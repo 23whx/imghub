@@ -127,8 +127,8 @@ const VideoThumbnail = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">视频缩略图查看器</h1>
-        <p className="text-gray-600">获取YouTube视频的高清缩略图</p>
+        <h1 className="text-3xl font-bold text-gray-900 mb-2">视频封面图查看器</h1>
+        <p className="text-gray-600">获取YouTube视频的高清封面图</p>
       </div>
 
       <div className="space-y-6">
@@ -200,7 +200,7 @@ const VideoThumbnail = () => {
             className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-medium transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
           >
             <Video className="w-5 h-5" />
-            <span>获取缩略图</span>
+            <span>获取封面</span>
           </button>
 
           {error && (
@@ -210,10 +210,10 @@ const VideoThumbnail = () => {
           )}
         </div>
 
-        {/* 缩略图展示 */}
+        {/* 封面图展示 */}
         {thumbnails.length > 0 && (
           <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold mb-4">缩略图列表</h2>
+            <h2 className="text-lg font-semibold mb-4">封面图列表</h2>
             <div className="space-y-4">
               {thumbnails.map((thumbnail, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">

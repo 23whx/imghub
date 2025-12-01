@@ -189,7 +189,7 @@ const ImageCompress = () => {
               {images.map((img, index) => (
                 <div key={index} className="border border-gray-200 rounded-lg p-4">
                   <div className="flex items-center space-x-4">
-                    {/* 缩略图 */}
+                    {/* 封面图 */}
                     <div className="flex-shrink-0">
                       <img
                         src={img.compressedDataUrl || img.originalImage.src}

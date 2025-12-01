@@ -38,6 +38,7 @@ const Navbar = () => {
   // 关键修改：在组件挂载前使用默认语言 'zh'，挂载后使用 Store 中的语言
   // 这解决了服务端渲染(SSR)和客户端初次渲染不匹配导致的 Hydration Error
   const currentLang = mounted ? $language : 'zh';
+  const effectiveDarkMode = mounted ? $isDarkMode : false;
   const t = languages[currentLang] || languages.zh;
 
   const tools = [
@@ -49,7 +50,7 @@ const Navbar = () => {
     // 暂时隐藏
     // { name: '网页截图', path: '/tools/screenshot', nameEn: 'Screenshot', nameJa: 'スクリーンショット' },
     // { name: '去水印', path: '/tools/watermark-remover', nameEn: 'Watermark Remover', nameJa: '透かし除去' },
-    { name: '视频缩略图', path: '/tools/video-thumbnail', nameEn: 'Video Thumbnail', nameJa: '動画サムネイル' },
+    { name: '视频封面', path: '/tools/video-thumbnail', nameEn: 'Video Thumbnail', nameJa: '動画サムネイル' },
     { name: '图片压缩', path: '/tools/image-compress', nameEn: 'Image Compress', nameJa: '画像圧縮' },
   ];
 
@@ -61,7 +62,7 @@ const Navbar = () => {
 
   return (
     <nav className={`backdrop-blur-lg border-b sticky top-0 z-50 transition-colors duration-300 ${
-      $isDarkMode 
+      effectiveDarkMode 
         ? 'bg-gray-800/80 border-gray-700/50' 
         : 'bg-white/80 border-gray-200/50'
     }`}>
@@ -82,7 +83,7 @@ const Navbar = () => {
             <a
               href="/"
               className={`flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                $isDarkMode 
+                effectiveDarkMode 
                   ? 'text-gray-200 hover:bg-gray-700' 
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
@@ -94,7 +95,7 @@ const Navbar = () => {
             {/* More Dropdown */}
             <div className="relative group">
               <button className={`px-3 py-2 rounded-lg text-sm font-medium transition-colors ${
-                $isDarkMode 
+                effectiveDarkMode 
                   ? 'text-gray-200 hover:bg-gray-700' 
                   : 'text-gray-700 hover:bg-gray-100'
               }`}>
@@ -125,10 +126,10 @@ const Navbar = () => {
             {/* Language Selector */}
             <div className="relative">
               <select
-                value={$language}
+                value={currentLang}
                 onChange={(e) => language.set(e.target.value)}
                 className={`inline-flex items-center px-3 py-2 rounded-lg text-sm font-medium transition-colors appearance-none pr-8 border-0 cursor-pointer ${
-                  $isDarkMode 
+                  effectiveDarkMode 
                     ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' 
                     : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
                 }`}
@@ -138,20 +139,20 @@ const Navbar = () => {
                 <option value="ja">日本語</option>
               </select>
               <Globe className={`absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 pointer-events-none ${
-                $isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                effectiveDarkMode ? 'text-gray-400' : 'text-gray-500'
               }`} />
             </div>
             
             {/* Dark Mode Toggle */}
             <button
-              onClick={() => isDarkMode.set(!$isDarkMode)}
+              onClick={() => isDarkMode.set(!effectiveDarkMode)}
               className={`inline-flex items-center px-3 py-2 rounded-lg transition-colors ${
-                $isDarkMode 
+                effectiveDarkMode 
                   ? 'bg-gray-700 hover:bg-gray-600 text-gray-200' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               }`}
             >
-              {$isDarkMode ? (
+              {effectiveDarkMode ? (
                 <Sun className="w-4 h-4" />
               ) : (
                 <Moon className="w-4 h-4" />
@@ -175,7 +176,7 @@ const Navbar = () => {
             <button
               onClick={() => setIsOpen(!isOpen)}
               className={`md:hidden p-2 rounded-lg transition-colors ${
-                $isDarkMode 
+                effectiveDarkMode 
                   ? 'text-gray-200 hover:bg-gray-700' 
                   : 'text-gray-700 hover:bg-gray-100'
               }`}
@@ -192,7 +193,7 @@ const Navbar = () => {
               <a
                 href="/"
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                  $isDarkMode 
+                  effectiveDarkMode 
                     ? 'text-gray-200 hover:bg-gray-700' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}
@@ -205,7 +206,7 @@ const Navbar = () => {
                   key={tool.path}
                   href={tool.path}
                   className={`block px-3 py-2 rounded-lg transition-colors ${
-                    $isDarkMode 
+                    effectiveDarkMode 
                       ? 'text-gray-200 hover:bg-gray-700' 
                       : 'text-gray-700 hover:bg-gray-100'
                   }`}
@@ -216,7 +217,7 @@ const Navbar = () => {
               <a
                 href="/about"
                 className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                  $isDarkMode 
+                  effectiveDarkMode 
                     ? 'text-gray-200 hover:bg-gray-700' 
                     : 'text-gray-700 hover:bg-gray-100'
                 }`}

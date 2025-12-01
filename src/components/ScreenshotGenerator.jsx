@@ -1,13 +1,15 @@
-import React, { useState, useRef, useContext } from 'react';
+import React, { useState, useRef } from 'react';
 import HeroSelector from './HeroSelector.jsx';
 import SubtitleInput from './SubtitleInput.jsx';
 import CanvasPreview from './CanvasPreview.jsx';
 import Controls from './Controls.jsx';
 import { Download, Settings, Sparkles } from 'lucide-react';
-import { GlobalContext } from '../contexts/GlobalContext.jsx';
+import { useStore } from '@nanostores/react';
+import { isDarkMode as darkModeStore, language as languageStore } from '../stores/globalStore';
 
 const ScreenshotGenerator = () => {
-  const { isDarkMode, language } = useContext(GlobalContext);
+  const isDarkMode = useStore(darkModeStore);
+  const language = useStore(languageStore);
   const [selectedHero, setSelectedHero] = useState('jobs');
   const [customImage, setCustomImage] = useState(null);
   const [subtitle, setSubtitle] = useState('如果你不够优秀\n人脉是不值钱的\n它不是追求来的\n而是吸引来的\n只有等价的交换\n才能得到合理的帮助\n虽然听起来很冷\n但这是事实');
