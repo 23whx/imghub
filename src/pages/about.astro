@@ -1,0 +1,126 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import { Mail, Twitter, Globe, Heart } from 'lucide-react';
+---
+
+<MainLayout 
+  title="关于作者 - ImgHub" 
+  description="了解 ImgHub 的创作者 Rollkey，一个热爱开发实用工具的独立开发者"
+>
+  <div class="max-w-4xl mx-auto px-4 py-12">
+    <!-- 作者简介 -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+      <div class="flex flex-col md:flex-row items-center md:items-start gap-6 mb-8">
+        <div class="w-24 h-24 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-3xl font-bold flex-shrink-0">
+          R
+        </div>
+        <div class="text-center md:text-left">
+          <h1 class="text-3xl font-bold text-gray-900 mb-2">Rollkey</h1>
+          <p class="text-gray-600 mb-4">独立开发者 / 工具创造者</p>
+          <p class="text-gray-700 leading-relaxed">
+            你好！我是 Rollkey，一个热衷于创造实用工具的独立开发者。
+            ImgHub 是我为了让图片处理变得更简单、更高效而创建的工具集合。
+            我相信好的工具应该是免费的、易用的、注重隐私的。
+          </p>
+        </div>
+      </div>
+
+      <!-- 联系方式 -->
+      <div class="border-t pt-8">
+        <h2 class="text-xl font-bold text-gray-900 mb-4">联系方式</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <a 
+            href="mailto:wanghongxiang23@gmail.com"
+            class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+          >
+            <div class="w-10 h-10 bg-red-100 rounded-lg flex items-center justify-center text-red-600 group-hover:scale-110 transition-transform">
+              <Mail class="w-5 h-5" />
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">邮箱</div>
+              <div class="text-gray-900 font-medium text-sm">wanghongxiang23@gmail.com</div>
+            </div>
+          </a>
+
+          <a 
+            href="https://x.com/Rollkey4"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+          >
+            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600 group-hover:scale-110 transition-transform">
+              <Twitter class="w-5 h-5" />
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">X (Twitter)</div>
+              <div class="text-gray-900 font-medium">@Rollkey4</div>
+            </div>
+          </a>
+
+          <a 
+            href="https://oumashu.top"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-3 p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors group"
+          >
+            <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center text-purple-600 group-hover:scale-110 transition-transform">
+              <Globe class="w-5 h-5" />
+            </div>
+            <div>
+              <div class="text-sm text-gray-500">工具站</div>
+              <div class="text-gray-900 font-medium">oumashu.top</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- 项目介绍 -->
+    <div class="bg-white rounded-2xl shadow-lg p-8 mb-8">
+      <h2 class="text-2xl font-bold text-gray-900 mb-4">关于 ImgHub</h2>
+      <div class="space-y-4 text-gray-700 leading-relaxed">
+        <p>
+          ImgHub 是一个完全免费的在线图片处理工具集合，旨在为用户提供简单、快速、安全的图片处理体验。
+        </p>
+        <p>
+          <strong>我们的特色：</strong>
+        </p>
+        <ul class="list-disc list-inside space-y-2 ml-4">
+          <li><strong>完全免费</strong> - 所有工具永久免费使用，无需注册</li>
+          <li><strong>隐私优先</strong> - 图片在您的浏览器本地处理，不上传服务器</li>
+          <li><strong>简单易用</strong> - 直观的界面设计，无需学习即可上手</li>
+          <li><strong>持续更新</strong> - 定期添加新功能，优化用户体验</li>
+        </ul>
+        <p>
+          如果您在使用过程中遇到任何问题或有新功能建议，欢迎通过上方联系方式与我联系。
+        </p>
+      </div>
+    </div>
+
+    <!-- 支持项目 -->
+    <div class="bg-gradient-to-br from-blue-50 to-purple-50 rounded-2xl shadow-lg p-8 text-center">
+      <Heart class="w-12 h-12 text-red-500 mx-auto mb-4" />
+      <h2 class="text-2xl font-bold text-gray-900 mb-3">支持项目</h2>
+      <p class="text-gray-700 mb-4">
+        如果 ImgHub 对您有帮助，欢迎分享给更多人。<br />
+        您的支持是我持续开发的动力！
+      </p>
+      <div class="flex flex-wrap justify-center gap-3">
+        <a 
+          href="https://x.com/Rollkey4" 
+          target="_blank"
+          rel="noopener noreferrer"
+          class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+        >
+          在 X 上关注我
+        </a>
+        <a 
+          href="mailto:wanghongxiang23@gmail.com"
+          class="px-6 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
+        >
+          反馈建议
+        </a>
+      </div>
+    </div>
+  </div>
+</MainLayout>

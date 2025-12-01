@@ -1,0 +1,30 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景渐变 -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="800" y2="600" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#8B5CF6"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-color="rgba(0,0,0,0.3)"/>
+    </filter>
+  </defs>
+  
+  <!-- 背景 -->
+  <rect width="800" height="600" fill="url(#bg)"/>
+  
+  <!-- 暗色遮罩 -->
+  <rect width="800" height="600" fill="rgba(0,0,0,0.3)"/>
+  
+  <!-- 人物轮廓 -->
+  <circle cx="400" cy="200" r="80" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  <rect x="360" y="280" width="80" height="120" rx="10" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+  
+  <!-- 字幕文字 -->
+  <text x="400" y="450" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="bold" filter="url(#shadow)">如果你不够优秀</text>
+  <text x="400" y="500" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="bold" filter="url(#shadow)">人脉是不值钱的</text>
+  <text x="400" y="550" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-size="42" font-weight="bold" filter="url(#shadow)">它不是追求来的</text>
+  
+  <!-- 水印 -->
+  <text x="780" y="25" text-anchor="end" fill="rgba(255,255,255,0.7)" font-family="Arial, sans-serif" font-size="14">screenshot | Rollkey</text>
+</svg>
