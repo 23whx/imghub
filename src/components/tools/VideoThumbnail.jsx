@@ -35,7 +35,7 @@ const VideoThumbnail = () => {
     return null;
   };
 
-  const getThumbnails = () => {
+  const getThumbnails = async () => {
     setError('');
     setThumbnails([]);
 
@@ -75,31 +75,60 @@ const VideoThumbnail = () => {
         }
       ]);
     } else if (platform === 'bilibili') {
-      // B站缩略图需要通过API获取，这里提供一个简化版本
-      setThumbnails([
-        {
-          quality: '封面图',
-          url: `https://i0.hdslb.com/bfs/archive/${videoId.replace('BV', '').replace('av', '')}.jpg`,
-          size: '未知'
+      // 调用我们的后端 API 代理请求
+      try {
+        const res = await fetch(`/api/bilibili-cover?bvid=${videoId}`);
+        const data = await res.json();
+        
+        if (!res.ok) {
+          setError(data.error || '获取封面失败');
+          return;
         }
-      ]);
-      setError('注意：B站缩略图需要通过API获取，此处仅为示例链接');
+
+        setThumbnails([
+          {
+            quality: '封面图',
+            url: data.url,
+            size: '原始尺寸'
+          }
+        ]);
+      } catch (err) {
+        setError('请求失败，请稍后重试');
+        console.error(err);
+      }
     }
   };
 
-  const downloadThumbnail = (thumbnailUrl, quality) => {
-    const link = document.createElement('a');
-    link.href = thumbnailUrl;
-    link.download = `thumbnail_${quality}.jpg`;
-    link.target = '_blank';
-    link.click();
+  const downloadThumbnail = async (thumbnailUrl, quality) => {
+    try {
+      // 尝试 Fetch 方式下载（适用于支持 CORS 的图片）
+      // 添加 referrerPolicy: 'no-referrer' 以绕过防盗链
+      const response = await fetch(thumbnailUrl, {
+        referrerPolicy: 'no-referrer'
+      });
+      if (!response.ok) throw new Error('Network response was not ok');
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `thumbnail_${quality.replace(/\s+/g, '_')}.jpg`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Fetch download failed, falling back to new window:', error);
+      // 如果 Fetch 失败（例如跨域限制），则在新窗口打开
+      window.open(thumbnailUrl, '_blank');
+    }
   };
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
       <div className="mb-8 text-center">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">视频缩略图查看器</h1>
-        <p className="text-gray-600">获取YouTube和B站视频的高清缩略图</p>
+        <p className="text-gray-600">获取YouTube视频的高清缩略图</p>
       </div>
 
       <div className="space-y-6">
@@ -110,8 +139,8 @@ const VideoThumbnail = () => {
             <span>视频链接</span>
           </h2>
 
-          {/* 平台选择 */}
-          <div className="mb-4">
+          {/* 平台选择 - 暂时隐藏 Bilibili */}
+          {/* <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700 mb-2">
               选择平台
             </label>
@@ -139,7 +168,7 @@ const VideoThumbnail = () => {
                 <span>Bilibili</span>
               </button>
             </div>
-          </div>
+          </div> */}
 
           {/* URL输入 */}
           <div className="mb-4">
@@ -150,11 +179,7 @@ const VideoThumbnail = () => {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder={
-                platform === 'youtube'
-                  ? 'https://www.youtube.com/watch?v=...'
-                  : 'https://www.bilibili.com/video/BV...'
-              }
+              placeholder="https://www.youtube.com/watch?v=..."
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
@@ -163,18 +188,9 @@ const VideoThumbnail = () => {
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
             <p className="text-sm text-gray-600 mb-2">支持的链接格式：</p>
             <ul className="text-xs text-gray-500 space-y-1">
-              {platform === 'youtube' ? (
-                <>
-                  <li>• https://www.youtube.com/watch?v=VIDEO_ID</li>
-                  <li>• https://youtu.be/VIDEO_ID</li>
-                  <li>• https://www.youtube.com/embed/VIDEO_ID</li>
-                </>
-              ) : (
-                <>
-                  <li>• https://www.bilibili.com/video/BV1234567890</li>
-                  <li>• https://www.bilibili.com/video/av12345678</li>
-                </>
-              )}
+              <li>• https://www.youtube.com/watch?v=VIDEO_ID</li>
+              <li>• https://youtu.be/VIDEO_ID</li>
+              <li>• https://www.youtube.com/embed/VIDEO_ID</li>
             </ul>
           </div>
 
@@ -219,6 +235,7 @@ const VideoThumbnail = () => {
                       src={thumbnail.url}
                       alt={thumbnail.quality}
                       className="w-full h-auto"
+                      referrerPolicy="no-referrer"
                       onError={(e) => {
                         e.target.style.display = 'none';
                         e.target.parentElement.innerHTML += '<p class="text-center py-8 text-gray-400">图片加载失败</p>';

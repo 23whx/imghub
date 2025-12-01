@@ -220,7 +220,7 @@ const MBTIGridContent = () => {
       }
 
       // 绘制MBTI标签
-      ctx.fillStyle = '#3b82f6';
+      ctx.fillStyle = '#000000';
       ctx.fillRect(x, y + cellHeight - 50, cellWidth, 50);
 
       ctx.fillStyle = '#ffffff';
@@ -231,7 +231,7 @@ const MBTIGridContent = () => {
 
       // 高亮选中框
       if (currentEditType === type) {
-        ctx.strokeStyle = '#3b82f6';
+        ctx.strokeStyle = '#000000';
         ctx.lineWidth = 4;
         ctx.strokeRect(x + padding - 2, y + padding - 2, cellWidth - padding * 2 + 4, cellHeight - 50 - padding + 4);
       }
