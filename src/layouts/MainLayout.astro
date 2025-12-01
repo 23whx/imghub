@@ -5,12 +5,13 @@ import Navbar from '../components/Navbar.jsx';
 interface Props {
   title: string;
   description?: string;
+  keywords?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, keywords } = Astro.props;
 ---
 
-<Layout title={title} description={description}>
+<Layout title={title} description={description} keywords={keywords}>
   <Navbar client:load />
   <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 pt-8 pb-12">
     <slot />

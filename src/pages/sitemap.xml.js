@@ -1,4 +1,3 @@
----
 // 动态生成 sitemap.xml
 const pages = [
   { url: '', changefreq: 'daily', priority: '1.0' },
@@ -16,7 +15,8 @@ const pages = [
 
 const site = 'https://imghub.com'; // 请替换为您的实际域名
 
-const xml = `<?xml version="1.0" encoding="UTF-8"?>
+export async function GET() {
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
@@ -29,9 +29,10 @@ ${pages.map(page => `  <url>
   </url>`).join('\n')}
 </urlset>`;
 
-return new Response(xml, {
-  headers: {
-    'Content-Type': 'application/xml; charset=utf-8',
-  },
-});
----
+  return new Response(xml, {
+    headers: {
+      'Content-Type': 'application/xml; charset=utf-8',
+    },
+  });
+}
+
