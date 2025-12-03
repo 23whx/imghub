@@ -13,20 +13,20 @@ const { title, description, keywords } = Astro.props;
 
 <Layout title={title} description={description} keywords={keywords}>
   <Navbar client:load />
-  <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 pt-8 pb-12">
+  <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pt-8 pb-12 transition-colors duration-300">
     <slot />
     
     <!-- Footer -->
-    <footer class="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-gray-200">
-      <div class="text-center text-gray-600 text-sm space-y-3">
+    <footer class="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
+      <div class="text-center text-gray-600 dark:text-gray-400 text-sm space-y-3">
         <div class="flex flex-wrap justify-center gap-4 mb-3">
-          <a href="/about" class="hover:text-blue-600 transition-colors">关于我们</a>
-          <span class="text-gray-400">|</span>
-          <a href="/privacy" class="hover:text-blue-600 transition-colors">隐私政策</a>
-          <span class="text-gray-400">|</span>
-          <a href="/terms" class="hover:text-blue-600 transition-colors">服务条款</a>
-          <span class="text-gray-400">|</span>
-          <a href="mailto:wanghongxiang23@gmail.com" class="hover:text-blue-600 transition-colors">联系我们</a>
+          <a href="/about" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">关于我们</a>
+          <span class="text-gray-400 dark:text-gray-500">|</span>
+          <a href="/privacy" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">隐私政策</a>
+          <span class="text-gray-400 dark:text-gray-500">|</span>
+          <a href="/terms" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">服务条款</a>
+          <span class="text-gray-400 dark:text-gray-500">|</span>
+          <a href="mailto:wanghongxiang23@gmail.com" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">联系我们</a>
         </div>
         <p>© 2025 ImgHub. Made with ❤️ by Rollkey</p>
       </div>
