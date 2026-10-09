@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import { translateToolText } from '../../i18n/legacyTools.js';
+﻿import React, { useState, useRef } from 'react';
 import { Download, Type, Palette } from 'lucide-react';
 
-const PornhubStyle = () => {
+const PornhubStyle = ({ lang: langProp = 'en' }) => {
+  const tr = text => translateToolText(langProp, text);
   const [leftText, setLeftText] = useState('Porn');
   const [rightText, setRightText] = useState('Hub');
   const [fontSize, setFontSize] = useState(80);
@@ -148,79 +150,70 @@ const PornhubStyle = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Pornhub风格Logo生成器</h1>
-        <p className="text-gray-600">制作经典的Pornhub风格Logo</p>
+    <div className="tool-shell">
+      <div className="mb-4 sm:mb-8 text-center">
+        <h2 className="tool-title">{tr("Pornhub风格Logo生成器")}</h2>
+        <p className="tool-subtitle">{tr("制作经典的Pornhub风格Logo")}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
         {/* 左侧控制面板 */}
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="tool-card">
             <div className="flex items-center space-x-2 mb-4">
-              <Type className="w-5 h-5 text-orange-500" />
-              <h2 className="text-lg font-semibold">文字设置</h2>
+              <Type className="w-5 h-5 shrink-0" />
+              <h2 className="text-lg font-semibold">{tr("文字设置")}</h2>
             </div>
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  布局方式
-                </label>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("布局方式")}</label>
                 <div className="flex gap-3">
                   <button
+                    type="button"
                     onClick={() => setLayout('horizontal')}
                     className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
                       layout === 'horizontal'
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-neutral-900 dark:bg-white text-white dark:text-black'
+                        : 'bg-black/5 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 hover:bg-black/10 dark:hover:bg-white/15'
                     }`}
-                  >
-                    横向 (左右)
-                  </button>
+                  >{tr("横向 (左右)")}</button>
                   <button
+                    type="button"
                     onClick={() => setLayout('vertical')}
                     className={`flex-1 px-4 py-2 rounded-lg transition-colors ${
                       layout === 'vertical'
-                        ? 'bg-orange-500 text-white'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                        ? 'bg-neutral-900 dark:bg-white text-white dark:text-black'
+                        : 'bg-black/5 dark:bg-white/10 text-neutral-700 dark:text-neutral-300 hover:bg-black/10 dark:hover:bg-white/15'
                     }`}
-                  >
-                    纵向 (上下)
-                  </button>
+                  >{tr("纵向 (上下)")}</button>
                 </div>
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  左侧文字（白色）
-                </label>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("左侧文字（白色）")}</label>
                 <input
                   type="text"
                   value={leftText}
                   onChange={(e) => setLeftText(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  placeholder="例如：Porn"
+                  className="w-full px-4 py-2 border border-black/15 dark:border-white/15 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent"
+                  placeholder={tr("例如：Porn")}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  右侧文字（橙底黑字）
-                </label>
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("右侧文字（橙底黑字）")}</label>
                 <input
                   type="text"
                   value={rightText}
                   onChange={(e) => setRightText(e.target.value)}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                  placeholder="例如：Hub"
+                  className="w-full px-4 py-2 border border-black/15 dark:border-white/15 rounded-lg bg-white dark:bg-neutral-900 text-neutral-900 dark:text-white placeholder:text-neutral-400 focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent"
+                  placeholder={tr("例如：Hub")}
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  字体大小: {fontSize}px
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("字体大小:")}{fontSize}px
                 </label>
                 <input
                   type="range"
@@ -228,13 +221,12 @@ const PornhubStyle = () => {
                   max="160"
                   value={fontSize}
                   onChange={(e) => setFontSize(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-neutral-900 dark:accent-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  文字间距: {textGap}px
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("文字间距:")}{textGap}px
                 </label>
                 <input
                   type="range"
@@ -242,56 +234,60 @@ const PornhubStyle = () => {
                   max="40"
                   value={textGap}
                   onChange={(e) => setTextGap(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-neutral-900 dark:accent-white"
                 />
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>贴合</span>
-                  <span>宽松</span>
+                <div className="flex justify-between text-xs text-neutral-500 dark:text-neutral-400 mt-1">
+                  <span>{tr("贴合")}</span>
+                  <span>{tr("宽松")}</span>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="tool-card">
             <div className="flex items-center space-x-2 mb-4">
-              <Palette className="w-5 h-5 text-orange-500" />
-              <h2 className="text-lg font-semibold">快速模板</h2>
+              <Palette className="w-5 h-5 shrink-0" />
+              <h2 className="text-lg font-semibold">{tr("快速模板")}</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <button
+                type="button"
                 onClick={() => {
                   setLeftText('Porn');
                   setRightText('Hub');
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 PornHub
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setLeftText('Code');
                   setRightText('Hub');
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 CodeHub
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setLeftText('Img');
                   setRightText('Hub');
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 ImgHub
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setLeftText('Study');
                   setRightText('Hub');
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 StudyHub
               </button>
@@ -299,18 +295,19 @@ const PornhubStyle = () => {
           </div>
 
           <button
+            type="button"
             onClick={handleExport}
-            className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-orange-500 to-yellow-500 hover:from-orange-600 hover:to-yellow-600 text-white rounded-lg font-medium transition-all transform hover:scale-105"
+            className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-neutral-900 dark:bg-white hover:bg-neutral-700 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg font-medium transition-colors"
           >
             <Download className="w-5 h-5" />
-            <span>下载图片</span>
+            <span>{tr("下载图片")}</span>
           </button>
         </div>
 
         {/* 右侧预览区 */}
-        <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold mb-4">实时预览</h2>
-          <div className="aspect-video bg-gray-50 rounded-lg overflow-hidden">
+        <div className="tool-card">
+          <h2 className="text-lg font-semibold mb-4">{tr("实时预览")}</h2>
+          <div className="aspect-video bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden">
             <canvas
               ref={canvasRef}
               width={800}

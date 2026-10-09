@@ -111,7 +111,7 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
       {/* 系统英雄选择 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.selectCelebrity}
         </label>
@@ -120,14 +120,10 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
             value={selectedHero || ''}
             onChange={(e) => handleHeroSelect(e.target.value)}
             disabled={customImage}
-            className={`w-full px-4 py-3 pr-10 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none text-sm transition-all duration-200 ${
-              isDarkMode
-                ? customImage 
-                  ? 'bg-gray-600 text-gray-500 border-gray-600 cursor-not-allowed'
-                  : 'bg-gray-700 text-gray-200 border-gray-600 hover:border-blue-400'
-                : customImage 
-                  ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-blue-300'
+            className={`w-full px-4 py-3 pr-10 border rounded-xl focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent appearance-none text-sm transition-all duration-200 ${
+              customImage
+                ? 'bg-gray-50 text-gray-400 border-gray-200 cursor-not-allowed dark:bg-gray-600 dark:text-gray-500 dark:border-gray-600'
+                : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 dark:bg-gray-700 dark:text-gray-200 dark:border-gray-600'
             }`}
           >
             <option value="">{t.pleaseSelect}</option>
@@ -138,35 +134,27 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
             ))}
           </select>
           <ChevronDown className={`absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 pointer-events-none transition-colors duration-200 ${
-            isDarkMode
-              ? customImage ? 'text-gray-500' : 'text-gray-400'
-              : customImage ? 'text-gray-400' : 'text-gray-500'
+            customImage ? 'text-gray-400 dark:text-gray-500' : 'text-gray-500 dark:text-gray-400'
           }`} />
         </div>
         
         {/* 选择状态提示 */}
         {selectedHero && !customImage && (
           <div className={`mt-2 p-2 border rounded-lg transition-colors duration-300 ${
-            isDarkMode 
-              ? 'bg-blue-900/30 border-blue-700' 
-              : 'bg-blue-50 border-blue-200'
+            "bg-black/5 border-black/10 dark:bg-white/10 dark:border-white/10"
           }`}>
-            <p className={`text-sm transition-colors duration-300 ${
-              isDarkMode ? 'text-blue-300' : 'text-blue-700'
-            }`}>
+            <p className="text-sm font-medium">
               ✓ {t.selected} {getHeroDisplayName(selectedHero)}
             </p>
           </div>
         )}
-        
+
         {customImage && (
           <div className={`mt-2 p-2 border rounded-lg transition-colors duration-300 ${
-            isDarkMode 
-              ? 'bg-amber-900/30 border-amber-700' 
-              : 'bg-amber-50 border-amber-200'
+            "bg-black/5 border-black/10 dark:bg-white/10 dark:border-white/10"
           }`}>
             <p className={`text-sm transition-colors duration-300 ${
-              isDarkMode ? 'text-amber-300' : 'text-amber-700'
+              "text-gray-600 dark:text-gray-300"
             }`}>
               ℹ️ {t.customDisabled}
             </p>
@@ -178,12 +166,12 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <div className={`w-full border-t transition-colors duration-300 ${
-            isDarkMode ? 'border-gray-600' : 'border-gray-200'
+            "border-gray-200 dark:border-gray-600"
           }`} />
         </div>
         <div className="relative flex justify-center text-sm">
           <span className={`px-2 transition-colors duration-300 ${
-            isDarkMode ? 'bg-gray-800 text-gray-400' : 'bg-white text-gray-500'
+            "bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400"
           }`}>{t.or}</span>
         </div>
       </div>
@@ -191,7 +179,7 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
       {/* 自定义图片上传 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.uploadCustom}
         </label>
@@ -203,42 +191,36 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
           />
           <div className={`border-2 border-dashed rounded-xl p-6 text-center transition-all duration-200 ${
-            isDarkMode
-              ? customImage 
-                ? 'border-green-600 bg-green-900/30' 
-                : 'border-gray-600 hover:border-blue-500 hover:bg-blue-900/20'
-              : customImage 
-                ? 'border-green-300 bg-green-50' 
-                : 'border-gray-300 hover:border-blue-400 hover:bg-blue-50'
+            customImage
+              ? 'border-neutral-900 bg-black/5 dark:border-white dark:bg-white/10'
+              : 'border-gray-300 hover:border-gray-400 hover:bg-black/5 dark:border-gray-600 dark:hover:bg-white/5'
           }`}>
             {customImage ? (
               <div className="space-y-2">
                 <div className={`w-16 h-16 mx-auto rounded-lg flex items-center justify-center transition-colors duration-300 ${
-                  isDarkMode ? 'bg-green-800' : 'bg-green-100'
+                  "bg-neutral-900 dark:bg-white"
                 }`}>
-                  <Upload className="w-8 h-8 text-green-600" />
+                  <Upload className={`w-8 h-8 ${"text-white dark:text-black"}`} />
                 </div>
-                <p className={`text-sm font-medium transition-colors duration-300 ${
-                  isDarkMode ? 'text-green-300' : 'text-green-700'
-                }`}>{t.imageUploaded}</p>
+                <p className="text-sm font-semibold">{t.imageUploaded}</p>
                 <p className={`text-xs transition-colors duration-300 ${
-                  isDarkMode ? 'text-green-400' : 'text-green-600'
+                  "text-gray-500 dark:text-gray-400"
                 }`}>{t.clickToReselect}</p>
               </div>
             ) : (
               <div className="space-y-2">
                 <div className={`w-16 h-16 mx-auto rounded-lg flex items-center justify-center transition-colors duration-300 ${
-                  isDarkMode ? 'bg-gray-700' : 'bg-gray-100'
+                  "bg-gray-100 dark:bg-gray-700"
                 }`}>
                   <Upload className={`w-8 h-8 transition-colors duration-300 ${
-                    isDarkMode ? 'text-gray-400' : 'text-gray-400'
+                    "text-gray-400 dark:text-gray-400"
                   }`} />
                 </div>
                 <p className={`text-sm font-medium transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                  "text-gray-700 dark:text-gray-200"
                 }`}>{t.uploadImage}</p>
                 <p className={`text-xs transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  "text-gray-500 dark:text-gray-400"
                 }`}>{t.supportFormats}</p>
               </div>
             )}
@@ -249,13 +231,9 @@ const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageCh
       {/* 底部当前选择提示（仅自定义图片时显示） */}
       {customImage && (
         <div className={`p-3 border rounded-lg transition-colors duration-300 ${
-          isDarkMode 
-            ? 'bg-green-900/30 border-green-700' 
-            : 'bg-green-50 border-green-200'
+          "bg-black/5 border-black/10 dark:bg-white/10 dark:border-white/10"
         }`}>
-          <p className={`text-sm transition-colors duration-300 ${
-            isDarkMode ? 'text-green-300' : 'text-green-700'
-          }`}>
+          <p className="text-sm font-medium">
             ✓ {t.customImageSelected}
           </p>
         </div>

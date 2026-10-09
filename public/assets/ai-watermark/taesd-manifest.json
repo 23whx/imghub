@@ -1,0 +1,16 @@
+{
+  "source": "https://github.com/madebyollin/taesd",
+  "revision": "027d3ef404a04a141e60d5ec0fee149c2c8bdd74",
+  "models": {
+    "encoder": {
+      "file": "taesd-encoder.onnx",
+      "bytes": 4902774,
+      "sha256": "44b9af2636e23e396ee77130e604c93dafd8f6841a892521f5d5fe91ef2dbc56"
+    },
+    "decoder": {
+      "file": "taesd-decoder.onnx",
+      "bytes": 4904109,
+      "sha256": "bb212b73febb9783ab3925ecfb5cab8adc10810aa6ef3472f72cdbe063c306e9"
+    }
+  }
+}

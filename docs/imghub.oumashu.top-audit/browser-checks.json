@@ -1,0 +1,16 @@
+{
+  "canonical": "https://imghub.oumashu.top/zh/tools/image-compress/",
+  "guidePresent": true,
+  "page": "http://127.0.0.1:3001/zh/tools/image-compress/?utm_source=seo-review#tool-guide",
+  "robots": "index, follow, max-image-preview:large",
+  "scrollWidth": 1265,
+  "stepsStyle": "decimal",
+  "types": [
+    "Person",
+    "WebSite",
+    "WebPage",
+    "WebApplication",
+    "BreadcrumbList"
+  ],
+  "width": 1265
+}

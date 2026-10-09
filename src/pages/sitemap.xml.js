@@ -1,38 +1,19 @@
-// 动态生成 sitemap.xml
-const pages = [
-  { url: '', changefreq: 'daily', priority: '1.0' },
-  { url: 'tools/subtitle-generator', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/pornhub-style', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/dnd-alignment', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/mbti-grid', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/meme-slicer', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/video-thumbnail', changefreq: 'weekly', priority: '0.9' },
-  { url: 'tools/image-compress', changefreq: 'weekly', priority: '0.9' },
-  { url: 'about', changefreq: 'monthly', priority: '0.6' },
-  { url: 'privacy', changefreq: 'monthly', priority: '0.5' },
-  { url: 'terms', changefreq: 'monthly', priority: '0.5' },
-];
+import { locales } from '../i18n/config.js';
+import { publicTools } from '../i18n/tools.js';
+import { buildAlternates, localizedPath } from '../i18n/utils.js';
+import { siteConfig, absoluteUrl } from '../config/site.js';
 
-const site = 'https://imghub.com'; // 请替换为您的实际域名
+export const sitemapPaths = ['', 'about', 'privacy', 'terms', ...publicTools.map(tool => `tools/${tool.slug}`)];
+const xmlEscape = value => String(value).replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&apos;' })[character]);
 
-export async function GET() {
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
-        http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
-${pages.map(page => `  <url>
-    <loc>${site}/${page.url}</loc>
-    <lastmod>${new Date().toISOString()}</lastmod>
-    <changefreq>${page.changefreq}</changefreq>
-    <priority>${page.priority}</priority>
-  </url>`).join('\n')}
-</urlset>`;
-
-  return new Response(xml, {
-    headers: {
-      'Content-Type': 'application/xml; charset=utf-8',
-    },
-  });
+export function GET() {
+  const entries = sitemapPaths.flatMap(path => locales.map(lang => {
+    const alternates = buildAlternates(siteConfig.url, path).map(alternate =>
+      `    <xhtml:link rel="alternate" hreflang="${alternate.hreflang}" href="${xmlEscape(alternate.href)}" />`
+    ).join('\n');
+    return `  <url>\n    <loc>${xmlEscape(absoluteUrl(localizedPath(lang, path)))}</loc>\n${alternates}\n  </url>`;
+  })).join('\n');
+  // Omit lastmod until a real per-page content modification date is maintained.
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${entries}\n</urlset>`;
+  return new Response(xml, { headers: { 'Content-Type': 'application/xml; charset=utf-8' } });
 }
-

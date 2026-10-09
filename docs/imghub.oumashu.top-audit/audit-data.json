@@ -1,0 +1,187 @@
+{
+  "domain": "imghub.oumashu.top",
+  "checked_at": "2026-10-03T13:27:27.834Z",
+  "summary": {
+    "health_score": null,
+    "score_note": "No global score: production rollout, Search Console and field performance remain unverified. Static assertions are engineering checks, not ranking weights.",
+    "business_type": "Free multilingual online image tools",
+    "top_findings": [
+      "Production robots pointed to another domain",
+      "Tool pages lacked detailed static guides",
+      "Hidden tools were indexable",
+      "English/Japanese legal body was Chinese",
+      "Default sharing image missing"
+    ],
+    "quick_wins": [
+      "Unified confirmed production domain",
+      "39 factual localized tool guides",
+      "Six hidden pages noindex",
+      "Real 1200x630 sharing image",
+      "Repeatable build audit"
+    ],
+    "source_status": "Implemented and locally verified; production deployment pending",
+    "validation": {
+      "contentPages": 57,
+      "indexablePages": 51,
+      "publicTools": 13,
+      "toolGuides": 39,
+      "hiddenPages": 6,
+      "redirectFallbacks": 19,
+      "internalReferences": 1674,
+      "errors": 0
+    },
+    "static_assertions": 3462
+  },
+  "categories": [
+    {
+      "name": "Technical SEO",
+      "score": null,
+      "what_works": [
+        "51 indexable canonical pages match the sitemap",
+        "Every public tool has a crawlable homepage link and matching ItemList entry",
+        "Language alternates match in both HTML and sitemap; index controls passed",
+        "Six updated AI tool language pages return HTTP 200 locally with initial HTML guides and schema",
+        "Unknown local tool URL returned 404 (first-round evidence)"
+      ],
+      "findings": [
+        {
+          "title": "Verify deployment at the confirmed custom domain",
+          "severity": "High",
+          "description": "Current production was checked before these source changes.",
+          "recommendation": "Deploy this version and check HTTP redirects, robots, sitemap and preview noindex headers."
+        }
+      ]
+    },
+    {
+      "name": "Content and On-Page SEO",
+      "score": null,
+      "what_works": [
+        "All public tools have independent localized guides and metadata",
+        "Initial HTML includes guide text and related links",
+        "Legal content is fully translated"
+      ],
+      "findings": [
+        {
+          "title": "Validate keyword demand with real queries",
+          "severity": "Medium",
+          "description": "Keyword plan is based on tool intent and public search samples; no volume or ranking dataset.",
+          "recommendation": "Use Search Console page/query/country segments after deployment."
+        }
+      ]
+    },
+    {
+      "name": "Structured Data",
+      "score": null,
+      "what_works": [
+        "Single linked JSON-LD graph per page",
+        "WebApplication and BreadcrumbList for public tools",
+        "No invented reviews or ratings"
+      ],
+      "findings": [
+        {
+          "title": "Software app rich results not eligible without real ratings or review",
+          "severity": "Info",
+          "description": "Semantic application schema is present; rating/review requirements are intentionally not fabricated.",
+          "recommendation": "Validate breadcrumbs after deployment. Add only genuine visible reviews if a real review feature is introduced."
+        }
+      ]
+    },
+    {
+      "name": "Performance and CWV",
+      "score": null,
+      "what_works": [
+        "Responsive WebP hero and self-hosted swap fonts retained",
+        "Guides add static HTML rather than hydration work",
+        "Hashed asset cache headers configured"
+      ],
+      "findings": [
+        {
+          "title": "No valid performance measurement available",
+          "severity": "Medium",
+          "description": "Anonymous PageSpeed API returned HTTP 429. No CrUX/GSC field data or local browser trace.",
+          "recommendation": "Measure the published version at least three times in a controlled lab and inspect field p75 when data becomes available."
+        }
+      ]
+    },
+    {
+      "name": "Images and Mobile UX",
+      "score": null,
+      "what_works": [
+        "Original 1200x630 PNG share image exists",
+        "Static local asset and image attribute checks passed",
+        "360px mobile guide and homepage showed no horizontal overflow"
+      ],
+      "findings": []
+    },
+    {
+      "name": "Authority and Search Visibility",
+      "score": null,
+      "what_works": [
+        "Author and contact identity consistent",
+        "Useful factual instructions and related workflows visible"
+      ],
+      "findings": [
+        {
+          "title": "Ownership and search performance data unavailable",
+          "severity": "Medium",
+          "description": "No verified Search Console property or backlink provider used.",
+          "recommendation": "Verify ownership, submit the sitemap and earn references through real examples and useful tools."
+        }
+      ]
+    }
+  ],
+  "action_plan": {
+    "phases": [
+      {
+        "name": "Source fixes",
+        "timeframe": "Completed",
+        "items": [
+          "Domain",
+          "On-page content",
+          "Index controls",
+          "Language parity",
+          "Structured data",
+          "Sharing image",
+          "Static regression checks"
+        ]
+      },
+      {
+        "name": "Deployment and ownership",
+        "timeframe": "At release",
+        "items": [
+          "Publish current build",
+          "Verify HTTP behavior",
+          "Search Console ownership",
+          "Submit sitemap"
+        ]
+      },
+      {
+        "name": "Measurement",
+        "timeframe": "First week after release",
+        "items": [
+          "URL inspection",
+          "Controlled lab measurements",
+          "Search Console baseline"
+        ]
+      },
+      {
+        "name": "Content and iteration",
+        "timeframe": "Following 4–8 weeks",
+        "items": [
+          "Real use cases",
+          "Query-led improvements",
+          "Useful organic references"
+        ]
+      }
+    ]
+  },
+  "artifacts": {
+    "findings_dir": "findings/",
+    "screenshots_dir": "screenshots/",
+    "static_audit": "static-audit.json",
+    "production_baseline": "production-baseline.json",
+    "pagespeed_attempt": "pagespeed-baseline.json",
+    "keyword_map": "KEYWORD-MAP.md",
+    "action_plan": "ACTION-PLAN.md"
+  }
+}

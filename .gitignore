@@ -48,6 +48,9 @@ Thumbs.db
 *.local
 
 # Testing
+output/ai-watermark/references/
+output/image-enhancer/references/
+output/ai-watermark/export-deps/
 .nyc_output/
 test-results/
 playwright-report/

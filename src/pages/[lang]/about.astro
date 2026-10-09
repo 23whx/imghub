@@ -1,0 +1,23 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import { Mail, Globe, Twitter } from 'lucide-react';
+import { locales, isValidLocale } from '../../i18n/config.js';
+import { aboutPage } from '../../i18n/pages.js';
+import { siteConfig } from '../../config/site.js';
+export function getStaticPaths() { return locales.map((lang) => ({ params: { lang } })); }
+const { lang } = Astro.params;
+if (!isValidLocale(lang)) return Astro.redirect('/en/about', 302);
+const t = aboutPage[lang as keyof typeof aboutPage] || aboutPage.en;
+---
+<MainLayout title={t.title} description={t.description} keywords={t.keywords} lang={lang} pathWithoutLang="about">
+  <div class="reading-page">
+    <header class="about-person"><div class="about-monogram" aria-hidden="true">R</div><div><h1>Rollkey</h1><p>{t.role}</p><p>{t.intro}</p></div></header>
+    <section class="about-section"><h2>{t.contactTitle}</h2><div class="about-links">
+      <a href="mailto:wyh93829@gmail.com"><Mail size={20} /><div><small>{t.emailLabel}</small><span>wyh93829@gmail.com</span></div></a>
+      <a href="https://x.com/Rollkey8" target="_blank" rel="noopener noreferrer"><Twitter size={20} /><div><small>X (Twitter)</small><span>@Rollkey8</span></div></a>
+      <a href={siteConfig.url + '/'}><Globe size={20} /><div><small>{t.siteLabel}</small><span>{new URL(siteConfig.url).host}</span></div></a>
+    </div></section>
+    <section class="about-section"><h2>{t.aboutProjectTitle}</h2><p>{t.aboutProjectP1}</p><div class="about-features">{t.features.map(f => <div><h3>{f.title}</h3><p>{f.desc}</p></div>)}</div><p>{t.aboutProjectP2}</p></section>
+    <section class="about-section about-support"><h2>{t.supportTitle}</h2><p>{t.supportDesc}</p><div class="hero-actions"><a class="studio-button" href="https://x.com/Rollkey8" target="_blank" rel="noopener noreferrer">{t.followX}<span aria-hidden="true">↗</span></a><a class="text-link" href="mailto:wyh93829@gmail.com">{t.feedback}<span aria-hidden="true">↗</span></a></div></section>
+  </div>
+</MainLayout>

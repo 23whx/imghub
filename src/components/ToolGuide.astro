@@ -1,0 +1,36 @@
+---
+import { getToolGuide, guideCopy } from '../i18n/toolGuides.js';
+import { getToolBySlug } from '../i18n/tools.js';
+import { localizedPath } from '../i18n/utils.js';
+interface Props { slug: string; lang: string; title: string; }
+const { slug, lang, title } = Astro.props;
+const guide = getToolGuide(slug, lang);
+const t = guideCopy[lang as keyof typeof guideCopy] || guideCopy.en;
+---
+{guide && <article id="tool-guide" class="tool-guide" aria-label={`${title} · ${t.overview}`}>
+  <section><h2>{title} · {t.overview}</h2><p>{guide.summary}</p></section>
+  <div class="guide-columns">
+    <section><h2>{t.steps}</h2><ol>{guide.steps.map(step => <li>{step}</li>)}</ol></section>
+    <section><h2>{t.tips}</h2><ul>{guide.tips.map(tip => <li>{tip}</li>)}</ul></section>
+  </div>
+  <section><h2>{t.faq}</h2>{guide.faqs.map(faq => <div class="guide-answer"><h3>{faq.question}</h3><p>{faq.answer}</p></div>)}</section>
+  <nav aria-label={t.related}><h2>{t.related}</h2><ul class="guide-links">{guide.related.map((related: string) => {
+    const tool = getToolBySlug(related);
+    return tool?.public && <li><a href={localizedPath(lang, `tools/${related}`)}>{(tool.card[lang as keyof typeof tool.card] || tool.card.en).title}<span aria-hidden="true">↗</span></a></li>;
+  })}</ul></nav>
+</article>}
+<style>
+  .tool-guide { max-width: 1100px; margin: 40px auto 0; padding-top: 40px; border-top: 1px solid var(--line); scroll-margin-top: 90px; }
+  .tool-guide section, .tool-guide nav { margin-bottom: 28px; }
+  h2 { font-family: var(--display); font-size: 26px; line-height: 1.5; color: var(--ink); margin-bottom: 12px; }
+  h3 { font-size: 16px; font-weight: 500; color: var(--ink); margin-bottom: 6px; }
+  p, li { font-size: 14px; line-height: 1.95; color: var(--muted); }
+  ol, ul { padding-left: 22px; } ol { list-style: decimal; } ul { list-style: disc; } li + li { margin-top: 8px; }
+  .guide-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; margin-top: 28px; }
+  .guide-answer + .guide-answer { margin-top: 18px; }
+  .guide-links { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; list-style: none; }
+  .guide-links li + li { margin: 0; }
+  .guide-links a { display: inline-flex; align-items: center; gap: 18px; min-height: 44px; padding: 8px 14px; border: 1px solid var(--line); border-radius: 6px; color: var(--ink); background: var(--surface); }
+  .guide-links a:hover { border-color: var(--accent); } .guide-links a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (max-width: 700px) { .guide-columns { grid-template-columns: 1fr; gap: 0; } h2 { font-size: 23px; } .tool-guide { margin-top: 28px; padding-top: 28px; } }
+</style>

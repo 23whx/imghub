@@ -1,0 +1,121 @@
+---
+import MainLayout from '../../../layouts/MainLayout.astro';
+import { locales, isValidLocale } from '../../../i18n/config.js';
+import { tools, getToolBySlug } from '../../../i18n/tools.js';
+import { localizedPath } from '../../../i18n/utils.js';
+import { getStudioCopy } from '../../../i18n/studio.js';
+import ToolGuide from '../../../components/ToolGuide.astro';
+import { canonicalPath } from '../../../utils/seo.js';
+import { siteConfig } from '../../../config/site.js';
+
+import ScreenshotGenerator from '../../../components/ScreenshotGenerator.jsx';
+import PornhubStyle from '../../../components/tools/PornhubStyle.jsx';
+import DNDAlignment from '../../../components/tools/DNDAlignment.jsx';
+import MBTIGrid from '../../../components/tools/MBTIGrid.jsx';
+import MemeSlicer from '../../../components/tools/MemeSlicer.jsx';
+import VideoThumbnail from '../../../components/tools/VideoThumbnail.jsx';
+import AIWatermarkRemover from '../../../components/tools/AIWatermarkRemover.jsx';
+import ImageEnhancer from '../../../components/tools/ImageEnhancer.jsx';
+import ImageCompress from '../../../components/tools/ImageCompress.jsx';
+import Screenshot from '../../../components/tools/Screenshot.jsx';
+import WatermarkRemover from '../../../components/tools/WatermarkRemover.jsx';
+import WiggleStudio from '../../../components/tools/WiggleStudio.jsx';
+import WatermarkAdder from '../../../components/tools/WatermarkAdder.jsx';
+import ImageOCR from '../../../components/tools/ImageOCR.jsx';
+import DrawingStudio from '../../../components/tools/DrawingStudio.jsx';
+
+export function getStaticPaths() {
+  return locales.flatMap((lang) =>
+    tools.map((tool) => ({
+      params: { lang, tool: tool.slug },
+    }))
+  );
+}
+
+const { lang, tool: toolSlug } = Astro.params;
+
+if (!isValidLocale(lang)) {
+  return Astro.redirect('/en/', 302);
+}
+
+const tool = getToolBySlug(toolSlug);
+if (!tool) {
+  return Astro.redirect(localizedPath(lang), 302);
+}
+
+const seo = tool.seo[lang as keyof typeof tool.seo] || tool.seo.en;
+const studio = getStudioCopy(lang);
+const pathWithoutLang = `tools/${tool.slug}`;
+const pageUrl = canonicalPath(lang, pathWithoutLang);
+const slug = tool.slug;
+const workspaceGuide = slug === 'video-thumbnail'
+  ? ({ zh: '粘贴链接 · 预览封面 · 下载 WebP', en: 'Paste a link · Preview · Download WebP', ja: 'リンクを入力 · プレビュー · WebP を保存' }[lang] || studio.guide)
+  : studio.guide;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  '@id': `${pageUrl}#application`,
+  name: seo.h1,
+  description: seo.description,
+  url: pageUrl,
+  applicationCategory: 'MultimediaApplication',
+  operatingSystem: 'Any',
+  browserRequirements: 'browserRequirements' in tool ? tool.browserRequirements : 'Requires a modern browser with JavaScript enabled',
+  isAccessibleForFree: true,
+  mainEntityOfPage: { '@id': `${pageUrl}#webpage` },
+  inLanguage: lang === 'zh' ? 'zh-CN' : lang,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD',
+    url: pageUrl,
+  },
+  author: {
+    '@id': `${siteConfig.url}/#creator`,
+  },
+};
+const breadcrumb = {
+  '@type': 'BreadcrumbList', '@id': `${pageUrl}#breadcrumb`,
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: studio.back, item: canonicalPath(lang) },
+    { '@type': 'ListItem', position: 2, name: seo.h1, item: pageUrl },
+  ],
+};
+---
+
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  lang={lang}
+  pathWithoutLang={pathWithoutLang}
+  jsonLd={tool.public ? [jsonLd, breadcrumb] : null}
+  indexable={tool.public}
+>
+  <div class="tool-page studio-container" data-tool={slug}>
+    <header class="workspace-header">
+      <nav aria-label={{ zh: '面包屑导航', en: 'Breadcrumb', ja: 'パンくずリスト' }[lang]} class="workspace-back"><a href={localizedPath(lang) + '#tools'}><span aria-hidden="true">← </span>{studio.back}</a><span aria-hidden="true"> / </span><span aria-current="page">{seo.h1}</span></nav>
+      <div class="workspace-heading"><div><h1>{seo.h1}</h1><p>{seo.description}</p></div><span class="workspace-guide">{workspaceGuide}</span></div>
+    </header>
+    <div class="workspace-content">
+    {slug === 'subtitle-generator' && <ScreenshotGenerator client:load lang={lang} />}
+    {slug === 'pornhub-style' && <PornhubStyle client:load lang={lang} />}
+    {slug === 'dnd-alignment' && <DNDAlignment client:load lang={lang} />}
+    {slug === 'mbti-grid' && <MBTIGrid client:load lang={lang} />}
+    {slug === 'meme-slicer' && <MemeSlicer client:load lang={lang} />}
+    {slug === 'video-thumbnail' && <VideoThumbnail client:load lang={lang} />}
+    {slug === 'ai-watermark-remover' && <AIWatermarkRemover client:load lang={lang} />}
+    {slug === 'image-enhancer' && <ImageEnhancer client:load lang={lang} />}
+    {slug === 'image-compress' && <ImageCompress client:load lang={lang} />}
+    {slug === 'screenshot' && <Screenshot client:load lang={lang} />}
+    {slug === 'watermark-remover' && <WatermarkRemover client:load lang={lang} />}
+    {slug === 'wiggle-studio' && <WiggleStudio client:load lang={lang} />}
+    {slug === 'watermark-adder' && <WatermarkAdder client:load lang={lang} />}
+    {slug === 'image-ocr' && <ImageOCR client:load lang={lang} />}
+    {slug === 'online-drawing' && <DrawingStudio client:load lang={lang} />}
+    </div>
+    {tool.public && <ToolGuide slug={slug} lang={lang} title={seo.h1} />}
+    <div class="workspace-note"><span>{studio.workspace} / ImgHub</span><a href={localizedPath(lang) + '#tools'}>{studio.browse}<span aria-hidden="true">↗</span></a></div>
+  </div>
+</MainLayout>

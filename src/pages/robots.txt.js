@@ -1,12 +1,10 @@
-const robotsTxt = `# https://www.robotstxt.org/robotstxt.html
-User-agent: *
-Allow: /
+import { absoluteUrl } from '../config/site.js';
 
-# Disallow crawling of API routes (if any)
+const robotsTxt = `User-agent: *
+Allow: /
 Disallow: /api/
 
-# Sitemap
-Sitemap: https://imghub.com/sitemap.xml
+Sitemap: ${absoluteUrl('/sitemap.xml')}
 `;
 
 export async function GET() {

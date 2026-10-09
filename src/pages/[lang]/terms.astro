@@ -1,0 +1,47 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import TermsBody from '../../components/legal/TermsBody.astro';
+import { locales, isValidLocale } from '../../i18n/config.js';
+import { termsPage } from '../../i18n/pages.js';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+if (!isValidLocale(lang)) {
+  return Astro.redirect('/en/terms', 302);
+}
+
+const t = termsPage[lang as keyof typeof termsPage] || termsPage.en;
+---
+
+<MainLayout
+  title={t.title}
+  description={t.description}
+  keywords={t.keywords}
+  lang={lang}
+  pathWithoutLang="terms"
+>
+  <div class="reading-page">
+    <div class="reading-document">
+      <header class="reading-header"><h1>{t.h1}</h1>
+      <p>{t.updated}</p></header>
+      {t.notice && (
+        <div class="reading-notice">
+          {t.notice}
+        </div>
+      )}
+      <div class="reading-body"><TermsBody lang={lang} /></div>
+      <div class="reading-acknowledgment mt-8 pt-6 border-t border-black/10 dark:border-white/10">
+        <p class="text-center text-gray-600">{lang === 'zh' ? '感谢您使用 ImgHub！' : lang === 'ja' ? 'ImgHubをご利用いただき、ありがとうございます。' : 'Thank you for using ImgHub!'}</p>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .prose h2 {
+    margin-top: 2rem;
+  }
+</style>

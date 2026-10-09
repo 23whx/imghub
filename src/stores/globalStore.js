@@ -1,48 +1,43 @@
 import { atom } from 'nanostores';
 
-// 创建 atoms
+// Warm ivory gallery by default; returning visitors retain their preference.
 export const isDarkMode = atom(false);
-export const language = atom('zh'); // SSR 默认中文，避免与初始 HTML 不一致
+// Default en to match site defaultLocale; URL / data-locale overrides on client
+export const language = atom('en');
 
-// 仅在客户端执行初始化和监听
+function getLocaleFromDocument() {
+  if (typeof document === 'undefined') return null;
+  const fromData = document.documentElement.getAttribute('data-locale');
+  if (fromData === 'zh' || fromData === 'en' || fromData === 'ja') return fromData;
+  return null;
+}
+
+function getLocaleFromPath() {
+  if (typeof window === 'undefined') return null;
+  const match = window.location.pathname.match(/^\/(zh|en|ja)(?:\/|$)/);
+  return match ? match[1] : null;
+}
+
+// Client-only init and listeners
 if (typeof window !== 'undefined') {
-  // 1. 初始化：从 localStorage 读取
   const savedDarkMode = localStorage.getItem('isDarkMode');
-  const savedLanguage = localStorage.getItem('language');
-
   if (savedDarkMode !== null) {
     isDarkMode.set(JSON.parse(savedDarkMode));
   }
 
-  if (savedLanguage) {
-    // 已有用户偏好，直接使用
-    language.set(savedLanguage);
+  // URL / html data-locale is the source of truth for SEO pages
+  const fromUrl = getLocaleFromPath() || getLocaleFromDocument();
+  if (fromUrl) {
+    language.set(fromUrl);
+    localStorage.setItem('language', fromUrl);
   } else {
-    // 首次访问：根据 IP 粗略判断地区，设置默认语言
-    (async () => {
-      try {
-        const res = await fetch('https://ipapi.co/json/');
-        if (!res.ok) throw new Error('geo fetch failed');
-        const data = await res.json();
-        const country = (data.country || data.country_code || '').toUpperCase();
-
-        let detected = 'en';
-        if (country === 'CN' || country === 'TW') {
-          detected = 'zh';
-        } else if (country === 'JP') {
-          detected = 'ja';
-        }
-
-        language.set(detected);
-      } catch (e) {
-        // 出错时默认英文
-        language.set('en');
-      }
-    })();
+    const savedLanguage = localStorage.getItem('language');
+    if (savedLanguage === 'zh' || savedLanguage === 'en' || savedLanguage === 'ja') {
+      language.set(savedLanguage);
+    }
   }
 
-  // 2. 监听变化并持久化
-  isDarkMode.subscribe(value => {
+  isDarkMode.subscribe((value) => {
     localStorage.setItem('isDarkMode', JSON.stringify(value));
     if (value) {
       document.documentElement.classList.add('dark');
@@ -51,7 +46,16 @@ if (typeof window !== 'undefined') {
     }
   });
 
-  language.subscribe(value => {
+  language.subscribe((value) => {
     localStorage.setItem('language', value);
   });
+}
+
+/** Sync store from a known page locale (call from React with lang prop). */
+export function syncLanguageFromLocale(lang) {
+  if (lang === 'zh' || lang === 'en' || lang === 'ja') {
+    if (language.get() !== lang) {
+      language.set(lang);
+    }
+  }
 }

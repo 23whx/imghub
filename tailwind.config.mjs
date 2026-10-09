@@ -1,9 +1,20 @@
 /** @type {import('tailwindcss').Config} */
 export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
+  darkMode: 'class',
   theme: {
     extend: {
       colors: {
+        neutral: {
+          50: '#f8f4ec', 100: '#eee7dc', 200: '#ded5c4', 300: '#c6baa3',
+          400: '#aa9f8f', 500: '#918577', 600: '#76695c', 700: '#51473f',
+          800: '#332d27', 900: '#211e1a', 950: '#14120f',
+        },
+        gray: {
+          50: '#f8f4ec', 100: '#eee7dc', 200: '#ded5c4', 300: '#c6baa3',
+          400: '#aa9f8f', 500: '#918577', 600: '#76695c', 700: '#51473f',
+          800: '#332d27', 900: '#211e1a', 950: '#14120f',
+        },
         primary: {
           50: '#eff6ff',
           100: '#dbeafe',
@@ -31,6 +42,7 @@ export default {
       },
       fontFamily: {
         sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+        display: ['Cormorant Garamond', 'Noto Serif SC', 'Noto Serif JP', 'Georgia', 'serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'SFMono-Regular', 'monospace'],
       },
       animation: {

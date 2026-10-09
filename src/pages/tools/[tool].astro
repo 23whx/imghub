@@ -1,0 +1,12 @@
+---
+import { toolSlugs } from '../../i18n/tools.js';
+
+export function getStaticPaths() {
+  return toolSlugs.map((tool) => ({
+    params: { tool },
+  }));
+}
+
+const { tool } = Astro.params;
+return Astro.redirect(`/en/tools/${tool}/`, 301);
+---

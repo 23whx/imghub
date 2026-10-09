@@ -70,11 +70,11 @@ const Controls = ({
       {/* 字体大小 */}
       <div>
         <label className={`flex items-center text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           <Type className="w-4 h-4 mr-2" />
           {t.fontSize}
-          <span className="ml-auto text-blue-600 font-semibold">{fontSize}px</span>
+          <span className="ml-auto font-semibold">{fontSize}px</span>
         </label>
         <div className="relative">
           <input
@@ -83,15 +83,10 @@ const Controls = ({
             max="80"
             value={fontSize}
             onChange={(e) => onFontSizeChange(Number(e.target.value))}
-            className={`w-full h-2 rounded-lg appearance-none cursor-pointer transition-colors duration-300 ${
-              isDarkMode ? 'bg-gray-600' : 'bg-gray-200'
-            }`}
-            style={{
-              background: `linear-gradient(to right, #3b82f6 0%, #3b82f6 ${((fontSize - 20) / (80 - 20)) * 100}%, ${isDarkMode ? '#4b5563' : '#e5e7eb'} ${((fontSize - 20) / (80 - 20)) * 100}%, ${isDarkMode ? '#4b5563' : '#e5e7eb'} 100%)`
-            }}
+            className="w-full accent-neutral-900 dark:accent-white"
           />
           <div className={`flex justify-between text-xs mt-1 transition-colors duration-300 ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-400'
+            "text-gray-400 dark:text-gray-400"
           }`}>
             <span>20px</span>
             <span>50px</span>
@@ -103,17 +98,15 @@ const Controls = ({
       {/* 字体选择 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.fontStyle}
         </label>
         <select
           value={fontFamily}
           onChange={(e) => onFontFamilyChange(e.target.value)}
-          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition-colors duration-300 ${
-            isDarkMode 
-              ? 'bg-gray-700 border-gray-600 text-gray-200' 
-              : 'bg-white border-gray-200 text-gray-900'
+          className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent text-sm transition-colors duration-300 ${
+            "bg-white border-gray-200 text-gray-900 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"
           }`}
         >
           <option value="default">{t.defaultFont}</option>
@@ -128,7 +121,7 @@ const Controls = ({
       {/* 文字颜色 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.textColor}
         </label>
@@ -138,7 +131,7 @@ const Controls = ({
             value={textColor}
             onChange={(e) => onTextColorChange(e.target.value)}
             className={`w-12 h-10 border rounded-lg cursor-pointer transition-colors duration-300 ${
-              isDarkMode ? 'border-gray-600' : 'border-gray-200'
+              "border-gray-200 dark:border-gray-600"
             }`}
           />
           <div className="flex-1">
@@ -147,10 +140,8 @@ const Controls = ({
               value={textColor}
               onChange={(e) => onTextColorChange(e.target.value)}
               placeholder="#ffffff"
-              className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 ${
-                isDarkMode 
-                  ? 'bg-gray-700 border-gray-600 text-gray-200 placeholder-gray-400' 
-                  : 'bg-white border-gray-200 text-gray-900 placeholder-gray-500'
+              className={`w-full px-3 py-2 border rounded-lg text-sm focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent transition-colors duration-300 ${
+                "bg-white border-gray-200 text-gray-900 placeholder-gray-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
               }`}
             />
           </div>
@@ -161,7 +152,7 @@ const Controls = ({
               key={color}
               onClick={() => onTextColorChange(color)}
               className={`w-6 h-6 rounded border transition-transform hover:scale-110 ${
-                isDarkMode ? 'border-gray-600' : 'border-gray-300'
+                "border-gray-300 dark:border-gray-600"
               }`}
               style={{ backgroundColor: color }}
               title={color}
@@ -173,7 +164,7 @@ const Controls = ({
       {/* 预设样式 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.presetStyles}
         </label>
@@ -189,10 +180,8 @@ const Controls = ({
               onClick={() => {
                 onFontSizeChange(preset.fontSize);
               }}
-              className={`px-3 py-2 text-xs rounded-lg transition-all duration-200 ${
-                isDarkMode 
-                  ? 'bg-gradient-to-r from-gray-700 to-gray-600 hover:from-blue-800 hover:to-blue-700 text-gray-300 hover:text-blue-200'
-                  : 'bg-gradient-to-r from-gray-50 to-gray-100 hover:from-blue-50 hover:to-blue-100 text-gray-600 hover:text-blue-600'
+              className={`px-3 py-2 text-xs rounded-lg transition-colors duration-200 ${
+                "bg-gray-50 hover:bg-gray-100 text-gray-600 hover:text-black dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300 dark:hover:text-white"
               }`}
             >
               {preset.name}

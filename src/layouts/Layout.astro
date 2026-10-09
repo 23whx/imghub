@@ -1,41 +1,82 @@
 ---
+import '../styles/global.css';
+import '../styles/gallery.css';
+import '../styles/fonts.css';
+import CookieConsent from '../components/CookieConsent.jsx';
+import { defaultLocale, htmlLang, ogLocale, isValidLocale } from '../i18n/config.js';
+import { siteConfig, absoluteUrl } from '../config/site.js';
+import { buildPageSchema, canonicalPath, serializeJsonLd } from '../utils/seo.js';
+
 export interface Props {
   title: string;
   description?: string;
   keywords?: string;
   image?: string;
   type?: string;
+  lang?: string;
+  pathWithoutLang?: string;
+  alternates?: Array<{ lang: string; hreflang: string; href: string }>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
+  indexable?: boolean;
 }
 
-const { 
-  title, 
-  description = "ImgHub - 免费在线图片处理工具集合，包括字幕生成器、Pornhub风格Logo制作、DND阵营九宫格、MBTI人格图、表情包切片、视频封面图查看、图片压缩等多种实用功能",
-  keywords = "图片处理,在线工具,字幕生成器,Pornhub风格,DND阵营,MBTI,表情包切片,图片压缩,视频封面图,ImgHub",
-  image = "/og-image.png",
-  type = "website"
+const {
+  title,
+  description = 'ImgHub - Free online image tools collection',
+  keywords = 'image tools,online tools,ImgHub',
+  image = siteConfig.image,
+  type = 'website',
+  lang = defaultLocale,
+  pathWithoutLang = '',
+  alternates = [],
+  jsonLd = null,
+  indexable = true,
 } = Astro.props;
 
-const canonicalURL = new URL(Astro.url.pathname, Astro.site);
-const ogImage = new URL(image, Astro.site);
+const locale = isValidLocale(lang) ? lang : defaultLocale;
+const pageHtmlLang = htmlLang[locale as keyof typeof htmlLang] || 'en';
+const pageOgLocale = ogLocale[locale as keyof typeof ogLocale] || 'en_US';
+const alternateOgLocales = Object.entries(ogLocale)
+  .filter(([code]) => code !== locale)
+  .map(([, value]) => value);
 
-import CookieConsent from '../components/CookieConsent.jsx';
+const canonicalURL = canonicalPath(locale, pathWithoutLang);
+const ogImage = absoluteUrl(image);
+const structuredData = buildPageSchema({ lang: locale, title, description, path: pathWithoutLang, extra: jsonLd });
+const imageAlt = locale === 'zh' ? 'ImgHub 免费在线图片工具集' : locale === 'ja' ? 'ImgHub 無料オンライン画像ツール集' : 'ImgHub free online image toolkit';
+const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 ---
 
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang={pageHtmlLang} data-locale={locale}>
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=5"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="format-detection" content="telephone=no" />
     <meta name="generator" content={Astro.generator} />
-    
+
     <!-- Primary Meta Tags -->
     <title>{title}</title>
     <meta name="title" content={title} />
     <meta name="description" content={description} />
     <meta name="keywords" content={keywords} />
     <meta name="author" content="Rollkey" />
+    {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
+    <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow'} />
     <link rel="canonical" href={canonicalURL} />
-    
+    {pathWithoutLang === '' && <link rel="preload" as="image" href="/assets/studio/gallery-hero-alps.webp" media="(min-width: 701px)" />}
+    {pathWithoutLang === '' && <link rel="preload" as="image" href="/assets/studio/gallery-hero-alps-mobile.webp" media="(max-width: 700px)" />}
+
+    <!-- hreflang alternates -->
+    {alternates.map((alt) => (
+      <link rel="alternate" hreflang={alt.hreflang} href={alt.href} />
+    ))}
+
     <!-- Favicons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
@@ -44,56 +85,57 @@ import CookieConsent from '../components/CookieConsent.jsx';
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="shortcut icon" href="/favicon.ico" />
-    <meta name="theme-color" content="#3b82f6" />
-    
+    <meta name="theme-color" content="#14120f" />
+
+    <!-- Restore the visitor's theme before paint. New visitors see the ivory gallery. -->
+    <script is:inline>
+      (function () {
+        try {
+          var saved = localStorage.getItem('isDarkMode');
+          if (saved !== null && JSON.parse(saved)) {
+            document.documentElement.classList.add('dark');
+          }
+        } catch (e) {}
+      })();
+    </script>
+
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={imageAlt} />
+    {image === siteConfig.image && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:type" content="image/png" /></>}
     <meta property="og:site_name" content="ImgHub" />
-    <meta property="og:locale" content="zh_CN" />
-    
+    <meta property="og:locale" content={pageOgLocale} />
+    {alternateOgLocales.map((loc) => (
+      <meta property="og:locale:alternate" content={loc} />
+    ))}
+
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content={canonicalURL} />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />
-    <meta name="twitter:creator" content="@Rollkey" />
-    
-    <!-- 字体 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+    <meta name="twitter:image:alt" content={imageAlt} />
+    <meta name="twitter:creator" content={siteConfig.socialHandle} />
+
+    <!-- Fonts are bundled locally in fonts.css. -->
+
     <!-- Structured Data (JSON-LD) -->
-    <script type="application/ld+json" is:inline>
-      {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "ImgHub",
-        "description": "免费在线图片处理工具集合",
-        "url": "https://imghub.com",
-        "author": {
-          "@type": "Person",
-          "name": "Rollkey"
-        },
-        "potentialAction": {
-          "@type": "SearchAction",
-          "target": "https://imghub.com/?q={search_term_string}",
-          "query-input": "required name=search_term_string"
-        }
-      }
-    </script>
-    
+    <script is:inline type="application/ld+json" set:html={serializeJsonLd(structuredData)} />
+
     <!-- Google AdSense -->
-    <script is:inline async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4880646654838411"
-         crossorigin="anonymous"></script>
+    <script
+      is:inline
+      async
+      src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4880646654838411"
+      crossorigin="anonymous"></script>
   </head>
-  <body class="font-sans antialiased bg-white text-gray-900 dark:bg-slate-900 dark:text-gray-50 transition-colors duration-300">
+  <body class="font-sans antialiased studio-site">
     <slot />
-    <CookieConsent client:load />
+    <CookieConsent client:load lang={locale} />
   </body>
 </html>

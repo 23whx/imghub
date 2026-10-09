@@ -1,7 +1,9 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { translateToolText } from '../../i18n/legacyTools.js';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Download, Eraser, ZoomIn, ZoomOut } from 'lucide-react';
 
-const WatermarkRemover = () => {
+const WatermarkRemover = ({ lang: langProp = 'en' }) => {
+  const tr = text => translateToolText(langProp, text);
   const [image, setImage] = useState(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [brushSize, setBrushSize] = useState(20);
@@ -154,19 +156,19 @@ const WatermarkRemover = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">图片去水印工具</h1>
-        <p className="text-gray-600">标记水印区域，智能修复图片</p>
+    <div className="tool-shell">
+      <div className="mb-4 sm:mb-8 text-center">
+        <h2 className="tool-title">{tr("图片去水印工具")}</h2>
+        <p className="tool-subtitle">{tr("标记水印区域，智能修复图片")}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 sm:gap-6">
         {/* 左侧控制面板 */}
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="tool-card">
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-              <Upload className="w-5 h-5 text-red-500" />
-              <span>上传图片</span>
+              <Upload className="w-5 h-5" />
+              <span>{tr("上传图片")}</span>
             </h2>
             <input
               type="file"
@@ -177,24 +179,23 @@ const WatermarkRemover = () => {
             />
             <label
               htmlFor="image-upload"
-              className="block w-full py-8 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-red-500 hover:bg-red-50 transition-colors"
+              className="block w-full py-8 border-2 border-dashed border-black/15 dark:border-white/15 rounded-lg text-center cursor-pointer hover:border-black/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             >
-              <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-600">点击上传</p>
+              <Upload className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
+              <p className="text-sm text-neutral-600 dark:text-neutral-300">{tr("点击上传")}</p>
             </label>
           </div>
 
           {image && (
             <>
-              <div className="bg-white rounded-2xl shadow-lg p-6">
+              <div className="tool-card">
                 <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-                  <Eraser className="w-5 h-5 text-red-500" />
-                  <span>画笔设置</span>
+                  <Eraser className="w-5 h-5" />
+                  <span>{tr("画笔设置")}</span>
                 </h2>
                 <div className="space-y-4">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      画笔大小: {brushSize}px
+                    <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("画笔大小:")}{brushSize}px
                     </label>
                     <input
                       type="range"
@@ -202,52 +203,43 @@ const WatermarkRemover = () => {
                       max="50"
                       value={brushSize}
                       onChange={(e) => setBrushSize(Number(e.target.value))}
-                      className="w-full"
+                      className="w-full accent-neutral-900 dark:accent-white"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="bg-white rounded-2xl shadow-lg p-6 space-y-3">
+              <div className="tool-card space-y-3">
                 <button
                   onClick={processImage}
                   disabled={maskData.length === 0}
-                  className="w-full px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  开始处理
-                </button>
+                  className="w-full px-4 py-2 bg-neutral-900 dark:bg-white hover:bg-neutral-700 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >{tr("开始处理")}</button>
                 <button
                   onClick={clearMask}
-                  className="w-full px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-colors"
-                >
-                  清除标记
-                </button>
+                  className="w-full px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg transition-colors"
+                >{tr("清除标记")}</button>
                 <button
                   onClick={handleExport}
-                  className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
+                  className="w-full flex items-center justify-center space-x-2 px-4 py-2 bg-neutral-900 dark:bg-white hover:bg-neutral-700 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg transition-colors"
                 >
                   <Download className="w-4 h-4" />
-                  <span>下载图片</span>
+                  <span>{tr("下载图片")}</span>
                 </button>
               </div>
             </>
           )}
 
-          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-            <p className="text-sm text-yellow-800">
-              <strong>使用说明：</strong><br />
-              1. 上传包含水印的图片<br />
-              2. 用鼠标涂抹标记水印区域<br />
-              3. 点击"开始处理"修复图片<br />
-              4. 下载处理后的图片
-            </p>
+          <div className="tool-card !p-4 font-medium">
+            <p className="text-sm">
+              <strong>{tr("使用说明：")}</strong><br />{tr("1. 上传包含水印的图片")}<br />{tr("2. 用鼠标涂抹标记水印区域")}<br />{tr("3. 点击\"开始处理\"修复图片")}<br />{tr("4. 下载处理后的图片")}</p>
           </div>
         </div>
 
         {/* 右侧预览区 */}
-        <div className="lg:col-span-3 bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold mb-4">图片编辑区</h2>
-          <div className="relative bg-gray-50 rounded-lg overflow-auto max-h-[600px]">
+        <div className="lg:col-span-3 tool-card">
+          <h2 className="text-lg font-semibold mb-4">{tr("图片编辑区")}</h2>
+          <div className="relative bg-black/5 dark:bg-white/5 rounded-lg overflow-auto max-h-[600px]">
             {image ? (
               <div className="relative inline-block">
                 <canvas
@@ -265,8 +257,8 @@ const WatermarkRemover = () => {
               </div>
             ) : (
               <div className="text-center py-20">
-                <Eraser className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-400">上传图片后开始编辑</p>
+                <Eraser className="w-16 h-16 text-neutral-300 dark:text-neutral-700 mx-auto mb-4" />
+                <p className="text-neutral-400">{tr("上传图片后开始编辑")}</p>
               </div>
             )}
           </div>

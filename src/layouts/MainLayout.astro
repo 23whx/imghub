@@ -1,36 +1,38 @@
 ---
 import Layout from './Layout.astro';
 import Navbar from '../components/Navbar.jsx';
+import { defaultLocale, isValidLocale } from '../i18n/config.js';
+import { buildAlternates, localizedPath } from '../i18n/utils.js';
+import { getUi } from '../i18n/ui.js';
+import { getStudioCopy } from '../i18n/studio.js';
+import { siteConfig } from '../config/site.js';
 
 interface Props {
   title: string;
   description?: string;
   keywords?: string;
+  lang?: string;
+  pathWithoutLang?: string;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
+  indexable?: boolean;
 }
-
-const { title, description, keywords } = Astro.props;
+const { title, description, keywords, lang = defaultLocale, pathWithoutLang = '', jsonLd = null, indexable = true } = Astro.props;
+const locale = isValidLocale(lang) ? lang : defaultLocale;
+const alternates = indexable ? buildAlternates(siteConfig.url, pathWithoutLang) : [];
+const t = getUi(locale);
+const studio = getStudioCopy(locale);
+const isHome = pathWithoutLang === '';
 ---
-
-<Layout title={title} description={description} keywords={keywords}>
-  <Navbar client:load />
-  <main class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900 pt-8 pb-12 transition-colors duration-300">
+<Layout title={title} description={description} keywords={keywords} lang={locale} pathWithoutLang={pathWithoutLang} alternates={alternates} jsonLd={jsonLd} indexable={indexable}>
+  <a class="skip-link" href="#main-content">{locale === 'zh' ? '跳到主要内容' : locale === 'ja' ? '本文へ移動' : 'Skip to content'}</a>
+  <Navbar client:load lang={locale} isHome={isHome} />
+  <main id="main-content" class:list={['studio-main', { 'studio-main-home': isHome }]}>
     <slot />
-    
-    <!-- Footer -->
-    <footer class="max-w-7xl mx-auto px-4 mt-16 pt-8 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
-      <div class="text-center text-gray-600 dark:text-gray-400 text-sm space-y-3">
-        <div class="flex flex-wrap justify-center gap-4 mb-3">
-          <a href="/about" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">关于我们</a>
-          <span class="text-gray-400 dark:text-gray-500">|</span>
-          <a href="/privacy" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">隐私政策</a>
-          <span class="text-gray-400 dark:text-gray-500">|</span>
-          <a href="/terms" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">服务条款</a>
-          <span class="text-gray-400 dark:text-gray-500">|</span>
-          <a href="mailto:wanghongxiang23@gmail.com" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">联系我们</a>
-        </div>
-        <p>© 2025 ImgHub. Made with ❤️ by Rollkey</p>
-      </div>
-    </footer>
   </main>
+  <footer class="studio-footer">
+    <div class="studio-container">
+      <div class="footer-top"><a href={localizedPath(locale)} class="footer-wordmark">ImgHub</a><div><p>{studio.footer}</p><a href={localizedPath(locale) + '#tools'} class="text-link">{studio.browse}<span aria-hidden="true">↗</span></a></div></div>
+      <div class="footer-bottom"><p>© {new Date().getFullYear()} ImgHub · Rollkey</p><nav aria-label="Footer"><a href={localizedPath(locale, 'about')}>{t.about}</a><a href={localizedPath(locale, 'privacy')}>{t.privacy}</a><a href={localizedPath(locale, 'terms')}>{t.terms}</a><a href="mailto:wyh93829@gmail.com">{t.contact}</a></nav></div>
+    </div>
+  </footer>
 </Layout>
-

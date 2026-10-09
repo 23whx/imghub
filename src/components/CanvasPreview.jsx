@@ -491,7 +491,7 @@ const CanvasPreview = forwardRef(({
 
   return (
     <div className="relative">
-      <div className="bg-gray-100 rounded-xl overflow-hidden shadow-inner hover:shadow-lg transition-shadow duration-200" style={{ width: `${PREVIEW_FIXED_WIDTH}px` }}>
+      <div className="bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden" style={{ width: `${PREVIEW_FIXED_WIDTH}px`, maxWidth: '100%' }}>
         <canvas
           ref={canvasRef}
           className="block w-full h-auto"
@@ -500,22 +500,16 @@ const CanvasPreview = forwardRef(({
       </div>
       
       {/* 预览信息 */}
-      <div className="mt-4 flex items-center justify-between text-sm text-gray-500">
-        <div className="flex items-center gap-4 flex-wrap">
-          <span className={`${language !== 'zh' ? 'text-xs' : ''}`}>{language === 'ja' ? 'サイズ' : language === 'en' ? 'Size' : '尺寸'}: {canvasSize.width}×{canvasSize.height}（{language === 'ja' ? 'プレビュー幅固定' : language === 'en' ? 'preview width fixed' : '预览宽度固定'} {PREVIEW_FIXED_WIDTH}px，{language === 'ja' ? '高さ自動調整' : language === 'en' ? 'height auto' : '高度自适应'}）</span>
-          <span className={`${language !== 'zh' ? 'text-xs' : ''}`}>{language === 'ja' ? '形式' : language === 'en' ? 'Format' : '格式'}: PNG</span>
-          <span className={`text-blue-600 ${language !== 'zh' ? 'text-xs' : ''}`}>{language === 'ja' ? 'スマート適応' : language === 'en' ? 'Smart Fit' : '智能适配'}</span>
-        </div>
-        <div className="text-right">
-          <span className={`${language !== 'zh' ? 'text-xs' : ''}`}>{language === 'ja' ? 'リアルタイムプレビュー' : language === 'en' ? 'Real-time Preview' : '实时预览'}</span>
-        </div>
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-500 dark:text-neutral-400">
+        <span>{canvasSize.width} × {canvasSize.height} · PNG</span>
+        <span>{language === 'ja' ? 'ライブプレビュー' : language === 'en' ? 'Live preview' : '实时预览'}</span>
       </div>
 
       {/* 加载提示 */}
       {getCurrentImageUrl() && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white/80 backdrop-blur-sm rounded-xl opacity-0 transition-opacity duration-300" id="loading-overlay">
+        <div aria-hidden="true" className="absolute inset-0 pointer-events-none flex items-center justify-center bg-white/80 dark:bg-black/80 rounded-lg opacity-0 transition-opacity duration-300" id="loading-overlay">
           <div className="text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-2"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-neutral-900 dark:border-white mx-auto mb-2"></div>
             <p className="text-sm text-gray-600">{language === 'ja' ? '読み込み中…' : language === 'en' ? 'Loading…' : '加载中...'}</p>
           </div>
         </div>

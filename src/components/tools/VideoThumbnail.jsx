@@ -1,265 +1,148 @@
-import React, { useState } from 'react';
-import { Link, Download, Video, Youtube } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { Download, ExternalLink, Link, Loader2, Video } from 'lucide-react';
+import { getBilibiliCover, parseVideoInput, thumbnailWebPBlob, YOUTUBE_QUALITIES } from '../../utils/videoThumbnail.js';
 
-const VideoThumbnail = () => {
-  const [url, setUrl] = useState('');
-  const [platform, setPlatform] = useState('youtube');
-  const [thumbnails, setThumbnails] = useState([]);
-  const [error, setError] = useState('');
-
-  const extractVideoId = (url, platform) => {
-    if (platform === 'youtube') {
-      const patterns = [
-        /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-        /youtube\.com\/embed\/([^&\n?#]+)/,
-        /youtube\.com\/v\/([^&\n?#]+)/
-      ];
-      
-      for (const pattern of patterns) {
-        const match = url.match(pattern);
-        if (match) return match[1];
-      }
-    } else if (platform === 'bilibili') {
-      const patterns = [
-        /bilibili\.com\/video\/(BV[a-zA-Z0-9]+)/,
-        /bilibili\.com\/video\/(av\d+)/,
-        /b23\.tv\/([a-zA-Z0-9]+)/
-      ];
-      
-      for (const pattern of patterns) {
-        const match = url.match(pattern);
-        if (match) return match[1];
-      }
-    }
-    
-    return null;
-  };
-
-  const getThumbnails = async () => {
-    setError('');
-    setThumbnails([]);
-
-    const videoId = extractVideoId(url, platform);
-    
-    if (!videoId) {
-      setError('无法识别视频链接，请检查URL是否正确');
-      return;
-    }
-
-    if (platform === 'youtube') {
-      setThumbnails([
-        {
-          quality: 'Max Resolution',
-          url: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`,
-          size: '1280x720'
-        },
-        {
-          quality: 'Standard',
-          url: `https://img.youtube.com/vi/${videoId}/sddefault.jpg`,
-          size: '640x480'
-        },
-        {
-          quality: 'High Quality',
-          url: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
-          size: '480x360'
-        },
-        {
-          quality: 'Medium Quality',
-          url: `https://img.youtube.com/vi/${videoId}/mqdefault.jpg`,
-          size: '320x180'
-        },
-        {
-          quality: 'Default',
-          url: `https://img.youtube.com/vi/${videoId}/default.jpg`,
-          size: '120x90'
-        }
-      ]);
-    } else if (platform === 'bilibili') {
-      // 调用我们的后端 API 代理请求
-      try {
-        const res = await fetch(`/api/bilibili-cover?bvid=${videoId}`);
-        const data = await res.json();
-        
-        if (!res.ok) {
-          setError(data.error || '获取封面失败');
-          return;
-        }
-
-        setThumbnails([
-          {
-            quality: '封面图',
-            url: data.url,
-            size: '原始尺寸'
-          }
-        ]);
-      } catch (err) {
-        setError('请求失败，请稍后重试');
-        console.error(err);
-      }
-    }
-  };
-
-  const downloadThumbnail = async (thumbnailUrl, quality) => {
-    try {
-      // 尝试 Fetch 方式下载（适用于支持 CORS 的图片）
-      // 添加 referrerPolicy: 'no-referrer' 以绕过防盗链
-      const response = await fetch(thumbnailUrl, {
-        referrerPolicy: 'no-referrer'
-      });
-      if (!response.ok) throw new Error('Network response was not ok');
-      
-      const blob = await response.blob();
-      const url = window.URL.createObjectURL(blob);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = `thumbnail_${quality.replace(/\s+/g, '_')}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (error) {
-      console.error('Fetch download failed, falling back to new window:', error);
-      // 如果 Fetch 失败（例如跨域限制），则在新窗口打开
-      window.open(thumbnailUrl, '_blank');
-    }
-  };
-
-  return (
-    <div className="max-w-4xl mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">视频封面图查看器</h1>
-        <p className="text-gray-600">获取YouTube视频的高清封面图</p>
-      </div>
-
-      <div className="space-y-6">
-        {/* 输入区 */}
-        <div className="bg-white rounded-2xl shadow-lg p-6">
-          <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-            <Link className="w-5 h-5 text-blue-500" />
-            <span>视频链接</span>
-          </h2>
-
-          {/* 平台选择 - 暂时隐藏 Bilibili */}
-          {/* <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              选择平台
-            </label>
-            <div className="flex space-x-4">
-              <button
-                onClick={() => setPlatform('youtube')}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                  platform === 'youtube'
-                    ? 'bg-red-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Youtube className="w-5 h-5" />
-                <span>YouTube</span>
-              </button>
-              <button
-                onClick={() => setPlatform('bilibili')}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-                  platform === 'bilibili'
-                    ? 'bg-pink-500 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                }`}
-              >
-                <Video className="w-5 h-5" />
-                <span>Bilibili</span>
-              </button>
-            </div>
-          </div> */}
-
-          {/* URL输入 */}
-          <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              视频链接
-            </label>
-            <input
-              type="text"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://www.youtube.com/watch?v=..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-            />
-          </div>
-
-          {/* 示例 */}
-          <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-            <p className="text-sm text-gray-600 mb-2">支持的链接格式：</p>
-            <ul className="text-xs text-gray-500 space-y-1">
-              <li>• https://www.youtube.com/watch?v=VIDEO_ID</li>
-              <li>• https://youtu.be/VIDEO_ID</li>
-              <li>• https://www.youtube.com/embed/VIDEO_ID</li>
-            </ul>
-          </div>
-
-          <button
-            onClick={getThumbnails}
-            disabled={!url}
-            className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white rounded-lg font-medium transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-          >
-            <Video className="w-5 h-5" />
-            <span>获取封面</span>
-          </button>
-
-          {error && (
-            <div className="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-              <p className="text-sm text-yellow-800">{error}</p>
-            </div>
-          )}
-        </div>
-
-        {/* 封面图展示 */}
-        {thumbnails.length > 0 && (
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold mb-4">封面图列表</h2>
-            <div className="space-y-4">
-              {thumbnails.map((thumbnail, index) => (
-                <div key={index} className="border border-gray-200 rounded-lg p-4">
-                  <div className="flex items-start justify-between mb-3">
-                    <div>
-                      <h3 className="font-medium text-gray-900">{thumbnail.quality}</h3>
-                      <p className="text-sm text-gray-500">尺寸: {thumbnail.size}</p>
-                    </div>
-                    <button
-                      onClick={() => downloadThumbnail(thumbnail.url, thumbnail.quality)}
-                      className="flex items-center space-x-1 px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg text-sm transition-colors"
-                    >
-                      <Download className="w-4 h-4" />
-                      <span>下载</span>
-                    </button>
-                  </div>
-                  <div className="bg-gray-100 rounded-lg overflow-hidden">
-                    <img
-                      src={thumbnail.url}
-                      alt={thumbnail.quality}
-                      className="w-full h-auto"
-                      referrerPolicy="no-referrer"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.parentElement.innerHTML += '<p class="text-center py-8 text-gray-400">图片加载失败</p>';
-                      }}
-                    />
-                  </div>
-                  <div className="mt-2">
-                    <input
-                      type="text"
-                      value={thumbnail.url}
-                      readOnly
-                      className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded text-xs text-gray-600"
-                      onClick={(e) => e.target.select()}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
+const copy = {
+  zh: {
+    title: '视频封面下载', subtitle: '粘贴哔哩哔哩或 YouTube 链接，预览并下载高清封面。',
+    input: '视频链接或 BV / AV 号', placeholder: '粘贴 B 站 / YouTube 视频链接或 BV / AV 号',
+    formats: '支持 B 站完整视频链接、BV / AV 号，以及 YouTube 常规、短视频和直播链接。b23 短链接需打开后复制完整地址。', shortOpen: '打开短链接，复制完整视频地址',
+    auto: '自动识别平台', bilibili: '哔哩哔哩', example: '试用示例：', find: '获取封面', loading: '正在获取…',
+    empty: '把喜欢的视频，留成一张封面。', emptyHint: '输入链接，或点击上方示例开始。', result: '封面预览', original: '原始封面',
+    download: '下载 WebP', downloading: '正在下载…', downloaded: '封面已下载', dimensions: '图片尺寸', open: '打开视频', author: 'UP 主', address: '原图链接',
+    failedImage: '该清晰度封面暂不可用，可尝试其他清晰度。', webpError: '当前浏览器不支持 WebP 导出，请使用较新的 Chrome、Edge 或 Firefox。',
+    qualities: ['超清封面', '标准封面', '高清封面', '中等封面', '默认封面'],
+    errors: { invalid_input: '无法识别链接，请输入 B 站视频链接、BV / AV 号或 YouTube 链接。', short_link_failed: '短链接无法解析，请复制视频完整链接重试。', video_not_found: '视频不存在、已被删除或暂不可见，请检查链接。', rate_limited: '哔哩哔哩暂时限制了请求，请稍后重试。', timeout: '获取封面超时，请稍后重试。', quality_unavailable: '该清晰度封面不可用，请选择其他清晰度。', image_failed: '封面下载失败，请重试。', upstream_failed: '暂时无法获取视频信息，请稍后重试。' },
+  },
+  en: {
+    title: 'Video thumbnail downloader', subtitle: 'Paste a Bilibili or YouTube link to preview and download high-resolution covers.',
+    input: 'Video URL or BV / AV ID', placeholder: 'Paste a Bilibili / YouTube URL or BV / AV ID',
+    formats: 'Supports full Bilibili video URLs, BV / AV IDs, and YouTube videos, Shorts and live links. For b23 links, open the link and copy the full URL.', shortOpen: 'Open short link and copy the full video URL',
+    auto: 'Platform detected automatically', bilibili: 'Bilibili', example: 'Try an example:', find: 'Find thumbnail', loading: 'Loading…',
+    empty: 'Save a favorite video as a cover.', emptyHint: 'Paste a link or choose an example above.', result: 'Thumbnail preview', original: 'Original cover',
+    download: 'Download WebP', downloading: 'Downloading…', downloaded: 'Cover downloaded', dimensions: 'Image size', open: 'Open video', author: 'Creator', address: 'Original image URL',
+    failedImage: 'This thumbnail quality is unavailable. Try another quality.', webpError: 'This browser cannot export WebP. Please use a recent Chrome, Edge or Firefox.', qualities: ['Maximum resolution', 'Standard', 'High quality', 'Medium quality', 'Default'],
+    errors: { invalid_input: 'Enter a valid Bilibili video URL, BV / AV ID or YouTube URL.', short_link_failed: 'Unable to resolve the short link. Try the full video URL.', video_not_found: 'This video does not exist, was removed or is unavailable.', rate_limited: 'Bilibili is limiting requests. Please try again later.', timeout: 'The request timed out. Please try again.', quality_unavailable: 'This thumbnail quality is unavailable. Choose another quality.', image_failed: 'Unable to download the image. Please try again.', upstream_failed: 'Unable to load video information. Please try again later.' },
+  },
+  ja: {
+    title: '動画サムネイルダウンロード', subtitle: 'Bilibili または YouTube のリンクから、高画質カバーを表示・ダウンロード。',
+    input: '動画 URL または BV / AV ID', placeholder: 'Bilibili / YouTube URL または BV / AV ID を入力',
+    formats: '完全な Bilibili 動画 URL、BV / AV ID、YouTube の動画・ショート・ライブに対応。b23 短縮リンクは開いて完全な URL をコピーしてください。', shortOpen: '短縮リンクを開いて完全な動画 URL をコピー',
+    auto: 'プラットフォームを自動判別', bilibili: 'Bilibili', example: 'サンプル：', find: 'サムネイルを取得', loading: '読み込み中…',
+    empty: 'お気に入りの動画を、一枚のカバーに。', emptyHint: 'リンクを入力するか、上のサンプルを選択してください。', result: 'サムネイルプレビュー', original: '元のカバー',
+    download: 'WebP をダウンロード', downloading: 'ダウンロード中…', downloaded: 'カバーをダウンロードしました', dimensions: '画像サイズ', open: '動画を開く', author: '投稿者', address: '元画像の URL',
+    failedImage: 'この画質のサムネイルは利用できません。別の画質をお試しください。', webpError: 'このブラウザは WebP を出力できません。最新の Chrome、Edge、Firefox をお使いください。', qualities: ['最高画質', '標準', '高画質', '中画質', '通常'],
+    errors: { invalid_input: '正しい Bilibili の動画 URL、BV / AV ID または YouTube URL を入力してください。', short_link_failed: '短縮リンクを解析できません。動画の完全な URL をお試しください。', video_not_found: '動画が存在しない、削除済み、または非公開です。', rate_limited: 'Bilibili がリクエストを制限しています。しばらくしてからお試しください。', timeout: '読み込みがタイムアウトしました。もう一度お試しください。', quality_unavailable: 'この画質は利用できません。別の画質を選択してください。', image_failed: '画像をダウンロードできません。もう一度お試しください。', upstream_failed: '動画情報を取得できません。しばらくしてからお試しください。' },
+  },
 };
 
-export default VideoThumbnail;
+function CoverCard({ thumbnail, t, download, downloading, disabled }) {
+  const [dimensions, setDimensions] = useState('');
+  const [failed, setFailed] = useState(false);
+  return <article className="border border-black/15 dark:border-white/15 rounded-lg overflow-hidden">
+    <div className="bg-black/5 dark:bg-white/5 min-h-32 flex items-center justify-center">
+      {failed ? <p className="p-6 text-sm text-center text-neutral-600 dark:text-neutral-300" role="status">{t.failedImage}</p> : <img
+        src={thumbnail.previewUrl} alt={thumbnail.title || thumbnail.label} className="w-full h-auto max-h-[420px] object-contain" referrerPolicy="no-referrer"
+        onLoad={event => {
+          const { naturalWidth: width, naturalHeight: height } = event.currentTarget;
+          if (thumbnail.platform === 'youtube' && ['maxresdefault', 'sddefault'].includes(thumbnail.quality) && width <= 120) setFailed(true);
+          else setDimensions(`${width} × ${height}`);
+        }} onError={() => setFailed(true)} />}
+    </div>
+    <div className="p-4 sm:p-5 space-y-3">
+      <div className="flex flex-wrap items-center justify-between gap-3">
+        <div><h3 className="font-medium">{thumbnail.label}</h3><p className="text-sm text-neutral-500 dark:text-neutral-400">{t.dimensions}: {dimensions || '—'}</p></div>
+        <button type="button" disabled={failed || disabled} onClick={() => download(thumbnail)} className="studio-button !gap-2 !min-h-11 disabled:opacity-50">
+          {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} {downloading ? t.downloading : t.download}
+        </button>
+      </div>
+      <label className="block text-xs text-neutral-500 dark:text-neutral-400">{t.address}
+        <input aria-label={`${t.address} · ${thumbnail.label}`} readOnly value={thumbnail.url} className="mt-1 w-full min-w-0 px-3 py-2 bg-black/5 dark:bg-white/5 border border-black/10 dark:border-white/10 rounded-md text-xs" onClick={event => event.currentTarget.select()} />
+      </label>
+    </div>
+  </article>;
+}
 
+export default function VideoThumbnail({ lang = 'en' }) {
+  const t = copy[lang] || copy.en;
+  const [input, setInput] = useState('');
+  const [thumbnails, setThumbnails] = useState([]);
+  const [metadata, setMetadata] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [downloading, setDownloading] = useState('');
+  const [error, setError] = useState('');
+  const [notice, setNotice] = useState('');
+  const controller = useRef(null);
+  const requestNumber = useRef(0);
+  useEffect(() => () => controller.current?.abort(), []);
+  const detected = parseVideoInput(input);
+  const showError = code => code === 'webp_unsupported' ? t.webpError : t.errors[code] || t.errors.upstream_failed;
+
+  const findThumbnails = async (value = input) => {
+    controller.current?.abort();
+    const serial = ++requestNumber.current;
+    const abort = new AbortController();
+    controller.current = abort;
+    setError(''); setNotice(''); setThumbnails([]); setMetadata(null);
+    const parsed = parseVideoInput(value);
+    if (!parsed) { setLoading(false); setError(t.errors.invalid_input); return; }
+    if (parsed.platform === 'youtube') {
+      setLoading(false);
+      setMetadata({ platform: 'YouTube', videoUrl: `https://www.youtube.com/watch?v=${parsed.id}` });
+      setThumbnails(YOUTUBE_QUALITIES.map((item, index) => ({ id: parsed.id, platform: 'youtube', quality: item.key, label: t.qualities[index], url: `https://i.ytimg.com/vi/${parsed.id}/${item.key}.jpg`, previewUrl: `https://i.ytimg.com/vi/${parsed.id}/${item.key}.jpg` })));
+      return;
+    }
+    setLoading(true);
+    try {
+      const data = await getBilibiliCover(value, { signal: abort.signal });
+      if (serial !== requestNumber.current) return;
+      setMetadata({ ...data, platform: t.bilibili });
+      setThumbnails([{ id: data.bvid, platform: 'bilibili', quality: 'original', label: t.original, title: data.title, url: data.url, previewUrl: data.url }]);
+    } catch (failure) {
+      if (!abort.signal.aborted && serial === requestNumber.current) setError(showError(failure.message));
+    } finally { if (serial === requestNumber.current) setLoading(false); }
+  };
+
+  const downloadThumbnail = async thumbnail => {
+    setError(''); setNotice(''); setDownloading(thumbnail.quality);
+    try {
+      const blob = await thumbnailWebPBlob(thumbnail.url, AbortSignal.timeout(20000));
+      const objectUrl = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = objectUrl;
+      link.download = `${thumbnail.platform}_${thumbnail.id}${thumbnail.platform === 'youtube' ? `_${thumbnail.quality}` : ''}.webp`;
+      document.body.appendChild(link); link.click(); link.remove();
+      // Give the browser time to consume the blob before releasing it.
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 10000);
+      setNotice(t.downloaded);
+    } catch (failure) { setError(showError(failure.name === 'TimeoutError' ? 'timeout' : failure.message)); }
+    finally { setDownloading(''); }
+  };
+
+  const tryExample = value => { setInput(value); findThumbnails(value); };
+  return <div className="tool-shell !max-w-4xl space-y-5">
+    <div className="text-center"><h2 className="tool-title">{t.title}</h2><p className="tool-subtitle">{t.subtitle}</p></div>
+    <form className="tool-card" onSubmit={event => { event.preventDefault(); findThumbnails(); }}>
+      <div className="flex flex-wrap gap-2 mb-5 text-xs"><span className="px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-full">{t.bilibili}</span><span className="px-3 py-1.5 border border-black/15 dark:border-white/15 rounded-full">YouTube</span><span className="py-1.5 text-neutral-500 dark:text-neutral-400">{t.auto}</span></div>
+      <label htmlFor="video-thumbnail-input" className="flex gap-2 items-center text-sm font-medium mb-2"><Link className="w-4 h-4" />{t.input}</label>
+      <input id="video-thumbnail-input" type="text" value={input} onChange={event => {
+        setInput(event.target.value); controller.current?.abort(); requestNumber.current++; setLoading(false); setError(''); setNotice(''); setThumbnails([]); setMetadata(null);
+      }} placeholder={t.placeholder} autoComplete="off" maxLength={2048} aria-describedby="video-thumbnail-formats" className="w-full min-w-0 px-4 py-3 border border-black/15 dark:border-white/15 rounded-md !text-base" />
+      <p id="video-thumbnail-formats" className="mt-2 text-xs leading-relaxed text-neutral-500 dark:text-neutral-400">{t.formats}</p>
+      <div className="flex flex-wrap items-center gap-2 my-4 text-sm"><span className="text-neutral-500 dark:text-neutral-400">{t.example}</span><button type="button" onClick={() => tryExample('https://www.bilibili.com/video/BV1GBa66HEC7/')} className="underline underline-offset-4 min-h-11 px-2">{t.bilibili}</button><button type="button" onClick={() => tryExample('https://www.youtube.com/watch?v=jNQXAC9IVRw')} className="underline underline-offset-4 min-h-11 px-2">YouTube</button></div>
+      <button type="submit" disabled={!input.trim() || loading} className="studio-button w-full !gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+        {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Video className="w-5 h-5" />}{loading ? t.loading : t.find}{!loading && detected && <span className="text-xs opacity-80">· {detected.platform === 'bilibili' ? t.bilibili : 'YouTube'}</span>}
+      </button>
+    </form>
+    {error && <div role="alert" className="tool-card text-sm border-red-400/50 text-red-700 dark:text-red-300"><p>{error}</p>{detected?.kind === 'short' && <a className="inline-flex items-center gap-2 underline underline-offset-4 min-h-11" href={detected.url} target="_blank" rel="noopener noreferrer">{t.shortOpen}<ExternalLink className="w-4 h-4" /></a>}</div>}
+    {notice && <p role="status" className="text-sm text-center">{notice}</p>}
+    <section className="tool-card" aria-busy={loading} aria-label={t.result}>
+      {metadata ? <div className="mb-5 space-y-2"><span className="text-xs text-neutral-500 dark:text-neutral-400">{metadata.platform}{metadata.bvid && ` · ${metadata.bvid}`}</span>
+        <h2 className="text-lg font-medium break-words">{metadata.title || t.result}</h2>
+        {metadata.author && <p className="text-sm text-neutral-500 dark:text-neutral-400">{t.author}: {metadata.author}</p>}
+        <a href={metadata.videoUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm underline underline-offset-4 min-h-11">{t.open}<ExternalLink className="w-3.5 h-3.5" /></a>
+      </div> : <div className="py-10 text-center text-neutral-500 dark:text-neutral-400"><Video className="w-8 h-8 mx-auto mb-4" /><p>{loading ? t.loading : t.empty}</p>{!loading && <p className="mt-2 text-sm">{t.emptyHint}</p>}</div>}
+      <div className="space-y-5">{thumbnails.map(thumbnail => <CoverCard key={`${thumbnail.platform}-${thumbnail.id}-${thumbnail.quality}`} thumbnail={thumbnail} t={t} download={downloadThumbnail} downloading={downloading === thumbnail.quality} disabled={!!downloading} />)}</div>
+    </section>
+  </div>;
+}

@@ -1,0 +1,54 @@
+{
+  "checkedAt": "2026-10-03T13:27:19.588Z",
+  "scope": "Local development HTTP; not production",
+  "pages": [
+    {
+      "path": "/zh/tools/image-enhancer/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/zh/tools/image-enhancer/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    },
+    {
+      "path": "/en/tools/image-enhancer/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/en/tools/image-enhancer/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    },
+    {
+      "path": "/ja/tools/image-enhancer/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/ja/tools/image-enhancer/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    },
+    {
+      "path": "/zh/tools/ai-watermark-remover/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/zh/tools/ai-watermark-remover/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    },
+    {
+      "path": "/en/tools/ai-watermark-remover/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/en/tools/ai-watermark-remover/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    },
+    {
+      "path": "/ja/tools/ai-watermark-remover/",
+      "status": 200,
+      "canonical": "https://imghub.oumashu.top/ja/tools/ai-watermark-remover/",
+      "alternates": 4,
+      "initialHtmlGuide": true,
+      "applicationSchema": true
+    }
+  ]
+}

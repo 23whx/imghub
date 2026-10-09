@@ -1,0 +1,44 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import HomeContent from '../../components/HomeContent.jsx';
+import { locales, isValidLocale } from '../../i18n/config.js';
+import { homePage } from '../../i18n/pages.js';
+import { publicTools } from '../../i18n/tools.js';
+import { exhibitOrder } from '../../i18n/studio.js';
+import { canonicalPath } from '../../utils/seo.js';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+if (!isValidLocale(lang)) {
+  return Astro.redirect('/en/', 302);
+}
+
+const seo = homePage[lang as keyof typeof homePage] || homePage.en;
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${canonicalPath(lang)}#tools`,
+  name: seo.title,
+  numberOfItems: publicTools.length,
+  itemListElement: [...publicTools].sort((a, b) => exhibitOrder.indexOf(a.slug) - exhibitOrder.indexOf(b.slug)).map((tool, index) => ({
+    '@type': 'ListItem', position: index + 1,
+    name: (tool.card[lang as keyof typeof tool.card] || tool.card.en).title,
+    url: canonicalPath(lang, `tools/${tool.slug}`),
+  })),
+};
+---
+
+<MainLayout
+  title={seo.title}
+  description={seo.description}
+  keywords={seo.keywords}
+  lang={lang}
+  pathWithoutLang=""
+  jsonLd={jsonLd}
+>
+  <HomeContent client:load lang={lang} />
+</MainLayout>

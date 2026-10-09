@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f4f0e8"/>
+  <rect x="30" y="30" width="1140" height="570" rx="4" fill="none" stroke="#d5cbbb"/>
+  <path d="M60 95H1140M60 535H1140" stroke="#d5cbbb"/>
+  <text x="64" y="73" font-family="Arial,sans-serif" font-size="16" letter-spacing="3" fill="#75685b">YOUR BROWSER. YOUR CREATIVE WORKSPACE.</text>
+  <text x="65" y="281" font-family="Georgia,serif" font-size="128" fill="#2c251e">ImgHub</text>
+  <text x="70" y="348" font-family="Arial,sans-serif" font-size="29" fill="#2c251e">Free online image tools</text>
+  <text x="70" y="400" font-family="Arial,sans-serif" font-size="22" fill="#75685b">Draw. Compress. Extract text. Create.</text>
+  <text x="70" y="488" font-family="Arial,sans-serif" font-size="18" fill="#765323">No installation. No account needed.</text>
+  <g stroke="#765323" stroke-width="3">
+    <rect x="812" y="148" width="280" height="310" rx="8" fill="#fffdf8" transform="rotate(8 952 303)"/>
+    <rect x="782" y="175" width="280" height="310" rx="8" fill="#eee8dd" transform="rotate(-7 922 330)"/>
+    <rect x="795" y="163" width="280" height="310" rx="8" fill="#fffdf8"/>
+    <path d="M795 416L877 318L927 369L985 299L1075 410" fill="#dcc08b"/>
+    <circle cx="867" cy="243" r="27" fill="#dcc08b"/>
+    <path d="M891 436L1030 217L1047 230L908 449L884 459Z" fill="#765323"/>
+  </g>
+  <text x="65" y="571" font-family="Arial,sans-serif" font-size="17" fill="#75685b">imghub.oumashu.top</text>
+  <text x="1138" y="571" text-anchor="end" font-family="Georgia,serif" font-size="22" fill="#765323">Made for your next image.</text>
+</svg>

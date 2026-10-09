@@ -1,13 +1,5 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import HomeContent from '../components/HomeContent.jsx';
+// Static hosting cannot read Accept-Language; default to English (x-default).
+// Prefer /zh/ or /ja/ via language switcher or bookmarked URLs.
+return Astro.redirect('/en/', 301);
 ---
-
-<MainLayout 
-  title="ImgHub - 免费在线图片处理工具集合" 
-  description="ImgHub 提供多种免费在线图片处理工具，包括字幕生成器、Pornhub风格Logo制作、DND阵营九宫格、MBTI人格图、表情包切片、视频封面图查看、图片压缩等实用功能，操作简单，无需注册。"
-  keywords="图片处理,在线工具,免费,字幕生成器,Pornhub,DND阵营,MBTI,表情包,视频封面图,图片压缩"
->
-  <HomeContent client:load />
-</MainLayout>
-

@@ -1,0 +1,42 @@
+{
+  "checkedAt": "2026-10-03T11:43:01.686Z",
+  "origin": "https://imghub.oumashu.top",
+  "results": [
+    {
+      "path": "/",
+      "status": 200,
+      "url": "https://imghub.oumashu.top/",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "text/html; charset=utf-8",
+        "server": "Vercel"
+      },
+      "bytes": 26706,
+      "preview": "<!DOCTYPE html><html lang=\"zh-CN\"> <head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><meta name=\"generator\" content=\"Astro v4.16.19\"><!-- Primary Meta Tags --><title>ImgHub"
+    },
+    {
+      "path": "/robots.txt",
+      "status": 200,
+      "url": "https://imghub.oumashu.top/robots.txt",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "text/plain; charset=utf-8",
+        "server": "Vercel"
+      },
+      "bytes": 177,
+      "preview": "# https://www.robotstxt.org/robotstxt.html\nUser-agent: *\nAllow: /\n\n# Disallow crawling of API routes (if any)\nDisallow: /api/\n\n# Sitemap\nSitemap: https://imghub.com/sitemap.xml\n"
+    },
+    {
+      "path": "/sitemap.xml",
+      "status": 200,
+      "url": "https://imghub.oumashu.top/sitemap.xml",
+      "headers": {
+        "cache-control": "public, max-age=0, must-revalidate",
+        "content-type": "application/xml",
+        "server": "Vercel"
+      },
+      "bytes": 2277,
+      "preview": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\"\n        xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\"\n        xsi:schemaLocation=\"http://www.sitemaps.org/schemas"
+    }
+  ]
+}

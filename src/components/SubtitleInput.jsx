@@ -77,8 +77,8 @@ const SubtitleInput = ({
   const t = languages[language] || languages.en;
 
   const subtitleModes = [
-    { id: 'mono', name: t.monoMode, icon: Type, color: 'blue' },
-    { id: 'bilingual', name: t.bilingualMode, icon: Languages, color: 'purple' },
+    { id: 'mono', name: t.monoMode, icon: Type },
+    { id: 'bilingual', name: t.bilingualMode, icon: Languages },
   ];
 
 
@@ -116,7 +116,7 @@ const SubtitleInput = ({
       {/* 字幕模式选择 */}
       <div>
         <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-          isDarkMode ? 'text-gray-200' : 'text-gray-700'
+          "text-gray-700 dark:text-gray-200"
         }`}>
           {t.subtitleMode}
         </label>
@@ -130,25 +130,12 @@ const SubtitleInput = ({
                 onClick={() => handleModeChange(mode.id)}
                 className={`relative flex items-center justify-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
                   isSelected
-                    ? isDarkMode
-                      ? mode.color === 'blue' 
-                        ? 'bg-blue-900/50 text-blue-300 ring-2 ring-blue-500'
-                        : 'bg-purple-900/50 text-purple-300 ring-2 ring-purple-500'
-                      : mode.color === 'blue'
-                        ? 'bg-blue-100 text-blue-700 ring-2 ring-blue-500 ring-offset-1'
-                        : 'bg-purple-100 text-purple-700 ring-2 ring-purple-500 ring-offset-1'
-                    : isDarkMode
-                      ? 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                      : 'bg-gray-50 text-gray-600 hover:bg-gray-100'
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-black"
+                    : "bg-gray-50 text-gray-600 hover:bg-gray-100 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
                 }`}
               >
                 <Icon className="w-4 h-4 mr-2" />
                 {mode.name}
-                {isSelected && (
-                  <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full ${
-                    mode.color === 'blue' ? 'bg-blue-500' : 'bg-purple-500'
-                  }`}></div>
-                )}
               </button>
             );
           })}
@@ -164,29 +151,28 @@ const SubtitleInput = ({
             {/* 上方字幕 */}
             <div>
               <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                "text-gray-700 dark:text-gray-200"
               }`}>
                 {t.topSubtitle}
                 <span className={`text-xs ml-2 transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  "text-gray-500 dark:text-gray-400"
                 }`}>{t.lineNote}</span>
               </label>
               <div className="relative">
                 <textarea
+                  aria-label={t.topSubtitle}
                   value={topSubtitle}
                   onChange={(e) => {
                     setTopSubtitle(e.target.value);
                   }}
                   placeholder={placeholders.bilingual?.top || ''}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
-                    isDarkMode 
-                      ? 'bg-gray-700/50 border-gray-600 text-gray-200 placeholder-gray-400' 
-                      : 'bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500'
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
+                    "bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500 dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
                   }`}
                 />
                 <div className={`absolute bottom-3 right-3 text-xs transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-500' : 'text-gray-400'
+                  "text-gray-400 dark:text-gray-500"
                 }`}>
                   {topSubtitle.split('\n').length} {t.linesSuffix}
                 </div>
@@ -196,29 +182,28 @@ const SubtitleInput = ({
             {/* 下方字幕 */}
             <div>
               <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-200' : 'text-gray-700'
+                "text-gray-700 dark:text-gray-200"
               }`}>
                 {t.bottomSubtitle}
                 <span className={`text-xs ml-2 transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                  "text-gray-500 dark:text-gray-400"
                 }`}>{t.lineNote}</span>
               </label>
               <div className="relative">
                 <textarea
+                  aria-label={t.bottomSubtitle}
                   value={bottomSubtitle}
                   onChange={(e) => {
                     setBottomSubtitle(e.target.value);
                   }}
                   placeholder={placeholders.bilingual?.bottom || ''}
                   rows={4}
-                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
-                    isDarkMode 
-                      ? 'bg-gray-700/50 border-gray-600 text-gray-200 placeholder-gray-400' 
-                      : 'bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500'
+                  className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
+                    "bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500 dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
                   }`}
                 />
                 <div className={`absolute bottom-3 right-3 text-xs transition-colors duration-300 ${
-                  isDarkMode ? 'text-gray-500' : 'text-gray-400'
+                  "text-gray-400 dark:text-gray-500"
                 }`}>
                   {bottomSubtitle.split('\n').length} {t.linesSuffix}
                 </div>
@@ -228,27 +213,26 @@ const SubtitleInput = ({
         ) : (
           <div>
             <label className={`block text-sm font-medium mb-3 transition-colors duration-300 ${
-              isDarkMode ? 'text-gray-200' : 'text-gray-700'
+              "text-gray-700 dark:text-gray-200"
             }`}>
               {t.subtitleContent}
               <span className={`text-xs ml-2 transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                "text-gray-500 dark:text-gray-400"
               }`}>{t.lineNote}</span>
             </label>
             <div className="relative">
               <textarea
+                aria-label={t.subtitleContent}
                 value={subtitle}
                 onChange={(e) => onSubtitleChange(e.target.value)}
                 placeholder={placeholders.mono}
                 rows={6}
-                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
-                  isDarkMode 
-                    ? 'bg-gray-700/50 border-gray-600 text-gray-200 placeholder-gray-400' 
-                    : 'bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500'
+                className={`w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 focus:border-transparent resize-none text-sm leading-relaxed transition-all duration-200 backdrop-blur-sm ${
+                  "bg-white/50 border-gray-200 text-gray-900 placeholder-gray-500 dark:bg-gray-700/50 dark:border-gray-600 dark:text-gray-200 dark:placeholder-gray-400"
                 }`}
               />
               <div className={`absolute bottom-3 right-3 text-xs transition-colors duration-300 ${
-                isDarkMode ? 'text-gray-500' : 'text-gray-400'
+                "text-gray-400 dark:text-gray-500"
               }`}>
                 {subtitle.split('\n').length} {t.linesSuffix}
               </div>
@@ -259,18 +243,16 @@ const SubtitleInput = ({
 
       {/* 使用提示 */}
       <div className={`border rounded-lg p-3 transition-colors duration-300 ${
-        isDarkMode 
-          ? 'bg-amber-900/30 border-amber-700' 
-          : 'bg-amber-50 border-amber-200'
+        "bg-black/5 border-black/10 dark:bg-black/5 dark:border-white/10"
       }`}>
         <h4 className={`text-sm font-medium mb-1 transition-colors duration-300 ${
-          isDarkMode ? 'text-amber-300' : 'text-amber-800'
-        }`}>💡 {t.usageTips}</h4>
+          "text-gray-800 dark:text-gray-200"
+        }`}>{t.usageTips}</h4>
         <ul className={`text-xs space-y-1 transition-colors duration-300 ${
-          isDarkMode ? 'text-amber-400' : 'text-amber-700'
+          "text-gray-600 dark:text-gray-400"
         }`}>
           {t.tips.map((tip, index) => (
-            <li key={index}>• {tip}</li>
+            <li key={index}>{tip.replace(/^[^\p{L}\p{N}]+/u, '')}</li>
           ))}
         </ul>
       </div>
@@ -279,9 +261,9 @@ const SubtitleInput = ({
       {!isBilingualMode && (
         <div>
           <label className={`block text-sm font-medium mb-2 transition-colors duration-300 ${
-            isDarkMode ? 'text-gray-200' : 'text-gray-700'
+            "text-gray-700 dark:text-gray-200"
           }`}>
-            快速模板
+            {language === 'ja' ? 'プリセット' : language === 'en' ? 'Quick templates' : '快速模板'}
           </label>
           <div className="flex flex-wrap gap-2">
             {[
@@ -302,12 +284,10 @@ const SubtitleInput = ({
                   onSubtitleChange(templates[template]);
                 }}
                 className={`px-3 py-1 text-xs rounded-full transition-colors duration-200 ${
-                  isDarkMode 
-                    ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' 
-                    : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                  "bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300"
                 }`}
               >
-                {template}
+                {({ en: { '经典励志': 'Motivation', '人生感悟': 'Life', '商业智慧': 'Business', '哲学思考': 'Philosophy' }, ja: { '经典励志': '励まし', '人生感悟': '人生', '商业智慧': 'ビジネス', '哲学思考': '哲学' } })[language]?.[template] || template}
               </button>
             ))}
           </div>

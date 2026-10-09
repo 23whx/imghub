@@ -1,0 +1,50 @@
+---
+import MainLayout from '../../layouts/MainLayout.astro';
+import PrivacyBody from '../../components/legal/PrivacyBody.astro';
+import { locales, isValidLocale } from '../../i18n/config.js';
+import { privacyPage } from '../../i18n/pages.js';
+
+export function getStaticPaths() {
+  return locales.map((lang) => ({ params: { lang } }));
+}
+
+const { lang } = Astro.params;
+if (!isValidLocale(lang)) {
+  return Astro.redirect('/en/privacy', 302);
+}
+
+const t = privacyPage[lang as keyof typeof privacyPage] || privacyPage.en;
+---
+
+<MainLayout
+  title={t.title}
+  description={t.description}
+  keywords={t.keywords}
+  lang={lang}
+  pathWithoutLang="privacy"
+>
+  <div class="reading-page">
+    <div class="reading-document">
+      <header class="reading-header"><h1>{t.h1}</h1>
+      <p>{t.updated}</p></header>
+      {t.notice && (
+        <div class="reading-notice">
+          {t.notice}
+        </div>
+      )}
+      <div class="reading-body"><PrivacyBody lang={lang} /></div>
+      <div class="reading-acknowledgment mt-8 pt-6 border-t border-black/10 dark:border-white/10">
+        <p class="text-center text-gray-600">{lang === 'zh' ? '感谢您信任 ImgHub。我们承诺保护您的隐私。' : lang === 'ja' ? 'ImgHubをご信頼いただき、ありがとうございます。お客様のプライバシー保護に努めます。' : 'Thank you for trusting ImgHub. We are committed to protecting your privacy.'}</p>
+      </div>
+    </div>
+  </div>
+</MainLayout>
+
+<style>
+  .prose h2 {
+    margin-top: 2rem;
+  }
+  .prose h3 {
+    margin-top: 1.5rem;
+  }
+</style>

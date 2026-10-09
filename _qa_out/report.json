@@ -1,0 +1,147 @@
+[
+  {
+    "ok": true,
+    "name": "首页 /zh/ HTTP",
+    "detail": "200"
+  },
+  {
+    "ok": true,
+    "name": "首页 title",
+    "detail": "ImgHub - 免费在线图片处理工具集合"
+  },
+  {
+    "ok": true,
+    "name": "首页 H1",
+    "detail": "ImgHub"
+  },
+  {
+    "ok": true,
+    "name": "首页含晃动工坊入口",
+    "detail": "/zh/tools/wiggle-studio/,/zh/tools/wiggle-studio/"
+  },
+  {
+    "ok": true,
+    "name": "首页无致命 JS 错误",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "移动端首页无横向溢出",
+    "detail": "{\"scrollWidth\":390,\"clientWidth\":390,\"bodyScrollWidth\":390}"
+  },
+  {
+    "ok": true,
+    "name": "移动端抽屉菜单工具数",
+    "detail": "24"
+  },
+  {
+    "ok": true,
+    "name": "晃动工坊页 HTTP",
+    "detail": "200"
+  },
+  {
+    "ok": true,
+    "name": "晃动工坊 H1",
+    "detail": "晃动图片工坊"
+  },
+  {
+    "ok": true,
+    "name": "html lang",
+    "detail": "zh-CN"
+  },
+  {
+    "ok": true,
+    "name": "hreflang 齐全",
+    "detail": "zh-CN,en,ja,x-default"
+  },
+  {
+    "ok": true,
+    "name": "description 存在",
+    "detail": "免费在线晃动图生成器：上传图片、涂抹要动的区域，预览弹性晃动效果，导出 GIF、WebM 或 MP4。全程浏览器本地处理"
+  },
+  {
+    "ok": true,
+    "name": "点击示例图片",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "示例加载后出现画布",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "模拟涂抹操作",
+    "detail": "512x512"
+  },
+  {
+    "ok": true,
+    "name": "进入晃动预览",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "预览画布有渲染",
+    "detail": "{\"ok\":true,\"mode\":\"2d\",\"sample\":[255,219,172,255],\"size\":{\"w\":614,\"h\":614}}"
+  },
+  {
+    "ok": true,
+    "name": "切换预设",
+    "detail": "4 presets"
+  },
+  {
+    "ok": true,
+    "name": "进入分享步骤",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "点击导出 GIF",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "GIF 导出完成",
+    "detail": "41.4s"
+  },
+  {
+    "ok": true,
+    "name": "GIF 文件体积合理",
+    "detail": "imghub-wiggle.gif 1681.0KB"
+  },
+  {
+    "ok": true,
+    "name": "晃动页移动端无横向溢出",
+    "detail": "{\"sw\":390,\"cw\":390}"
+  },
+  {
+    "ok": true,
+    "name": "晃动页无致命 JS 错误",
+    "detail": ""
+  },
+  {
+    "ok": true,
+    "name": "冒烟 /zh/tools/image-compress/",
+    "detail": "图片压缩工具"
+  },
+  {
+    "ok": true,
+    "name": "冒烟 /zh/tools/meme-slicer/",
+    "detail": "表情包切片工具"
+  },
+  {
+    "ok": true,
+    "name": "冒烟 /en/tools/mbti-grid/",
+    "detail": "MBTI Personality Grid Maker"
+  },
+  {
+    "ok": true,
+    "name": "冒烟 /ja/tools/pornhub-style/",
+    "detail": "Pornhub風ロゴメーカー"
+  },
+  {
+    "ok": true,
+    "name": "晃动有实际像素变化",
+    "detail": "avgDiff=50.77 size=288x288"
+  }
+]

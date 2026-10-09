@@ -5,8 +5,11 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node scripts/prepare-ai-watermark.mjs && node scripts/prepare-image-enhancer.mjs && node scripts/prepare-ocr.mjs",
     "build": "astro check && astro build",
     "preview": "astro preview",
+    "test:seo": "node --test tests/seo.test.mjs",
+    "audit:seo": "node scripts/seo-audit.mjs",
     "astro": "astro"
   },
   "dependencies": {
@@ -14,20 +17,26 @@
     "@astrojs/react": "^3.6.0",
     "@astrojs/tailwind": "^5.1.0",
     "@nanostores/react": "^1.0.0",
+    "@paddleocr/paddleocr-js": "0.4.2",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "astro": "^4.11.0",
+    "gifenc": "^1.0.3",
     "jszip": "^3.10.1",
     "lucide-react": "^0.408.0",
     "nanostores": "^1.1.0",
+    "ocr-onnxruntime": "npm:onnxruntime-web@1.24.3",
+    "onnxruntime-web": "1.20.1",
     "puppeteer": "^24.31.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.34.4",
     "tailwindcss": "^3.4.4",
+    "tesseract.js": "^7.0.0",
     "typescript": "^5.5.2"
   },
   "devDependencies": {
-    "@tailwindcss/typography": "^0.5.13"
+    "@tailwindcss/typography": "^0.5.13",
+    "parse5": "^7.3.0"
   }
 }

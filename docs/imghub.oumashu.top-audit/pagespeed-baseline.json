@@ -1,0 +1,6 @@
+{
+  "checkedAt": "2026-10-03T12:07:20.368Z",
+  "target": "Current production before this deployment",
+  "status": 429,
+  "reason": "Quota exceeded for quota metric 'Queries' and limit 'Queries per day' of service 'pagespeedonline.googleapis.com' for consumer 'project_number:583797351490'."
+}

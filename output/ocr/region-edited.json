@@ -1,0 +1,44 @@
+{
+  "text": "校对后的文字 / Edited OCR text",
+  "image": {
+    "width": 980,
+    "height": 540
+  },
+  "crop": {
+    "x": 43,
+    "y": 330,
+    "width": 886,
+    "height": 67
+  },
+  "lines": [
+    {
+      "poly": [
+        [
+          61.52545454545455,
+          356.6385542168675
+        ],
+        [
+          613.2618181818182,
+          354.2168674698795
+        ],
+        [
+          613.2618181818182,
+          390.5421686746988
+        ],
+        [
+          61.52545454545455,
+          392.96385542168673
+        ]
+      ],
+      "text": "English text: GPU runs on your device.",
+      "score": 0.9967877755039617
+    }
+  ],
+  "runtime": {
+    "requestedBackend": "webgpu",
+    "detProvider": "webgpu",
+    "recProvider": "webgpu",
+    "webgpuAvailable": true
+  },
+  "seconds": 1.1082999999821186
+}

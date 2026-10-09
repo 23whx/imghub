@@ -41,7 +41,48 @@ pnpm dev
 
 在浏览器中访问 `http://localhost:3000`
 
-### 构建生产版本
+### 在线画图
+
+入口：`/zh/tools/online-drawing`（另有 `/en/` 和 `/ja/` 版本）。首页和导航菜单均已接入。
+
+页面直接使用本站 Canvas 编辑器，图片编辑在浏览器本地完成。刷新或离开前请保存工程。
+
+- 画笔、橡皮、油漆桶、吸管、文字、矩形、椭圆和直线。
+- 图层移动、缩放、旋转、翻转、复制、排序、隐藏、锁定、不透明度和混合模式。
+- 裁剪、画布尺寸调整、亮度、对比度、饱和度、模糊、撤销与重做。
+- 打开 PNG / JPG / WebP / GIF / BMP，拖入多张图片添加图层，导出 PNG / JPG / WebP。
+- `.imghub.json` 工程保留图层、文字和设置。暂不支持 PSD；关闭页面前需手动保存工程。
+
+画布最大 4096 × 4096，最多 40 个图层，总源像素限制为 3200 万；撤销历史最多 30 步并限制内存占用。图片最大 25 MB，工程最大 60 MB。
+
+核心测试：`node --test tests/drawing.test.mjs`。浏览器测试：先运行 `npm run dev -- --port 3001`，再运行 `node tests/drawing.e2e.mjs`。可以通过 `DRAWING_TEST_URL` 和 `DRAWING_TEST_CHROME` 指定服务地址和 Chrome 路径。截图与测试报告输出到忽略的 `test-results/drawing/` 目录。
+
+交互回归：`node tests/drawing-regressions.e2e.mjs`，验证图层边界绘画、文字撤销、负坐标输入和保存提醒。
+
+### 图片压缩
+
+入口：`/zh/tools/image-compress/`，另有英文和日文版本。支持 JPG、PNG、WebP，图片在浏览器本地处理。
+
+- 按画质压缩：默认 80%，智能比较原格式、WebP 和不含透明像素时的 JPG，选择更小的结果；若重编码更大则保留原图。每次重新压缩都读取原文件，避免重复有损编码。
+- 限制文件大小：搜索满足目标的较高编码质量，可选择允许按比例缩小尺寸；无法达到目标时明确提示。可设置最大边长，图片不会被放大。
+- PNG 原尺寸压缩直接重新压缩 IDAT 数据，保留精确像素、半透明颜色、调色板、色彩信息和 16 位样本；缺少浏览器流压缩支持时保留原文件。缩放或格式转换使用 Canvas。JPG 透明区域填白，智能模式保留透明。
+- 显示实际编码文件字节数、尺寸及节省比例，支持前后对比、取消、删除和 ZIP 批量下载；同名图片不会覆盖。
+
+最多 50 张，单张最大 50 MB，总输入不超过 200 MB。源图边长限制 16384、总像素限制 80 Mi；Canvas 输出边长限制 8192、总像素限制 32 Mi。超大图片需设置较小边长。暂不处理动画图片。
+
+核心测试：`node --test tests/compression.test.mjs`。浏览器测试：启动 3001 端口的开发服务后运行 `node tests/compression.e2e.mjs`；可通过 `COMPRESSION_TEST_URL` 和 `COMPRESSION_TEST_CHROME` 指定服务地址和 Chrome 路径。浏览器测试验证实际文件、透明像素、画质差异、目标体积、ZIP、取消及多语言布局，报告和截图位于忽略的 `test-results/compression/`。
+
+### 视频封面下载
+
+入口：`/zh/tools/video-thumbnail/`，另有英文和日文版本。哔哩哔哩完整视频链接、BV / AV 号及分享文字中的完整链接会自动识别；YouTube 支持 watch、youtu.be、embed、Shorts 和 live 链接。B 站结果显示标题、UP 主及原始封面尺寸；YouTube 显示多个清晰度。下载在浏览器 Canvas 中转为 WebP，保留封面原始尺寸。
+
+网站保持 Astro 静态输出，可直接部署 Vercel，无 API 路由、Node 服务、Serverless Function、第三方代理或 API Key。B 站使用固定官方接口 `https://api.bilibili.com/x/web-interface/view` 的 JSONP 回调，图片从平台 CDN 读取。公开视频被删除、接口限流或超时会显示错误并允许重试。平台接口或 CDN 策略可能影响可用性。
+
+浏览器无法跨域读取 b23 短链接重定向，因此该输入会提示打开短链接并复制跳转后的完整视频地址，不自动代解析。B 站和 YouTube 的原图链接可在结果中复制。浏览器不支持 WebP 编码或图片下载失败时会明确提示，不输出伪 WebP 文件。
+
+验证：`node --test tests/video-thumbnail.test.mjs`。
+
+### 静态构建
 
 ```bash
 npm run build
@@ -241,3 +282,66 @@ MIT License
 ---
 
 **"都有截图了一定是真的"** 😄
+
+## AI 图片去水印（纯前端）
+
+入口：`/zh/tools/ai-watermark-remover/`，同时提供英语和日语页面，首页工具目录和导航已收录。
+
+- **隐形水印实验处理（默认）**：GPT-image / Nano Banana 整图 TAESD 自编码器重建，可调潜空间扰动、随机种子和 256–1024px 处理分辨率。通过 ONNX Runtime WebGPU 使用用户本机显卡，自动模式失败或不支持时回退单线程 WASM CPU。首次按需加载约 32 MB。每次从原图处理，保留原图尺寸和透明度，但模型重建会损失细节；PSNR 不是水印检测分数。
+- **Gemini 星形水印**：在右下角匹配标准 48px / 96px 模板，再用逆向 alpha 混合还原。匹配失败时保持像素不变。经过缩放、裁剪或更换标记的图片可改用手动修复；不透明部分和 JPEG 压缩造成的信息损失无法保证精确恢复。
+- **局部 AI 修复**：矩形、画笔、擦除标记、五步撤销、精确像素坐标框选和取消处理。MI-GAN 模型在单独的 Web Worker 中通过 ONNX Runtime WASM 运行，首次按需加载约 40 MB 同站静态资源，不需要 GPU、跨域隔离头、服务器或 API 密钥。限制单次选区不超过图片的 25%，分散的大选区需分次处理。
+- **仅清理元数据**：重新导出图片，不复制原文件的 EXIF、XMP 或 C2PA 元数据；可见水印保持不变。
+- 支持 PNG / JPG / WebP 输入，最大 25 MB、1200 万像素、单边 8192px。保留原图尺寸和透明度，前后滑块对比，统一导出 WebP。浏览器 WebP 编码可能引入轻微压缩变化。
+
+所有用户图片只在本机内存中处理。整图重建是研究实验，不含 SynthID 检测器，也未验证隐形水印去除。复杂纹理的 AI 修复可能有痕迹。
+
+参考：[wiltodelta/remove-ai-watermarks](https://github.com/wiltodelta/remove-ai-watermarks)、[WatermarkOut](https://github.com/IamRamgarhia/free-ai-watermark-remover)、[tbxark-arc/remove-ai-watermarks](https://github.com/tbxark-arc/remove-ai-watermarks)。资源来源、校验值和许可证见 `public/assets/ai-watermark/README.md`。`npm run build` 校验本地模型并复制固定版本的 WASM 文件，输出仍为 Astro 静态 `dist/`，可直接部署到 Vercel。
+
+算法验证：`node --test tests/ai-watermark.test.mjs tests/ai-watermark-latent.test.mjs`。
+
+TAESD 来源、固定版本和转换脚本见 `public/assets/ai-watermark/README.md`。离线 Python 转换仅供维护模型，网站运行和常规构建不需要 Python / CUDA / 后端。
+
+## SEO 配置与验证
+
+正式域名为 **https://imghub.oumashu.top/**。`src/config/site.js` 是域名和站点身份的单一配置入口，供 Astro、canonical、hreflang、JSON-LD、Open Graph、robots 和 sitemap 共用。域名变更时改该配置、重建并重新验证上线结果。
+
+所有公开工具提供中文、英文、日文的静态说明；文案在 `src/i18n/tools.js`、`pages.js`、`toolGuides.js` 中维护。增加公开工具时同步补齐三语指南。非公开工具保持 `noindex, follow`，不进入 sitemap。
+
+```bash
+npm run test:seo
+npm run build
+npm run audit:seo
+```
+
+审计针对最新 `dist/`，检查页面、域名、语言替代、结构化数据、初始 HTML 正文、资源与内部链接，结果写入 `docs/imghub.oumashu.top-audit/static-audit.json`。它不代表 Google 收录状态、排名或 Core Web Vitals 分数。
+
+Vercel 配置提供永久旧路由跳转、尾斜杠规范化、带哈希文件缓存及 `.vercel.app` 域名的预览 `noindex` 响应头。上线后检查实际 HTTP 状态与响应头；正式自定义域名不能带 `noindex`。不支持的工具地址应返回 404。
+
+如使用 Google Search Console 的 HTML 验证方法，将 Google 给出的 content 值配置为 `PUBLIC_GOOGLE_SITE_VERIFICATION`，然后重新构建发布。空值不会生成验证标签。DNS 域名属性需在域名平台验证。验证成功后提交 `https://imghub.oumashu.top/sitemap.xml`。
+
+审计与后续步骤：[完整报告](docs/imghub.oumashu.top-audit/FULL-AUDIT-REPORT.md)、[关键词地图](docs/imghub.oumashu.top-audit/KEYWORD-MAP.md)、[上线与监测计划](docs/imghub.oumashu.top-audit/ACTION-PLAN.md)。
+
+
+## 图片变清晰（纯前端）
+
+入口 `/zh/tools/image-enhancer/`，另有英文和日文页面，首页与导航均有入口。
+
+- Real-ESRGAN general-x4v3 轻量模型，官方两组去噪权重按默认0.5混合，转为4.9MB ONNX。通过本机 WebGPU 推理，自动模式可回退单线程 WASM CPU。首次约27MB，同站静态资源。
+- 原尺寸增强、2倍、4倍输出；原尺寸和2倍由模型4倍结果缩小获得。增强力度混合模型结果与原图的双线性缩放，每次从原图处理。
+- 分块核心128px，周围保留36px上下文，裁掉重叠区域后拼接，控制显存并避免内部接缝。支持取消、重新处理、原图滑块对比、100%滚动查看。
+- PNG/JPG/WebP输入：25MB、400万像素、单边4096px。输出最多1600万像素、单边8192px；不可用倍率禁用，参数改变后阻止旧结果导出。保留透明度，统一导出WebP。
+
+模型推断的细节不代表真实细节。严重失焦、微小文字和人脸应放大检查。
+网站无后端、无API密钥、无图片上传，仍输出Astro静态文件供Vercel部署。
+模型维护脚本 `scripts/export-image-enhancer.py` 仅用于离线转换，不是网站依赖。
+权重来源、许可证与校验值见 `public/assets/image-enhancer/README.md`。
+验证：`node --test tests/image-enhancer.test.mjs tests/seo.test.mjs`。
+
+### 自动多语言 OCR
+
+- 使用官方 PaddleOCR.js 0.4.2 / PP-OCRv5 联合识别简体、繁体中文、英文与日文；无需选择语言，不宣称覆盖所有语言。
+- 独立 Worker 使用本机 WebGPU；自动模式在 GPU 不可用或失败时重试 CPU。引擎、模型和匹配的 ORT 1.24.3 WASM 都是本站静态资源，原有图片工具继续使用 ORT 1.20.1。
+- 长图分块、重叠框去重、小字增强、框选、90°旋转、100%预览、文字框与置信度校对、全文编辑、TXT/JSON 下载。输入限25MB、1200万像素、单边16000px。
+- 首次加载约58MB，图片不上传，仍兼容纯静态 Vercel 部署。复杂分栏、表格、手写和严重模糊需要人工核对。
+- `node scripts/prepare-ocr.mjs` 校验静态资源；`--download` 从官方来源重新下载。来源和许可证见 `public/assets/ocr/README.md`。
+- 验证：`node --test tests/ocr.test.mjs tests/seo.test.mjs`。

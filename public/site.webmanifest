@@ -1,6 +1,7 @@
 {
-  "name": "ImgHub - Image Generator",
-  "short_name": "SubShot",
+  "name": "ImgHub - Free Online Image Tools",
+  "short_name": "ImgHub",
+  "start_url": "/",
   "icons": [
     {
       "src": "/android-chrome-192x192.png",
@@ -13,7 +14,7 @@
       "type": "image/png"
     }
   ],
-  "theme_color": "#ffffff",
-  "background_color": "#ffffff",
+  "theme_color": "#14120f",
+  "background_color": "#f4f0e8",
   "display": "standalone"
 }

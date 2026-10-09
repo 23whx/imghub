@@ -1,8 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { translateToolText } from '../../i18n/legacyTools.js';
+﻿import React, { useState, useRef, useEffect } from 'react';
 import { Upload, Download, Grid } from 'lucide-react';
 import JSZip from 'jszip';
 
-const MemeSlicer = () => {
+const MemeSlicer = ({ lang: langProp = 'en' }) => {
+  const tr = text => translateToolText(langProp, text);
   const [image, setImage] = useState(null);
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(3);
@@ -111,20 +113,20 @@ const MemeSlicer = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">表情包切片工具</h1>
-        <p className="text-gray-600">上传图片，自定义行列数，批量导出切片</p>
+    <div className="tool-shell">
+      <div className="mb-4 sm:mb-8 text-center">
+        <h2 className="tool-title">{tr("表情包切片工具")}</h2>
+        <p className="tool-subtitle">{tr("上传图片，自定义行列数，批量导出切片")}</p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
         {/* 左侧控制面板 */}
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
           {/* 上传区 */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="tool-card">
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-              <Upload className="w-5 h-5 text-green-500" />
-              <span>上传图片</span>
+              <Upload className="w-5 h-5" />
+              <span>{tr("上传图片")}</span>
             </h2>
             <input
               ref={fileInputRef}
@@ -136,7 +138,7 @@ const MemeSlicer = () => {
             />
             <label
               htmlFor="image-upload"
-              className="block w-full py-12 border-2 border-dashed border-gray-300 rounded-lg text-center cursor-pointer hover:border-green-500 hover:bg-green-50 transition-colors"
+              className="block w-full py-8 sm:py-12 border-2 border-dashed border-black/15 dark:border-white/15 rounded-lg text-center cursor-pointer hover:border-black/40 dark:hover:border-white/40 hover:bg-black/5 dark:hover:bg-white/5 transition-colors"
             >
               {image ? (
                 <div>
@@ -145,29 +147,28 @@ const MemeSlicer = () => {
                     alt="Preview"
                     className="max-h-32 mx-auto mb-2 rounded object-contain"
                   />
-                  <p className="text-sm text-gray-600">点击更换图片</p>
+                  <p className="text-sm text-neutral-600 dark:text-neutral-300">{tr("点击更换图片")}</p>
                 </div>
               ) : (
                 <div>
-                  <Upload className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                  <p className="text-gray-600">点击上传图片</p>
-                  <p className="text-sm text-gray-400 mt-1">支持 JPG, PNG, GIF</p>
+                  <Upload className="w-12 h-12 text-neutral-400 mx-auto mb-2" />
+                  <p className="text-neutral-600 dark:text-neutral-300">{tr("点击上传图片")}</p>
+                  <p className="text-sm text-neutral-400 mt-1">{tr("支持 JPG, PNG, GIF")}</p>
                 </div>
               )}
             </label>
           </div>
 
           {/* 切片设置 */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
+          <div className="tool-card">
             <h2 className="text-lg font-semibold mb-4 flex items-center space-x-2">
-              <Grid className="w-5 h-5 text-green-500" />
-              <span>切片设置</span>
+              <Grid className="w-5 h-5" />
+              <span>{tr("切片设置")}</span>
             </h2>
-            
+
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  行数: {rows}
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("行数:")}{rows}
                 </label>
                 <input
                   type="range"
@@ -175,13 +176,12 @@ const MemeSlicer = () => {
                   max="10"
                   value={rows}
                   onChange={(e) => setRows(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-neutral-900 dark:accent-white"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  列数: {cols}
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("列数:")}{cols}
                 </label>
                 <input
                   type="range"
@@ -189,28 +189,26 @@ const MemeSlicer = () => {
                   max="10"
                   value={cols}
                   onChange={(e) => setCols(Number(e.target.value))}
-                  className="w-full"
+                  className="w-full accent-neutral-900 dark:accent-white"
                 />
               </div>
 
-              <div className="pt-4 border-t border-gray-200">
-                <p className="text-sm text-gray-600">
-                  将生成 <span className="font-bold text-green-600">{rows * cols}</span> 张切片图片
-                </p>
+              <div className="pt-4 border-t border-black/10 dark:border-white/10">
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">{tr("将生成")}<span className="font-semibold">{rows * cols}</span>{tr("张切片图片")}</p>
               </div>
             </div>
           </div>
 
           {/* 快速预设 */}
-          <div className="bg-white rounded-2xl shadow-lg p-6">
-            <h2 className="text-lg font-semibold mb-4">快速预设</h2>
+          <div className="tool-card">
+            <h2 className="text-lg font-semibold mb-4">{tr("快速预设")}</h2>
             <div className="grid grid-cols-2 gap-3">
               <button
                 onClick={() => {
                   setRows(2);
                   setCols(2);
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 2×2
               </button>
@@ -219,7 +217,7 @@ const MemeSlicer = () => {
                   setRows(3);
                   setCols(3);
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 3×3
               </button>
@@ -228,7 +226,7 @@ const MemeSlicer = () => {
                   setRows(3);
                   setCols(4);
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 3×4
               </button>
@@ -237,7 +235,7 @@ const MemeSlicer = () => {
                   setRows(4);
                   setCols(4);
                 }}
-                className="px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-lg text-sm transition-colors"
+                className="px-4 py-2 bg-black/5 dark:bg-white/10 hover:bg-black/10 dark:hover:bg-white/15 rounded-lg text-sm transition-colors"
               >
                 4×4
               </button>
@@ -247,17 +245,17 @@ const MemeSlicer = () => {
           <button
             onClick={handleExport}
             disabled={!image}
-            className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white rounded-lg font-medium transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+            className="w-full flex items-center justify-center space-x-2 px-6 py-3 bg-neutral-900 dark:bg-white hover:bg-neutral-700 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg font-medium transition-all disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Download className="w-5 h-5" />
-            <span>导出切片 (ZIP)</span>
+            <span>{tr("导出切片 (ZIP)")}</span>
           </button>
         </div>
 
         {/* 右侧预览区 - 添加了 sticky 和 self-start */}
-        <div className="lg:col-span-2 bg-white rounded-2xl shadow-lg p-6 lg:sticky lg:top-24 self-start">
-          <h2 className="text-lg font-semibold mb-4">预览</h2>
-          <div className="bg-gray-50 rounded-lg overflow-auto max-h-[80vh] flex items-center justify-center p-4">
+        <div className="lg:col-span-2 tool-card lg:sticky lg:top-24 self-start">
+          <h2 className="text-lg font-semibold mb-4">{tr("预览")}</h2>
+          <div className="bg-black/5 dark:bg-white/5 rounded-lg overflow-auto max-h-[80vh] flex items-center justify-center p-4">
             {image ? (
               <canvas
                 ref={canvasRef}
@@ -265,8 +263,8 @@ const MemeSlicer = () => {
               />
             ) : (
               <div className="text-center py-20">
-                <Grid className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                <p className="text-gray-400">上传图片后查看预览</p>
+                <Grid className="w-16 h-16 text-neutral-300 dark:text-neutral-700 mx-auto mb-4" />
+                <p className="text-neutral-400">{tr("上传图片后查看预览")}</p>
               </div>
             )}
           </div>

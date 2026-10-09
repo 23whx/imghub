@@ -1,0 +1,602 @@
+.wig-studio {
+  color: var(--ink, #302323);
+  --wig-accent: var(--accent, #78343b);
+  --wig-line: var(--line, #e1d7cc);
+  font-size: 14px;
+}
+.wig-studio button,
+.wig-studio a,
+.wig-studio input,
+.wig-studio select {
+  font: inherit;
+}
+.wig-studio button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  cursor: pointer;
+  border: 1px solid var(--wig-line);
+  border-radius: 6px;
+  padding: 9px 12px;
+  background: var(--surface, #fffdf9);
+  color: inherit;
+  transition:
+    background 0.18s,
+    border-color 0.18s;
+}
+.wig-studio button:hover {
+  border-color: var(--wig-accent);
+  background: var(--surface-soft, #eee8dd);
+}
+.wig-studio button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.wig-studio :focus-visible {
+  outline: 2px solid var(--wig-accent);
+  outline-offset: 4px;
+}
+.wig-file {
+  display: none;
+}
+.wig-intro {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 6px 0 28px;
+}
+.wig-eyebrow,
+.wig-control-head > span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  color: var(--wig-accent);
+}
+.wig-intro h2 {
+  font-size: 25px;
+  font-family: var(--display, serif);
+  font-weight: 500;
+  margin: 10px 0 8px;
+}
+.wig-intro p,
+.wig-examples p {
+  color: var(--muted, #8d8077);
+  line-height: 1.7;
+}
+.wig-local {
+  font-size: 11px;
+  color: var(--muted, #8d8077);
+  white-space: nowrap;
+}
+.wig-steps {
+  display: flex;
+  border-top: 1px solid var(--wig-line);
+  border-bottom: 1px solid var(--wig-line);
+  margin-bottom: 22px;
+}
+.wig-steps button {
+  flex: 1;
+  padding: 18px 12px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  gap: 14px;
+  position: relative;
+}
+.wig-steps button span {
+  font-size: 11px;
+  letter-spacing: 1px;
+  opacity: 0.5;
+}
+.wig-steps button[aria-current="step"] {
+  color: var(--wig-accent);
+  background: var(--surface-soft, #eee8dd);
+}
+.wig-steps button[aria-current="step"]:after {
+  content: "";
+  position: absolute;
+  height: 2px;
+  background: var(--wig-accent);
+  bottom: -1px;
+  left: 0;
+  right: 0;
+}
+.wig-workbench {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+.wig-preview {
+  min-width: 0;
+  border: 1px solid var(--wig-line);
+  border-radius: 8px;
+  overflow: hidden;
+  background: #faf2ed;
+}
+.wig-preview-bar,
+.wig-preview-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  gap: 12px;
+  background: var(--surface, #fffdf9);
+  font-size: 11px;
+}
+.wig-preview-bar {
+  border-bottom: 1px solid var(--wig-line);
+}
+.wig-image-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.wig-preview-bar button {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+.wig-stage {
+  min-height: 360px;
+  height: 470px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  position: relative;
+  padding: 15px;
+}
+.wig-canvas-wrap {
+  width: min(100%, var(--wig-desktop-width));
+  flex-shrink: 0;
+  position: relative;
+  max-width: 100%;
+  transform-origin: center;
+}
+.wig-stage canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  touch-action: none;
+}
+.wig-stage.is-play canvas {
+  cursor: grab;
+}
+.wig-stage.is-play canvas:active {
+  cursor: grabbing;
+}
+.wig-paint.paint {
+  cursor: crosshair;
+}
+.wig-paint.erase {
+  cursor: cell;
+}
+.wig-paint.pan {
+  cursor: grab;
+}
+.wig-loading {
+  position: absolute;
+  font-size: 12px;
+  color: var(--muted);
+}
+.wig-preview-footer {
+  border-top: 1px solid var(--wig-line);
+  min-height: 53px;
+}
+.wig-preview-footer > span {
+  line-height: 1.6;
+}
+.wig-preview-footer button {
+  padding: 6px 8px;
+  background: transparent;
+  font-size: 11px;
+}
+.wig-zoom {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+.wig-zoom output {
+  min-width: 37px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+.wig-status {
+  margin: 0;
+  padding: 12px 16px;
+  color: var(--wig-accent);
+  background: var(--surface, #fffdf9);
+  font-size: 11px;
+  line-height: 1.6;
+  min-height: 42px;
+  border-top: 1px solid var(--wig-line);
+}
+.wig-live {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  background: #fffdf9;
+  border: 1px solid var(--wig-line);
+  border-radius: 30px;
+  padding: 8px 12px;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.wig-live i,
+.wig-record-dot {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #b2374a;
+}
+.wig-controls {
+  padding: 24px;
+  background: var(--surface, #fffdf9);
+  border: 1px solid var(--wig-line);
+  border-radius: 8px;
+}
+.wig-control-head h3 {
+  font-family: var(--display, serif);
+  font-size: 23px;
+  font-weight: 500;
+  margin: 10px 0;
+}
+.wig-control-head p {
+  font-size: 12px;
+  color: var(--muted, #8d8077);
+  line-height: 1.8;
+  margin-bottom: 24px;
+}
+.wig-controls fieldset {
+  border: 0;
+  padding: 0;
+  min-width: 0;
+  margin: 0 0 18px;
+}
+.wig-controls legend {
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+.wig-segments {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 16px;
+}
+.wig-segments button {
+  flex: 1;
+  font-size: 11px;
+  padding: 9px 4px;
+}
+.wig-studio button[aria-pressed="true"] {
+  color: var(--wig-accent);
+  border-color: var(--wig-accent);
+  background: var(--surface-soft, #eee8dd);
+}
+.wig-materials {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.wig-materials button {
+  text-align: left;
+  align-items: flex-start;
+  flex-direction: column;
+  font-size: 12px;
+  padding: 11px 10px;
+}
+.wig-materials small {
+  color: var(--muted, #8d8077);
+  font-size: 10px;
+  line-height: 1.5;
+}
+.wig-range {
+  display: block;
+  margin: 16px 0;
+  font-size: 12px;
+}
+.wig-range > span {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+.wig-range output {
+  color: var(--wig-accent);
+  font-variant-numeric: tabular-nums;
+}
+.wig-range input {
+  width: 100%;
+  accent-color: var(--wig-accent);
+  cursor: pointer;
+  display: block;
+}
+.wig-history {
+  display: flex;
+  gap: 8px;
+  margin: 18px 0;
+}
+.wig-history button {
+  flex: 1;
+  font-size: 12px;
+}
+.wig-note {
+  font-size: 10px;
+  color: var(--muted, #8d8077);
+  line-height: 1.8;
+  margin: 12px 0;
+}
+.wig-note strong {
+  color: var(--wig-accent);
+  float: right;
+  font-weight: 500;
+}
+.wig-fine {
+  border-top: 1px solid var(--wig-line);
+  border-bottom: 1px solid var(--wig-line);
+  padding: 14px 0;
+  margin: 20px 0;
+}
+.wig-fine summary {
+  cursor: pointer;
+  font-size: 12px;
+}
+.wig-fine > button {
+  font-size: 11px;
+}
+.wig-select {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 12px;
+  margin-top: 20px;
+}
+.wig-select select {
+  border: 1px solid var(--wig-line);
+  background: var(--surface, #fffdf9);
+  padding: 10px;
+  border-radius: 5px;
+  color: inherit;
+  width: 100%;
+}
+.wig-controls .wig-sensor {
+  font-size: 11px;
+  width: 100%;
+}
+.wig-studio .wig-primary {
+  width: 100%;
+  background: var(--accent-fill, #dcc08b);
+  color: var(--accent-ink, #261c0e);
+  border: 1px solid var(--accent-fill, #dcc08b);
+  padding: 13px 16px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  text-decoration: none;
+  margin-top: 20px;
+  font-size: 13px;
+}
+.wig-studio .wig-primary:hover {
+  background: #c6a975;
+  color: #261c0e;
+}
+.wig-primary .wig-record-dot {
+  background: #78343b;
+}
+.wig-studio .wig-back,
+.wig-studio .wig-cancel {
+  width: 100%;
+  margin-top: 12px;
+  font-size: 11px;
+}
+.wig-controls progress {
+  width: 100%;
+  height: 5px;
+  accent-color: var(--wig-accent);
+}
+.wig-examples {
+  border-top: 1px solid var(--wig-line);
+  margin-top: 46px;
+  padding-top: 28px;
+}
+.wig-examples h3 {
+  font-family: var(--display, serif);
+  font-size: 30px;
+  font-weight: 500;
+  margin: 12px 0;
+}
+.wig-examples p {
+  font-size: 12px;
+}
+.wig-example-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.wig-example-grid button {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0;
+  text-align: left;
+}
+.wig-example-grid picture {
+  display: block;
+  aspect-ratio: 1.25;
+  overflow: hidden;
+  background: #faf2ed;
+}
+.wig-example-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.wig-example-grid button > span {
+  display: block;
+  padding: 16px;
+  font-family: var(--display, serif);
+  font-size: 20px;
+}
+.wig-example-grid small {
+  display: block;
+  font: 9px/1.5 system-ui;
+  letter-spacing: 1.5px;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+.wig-example-grid b {
+  float: right;
+  color: var(--wig-accent);
+  font-weight: 400;
+}
+.wig-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 120;
+  background: #2c1c1b88;
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.wig-modal {
+  background: var(--surface, #fffdf9);
+  border-radius: 10px;
+  padding: 26px;
+  width: min(100%, 520px);
+  max-height: 90dvh;
+  overflow: auto;
+  position: relative;
+  box-shadow: 0 24px 80px #24141544;
+}
+.wig-modal h3 {
+  font-family: var(--display, serif);
+  font-size: 25px;
+  font-weight: 500;
+  margin: 0 35px 20px 0;
+}
+.wig-modal p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: var(--muted);
+}
+.wig-studio .wig-modal-close {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  border: 0;
+  background: transparent;
+  padding: 5px;
+}
+.wig-result {
+  width: 100%;
+  max-height: 56dvh;
+  object-fit: contain;
+  background: #faf2ed;
+  border-radius: 6px;
+  margin-bottom: 14px;
+}
+.wig-modal-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 24px;
+}
+.wig-modal-actions .wig-primary {
+  margin: 0;
+}
+@media (max-width: 950px) {
+  .wig-workbench {
+    grid-template-columns: minmax(0, 1fr) 280px;
+    gap: 16px;
+  }
+  .wig-controls {
+    padding: 18px;
+  }
+  .wig-stage {
+    height: 400px;
+  }
+  .wig-canvas-wrap {
+    width: min(100%, calc(var(--wig-desktop-width) * 0.84));
+  }
+}
+@media (max-width: 760px) {
+  .wig-intro {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .wig-intro h2 {
+    font-size: 22px;
+  }
+  .wig-steps button {
+    font-size: 12px;
+    gap: 7px;
+    padding: 16px 4px;
+  }
+  .wig-workbench {
+    grid-template-columns: 1fr;
+  }
+  .wig-stage {
+    height: 360px;
+    min-height: 260px;
+  }
+  .wig-canvas-wrap {
+    width: min(100%, var(--wig-mobile-width));
+    max-height: none;
+  }
+  .wig-controls {
+    padding: 20px;
+  }
+  .wig-materials small {
+    font-size: 11px;
+  }
+  .wig-preview-bar,
+  .wig-preview-footer {
+    padding: 10px 12px;
+  }
+  .wig-preview-footer > span {
+    max-width: 55%;
+  }
+  .wig-example-grid {
+    gap: 8px;
+  }
+  .wig-example-grid button > span {
+    padding: 12px 8px;
+    font-size: 15px;
+  }
+  .wig-example-grid small {
+    font-size: 8px;
+    letter-spacing: 0.5px;
+  }
+  .wig-examples h3 {
+    font-size: 25px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wig-studio * {
+    transition: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .wig-controls button,
+  .wig-preview-bar button {
+    min-height: 44px;
+  }
+  .wig-preview-footer > span {
+    min-width: 0;
+  }
+  .wig-live {
+    color: #2c251e;
+  }
+}

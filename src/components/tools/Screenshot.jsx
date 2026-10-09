@@ -1,7 +1,9 @@
-import React, { useState, useRef } from 'react';
+import { translateToolText } from '../../i18n/legacyTools.js';
+﻿import React, { useState, useRef } from 'react';
 import { Camera, Check, X, Monitor, Globe, Link, Loader2 } from 'lucide-react';
 
-const Screenshot = () => {
+const Screenshot = ({ lang: langProp = 'en' }) => {
+  const tr = text => translateToolText(langProp, text);
   const [mode, setMode] = useState('menu'); // 'menu', 'url-input', 'editor'
   const [imageUrl, setImageUrl] = useState(null);
   const [inputUrl, setInputUrl] = useState('');
@@ -35,7 +37,7 @@ const Screenshot = () => {
     } catch (err) {
       console.error(err);
       if (err.name !== 'NotAllowedError') {
-        setError('无法获取屏幕画面，请检查浏览器权限。');
+        setError(tr("无法获取屏幕画面，请检查浏览器权限。"));
       }
     }
   };
@@ -58,7 +60,7 @@ const Screenshot = () => {
 
       if (!response.ok) {
         const err = await response.json();
-        throw new Error(err.details || '截图失败，请检查链接是否有效');
+        throw new Error(err.details || tr("截图失败，请检查链接是否有效"));
       }
 
       const blob = await response.blob();
@@ -72,15 +74,15 @@ const Screenshot = () => {
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 py-8">
-      <div className="mb-8 text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">网页截图工具</h1>
-        <p className="text-gray-600">支持即时屏幕截图与网页长截图</p>
+    <div className="tool-shell">
+      <div className="mb-4 sm:mb-8 text-center">
+        <h2 className="tool-title">{tr("网页截图工具")}</h2>
+        <p className="tool-subtitle">{tr("支持即时屏幕截图与网页长截图")}</p>
       </div>
 
       {/* 错误提示 */}
       {error && (
-        <div className="max-w-2xl mx-auto mb-6 p-4 bg-red-50 text-red-600 rounded-lg border border-red-200 text-center animate-fade-in">
+        <div className="max-w-2xl mx-auto mb-6 p-4 tool-card !rounded-lg border-black/10 dark:border-white/10 text-center animate-fade-in font-medium">
           {error}
         </div>
       )}
@@ -91,70 +93,58 @@ const Screenshot = () => {
           {/* 选项1: 即时截图 */}
           <button
             onClick={handleLocalCapture}
-            className="group bg-white p-8 rounded-2xl shadow-lg border-2 border-transparent hover:border-blue-500 transition-all text-left flex flex-col h-full"
+            className="group tool-card !p-8 border-2 !border-black/10 dark:!border-white/10 hover:!border-black/40 dark:hover:!border-white/40 transition-all text-left flex flex-col h-full"
           >
-            <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 text-blue-600 group-hover:scale-110 transition-transform">
+            <div className="bg-black/5 dark:bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Monitor className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">即时截图</h3>
-            <p className="text-gray-500 mb-4 flex-grow">
-              调用浏览器原生功能，直接选择标签页、窗口或屏幕进行截图。
-            </p>
-            <span className="text-blue-600 font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-              开始截图 &rarr;
-            </span>
+            <h3 className="text-xl font-bold mb-2">{tr("即时截图")}</h3>
+            <p className="text-neutral-500 dark:text-neutral-400 mb-4 flex-grow">{tr("调用浏览器原生功能，直接选择标签页、窗口或屏幕进行截图。")}</p>
+            <span className="font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">{tr("开始截图 →")}</span>
           </button>
 
           {/* 选项2: 网页长截图 */}
           <button
             onClick={() => setMode('url-input')}
-            className="group bg-white p-8 rounded-2xl shadow-lg border-2 border-transparent hover:border-purple-500 transition-all text-left flex flex-col h-full"
+            className="group tool-card !p-8 border-2 !border-black/10 dark:!border-white/10 hover:!border-black/40 dark:hover:!border-white/40 transition-all text-left flex flex-col h-full"
           >
-            <div className="bg-purple-100 w-16 h-16 rounded-full flex items-center justify-center mb-6 text-purple-600 group-hover:scale-110 transition-transform">
+            <div className="bg-black/5 dark:bg-white/10 w-16 h-16 rounded-full flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
               <Globe className="w-8 h-8" />
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">网页长截图</h3>
-            <p className="text-gray-500 mb-4 flex-grow">
-              输入网址，自动滚动截取完整的网页长图（包括可视区域以外的内容）。
-            </p>
-            <span className="text-purple-600 font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-              去输入网址 &rarr;
-            </span>
+            <h3 className="text-xl font-bold mb-2">{tr("网页长截图")}</h3>
+            <p className="text-neutral-500 dark:text-neutral-400 mb-4 flex-grow">{tr("输入网址，自动滚动截取完整的网页长图（包括可视区域以外的内容）。")}</p>
+            <span className="font-medium flex items-center gap-1 group-hover:translate-x-1 transition-transform">{tr("去输入网址 →")}</span>
           </button>
         </div>
       )}
 
       {/* URL输入界面 */}
       {mode === 'url-input' && (
-        <div className="max-w-2xl mx-auto bg-white p-8 rounded-2xl shadow-lg animate-fade-in">
-          <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center gap-2">
-            <Link className="w-6 h-6 text-purple-500" />
-            输入网页地址
-          </h3>
+        <div className="max-w-2xl mx-auto tool-card !p-8 animate-fade-in">
+          <h3 className="text-xl font-bold mb-6 flex items-center gap-2">
+            <Link className="w-6 h-6" />{tr("输入网页地址")}</h3>
           <div className="flex gap-3 mb-4">
             <input
               type="text"
               value={inputUrl}
               onChange={(e) => setInputUrl(e.target.value)}
-              placeholder="例如: www.bilibili.com"
-              className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-purple-500 outline-none"
+              placeholder={tr("例如: www.bilibili.com")}
+              className="flex-1 px-4 py-3 rounded-lg border border-black/15 dark:border-white/15 focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 outline-none"
               onKeyDown={(e) => e.key === 'Enter' && handleUrlCapture()}
             />
             <button
               onClick={handleUrlCapture}
               disabled={loading || !inputUrl}
-              className="px-6 py-3 bg-purple-600 hover:bg-purple-700 text-white rounded-lg font-medium disabled:opacity-50 flex items-center gap-2"
+              className="px-6 py-3 bg-neutral-900 dark:bg-white hover:bg-neutral-700 dark:hover:bg-neutral-200 text-white dark:text-black rounded-lg font-medium disabled:opacity-50 flex items-center gap-2"
             >
               {loading && <Loader2 className="w-5 h-5 animate-spin" />}
-              {loading ? '生成中...' : '开始截图'}
+              {loading ? tr("生成中...") : tr("开始截图")}
             </button>
           </div>
-          <button 
+          <button
             onClick={() => setMode('menu')}
-            className="text-gray-500 text-sm hover:text-gray-700 hover:underline"
-          >
-            &larr; 返回选择模式
-          </button>
+            className="text-neutral-500 dark:text-neutral-400 text-sm hover:text-neutral-700 dark:hover:text-neutral-200 hover:underline"
+          >{tr("← 返回选择模式")}</button>
         </div>
       )}
 
@@ -285,7 +275,7 @@ const ScreenshotEditor = ({ imageUrl, onClose }) => {
   };
 
   // 样式辅助
-  const handleStyle = "absolute w-3 h-3 bg-white border border-blue-500 rounded-full z-20";
+  const handleStyle = "absolute w-3 h-3 bg-white border border-neutral-900 rounded-full z-20";
   const positions = {
     nw: { top: -4, left: -4, cursor: 'nw-resize' },
     n:  { top: -4, left: '50%', transform: 'translateX(-50%)', cursor: 'n-resize' },
@@ -321,7 +311,7 @@ const ScreenshotEditor = ({ imageUrl, onClose }) => {
           {/* 遮罩层 - 使用 box-shadow 模拟反向遮罩 */}
           {selection && (
             <div
-              className="absolute border-2 border-blue-400 group"
+              className="absolute border-2 border-white group"
               style={{
                 left: selection.x,
                 top: selection.y,
@@ -356,16 +346,16 @@ const ScreenshotEditor = ({ imageUrl, onClose }) => {
                 }}
                 onMouseDown={(e) => e.stopPropagation()}
               >
-                <button 
-                  onClick={() => setSelection(null)} 
-                  className="p-1 hover:bg-gray-100 rounded text-red-500"
+                <button
+                  onClick={() => setSelection(null)}
+                  className="p-1 hover:bg-black/5 rounded text-neutral-700"
                 >
                   <X className="w-5 h-5" />
                 </button>
-                <div className="w-px bg-gray-200 mx-1"></div>
-                <button 
-                  onClick={confirmCrop} 
-                  className="p-1 hover:bg-green-50 rounded text-green-500"
+                <div className="w-px bg-black/10 mx-1"></div>
+                <button
+                  onClick={confirmCrop}
+                  className="p-1 hover:bg-black/5 rounded text-neutral-900"
                 >
                   <Check className="w-5 h-5" />
                 </button>
