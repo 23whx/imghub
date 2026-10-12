@@ -27,7 +27,6 @@
     "nanostores": "^1.1.0",
     "ocr-onnxruntime": "npm:onnxruntime-web@1.24.3",
     "onnxruntime-web": "1.20.1",
-    "puppeteer": "^24.31.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "sharp": "^0.34.4",
@@ -37,6 +36,7 @@
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
-    "parse5": "^7.3.0"
+    "parse5": "^7.3.0",
+    "puppeteer": "^24.31.0"
   }
 }

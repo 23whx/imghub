@@ -1,20 +1,33 @@
-import React from 'react';
 import { Type } from 'lucide-react';
 
 const Controls = ({
   fontSize,
   onFontSizeChange,
+  lineHeight,
+  onLineHeightChange,
+  textAlign,
+  onTextAlignChange,
+  verticalPosition,
+  onVerticalPositionChange,
   fontFamily,
   onFontFamilyChange,
   textColor,
   onTextColorChange,
-  isDarkMode,
   language
 }) => {
   // 语言配置
   const languages = {
     en: {
       fontSize: 'Font Size',
+      lineHeight: 'Line Height',
+      textAlign: 'Alignment',
+      alignLeft: 'Left',
+      alignCenter: 'Center',
+      alignRight: 'Right',
+      verticalPosition: 'Position on Image',
+      positionTop: 'Top',
+      positionMiddle: 'Middle',
+      positionBottom: 'Bottom',
       fontStyle: 'Font Style',
       textColor: 'Text Color',
       defaultFont: 'Default Font',
@@ -31,6 +44,15 @@ const Controls = ({
     },
     zh: {
       fontSize: '字体大小',
+      lineHeight: '行高',
+      textAlign: '对齐方式',
+      alignLeft: '左对齐',
+      alignCenter: '居中',
+      alignRight: '右对齐',
+      verticalPosition: '首段位置',
+      positionTop: '顶部',
+      positionMiddle: '中间',
+      positionBottom: '底部',
       fontStyle: '字体样式',
       textColor: '文字颜色',
       defaultFont: '默认字体',
@@ -47,6 +69,15 @@ const Controls = ({
     },
     ja: {
       fontSize: 'フォントサイズ',
+      lineHeight: '行の高さ',
+      textAlign: '配置',
+      alignLeft: '左揃え',
+      alignCenter: '中央',
+      alignRight: '右揃え',
+      verticalPosition: '最初の字幕の位置',
+      positionTop: '上',
+      positionMiddle: '中央',
+      positionBottom: '下',
       fontStyle: 'フォントスタイル',
       textColor: 'テキストの色',
       defaultFont: 'デフォルトフォント',
@@ -94,6 +125,52 @@ const Controls = ({
           </div>
         </div>
       </div>
+
+      {/* 行高（单语模式） */}
+      <div>
+        <label className="flex items-center text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
+          {t.lineHeight}
+          <span className="ml-auto font-semibold">{lineHeight.toFixed(1)}</span>
+        </label>
+        <input
+          type="range"
+          min="1"
+          max="2.5"
+          step="0.1"
+          value={lineHeight}
+          onChange={(e) => onLineHeightChange(Number(e.target.value))}
+          className="w-full accent-neutral-900 dark:accent-white"
+        />
+      </div>
+
+      {/* 对齐方式与首段位置 */}
+      {[
+        { label: t.textAlign, value: textAlign, onChange: onTextAlignChange, options: [['left', t.alignLeft], ['center', t.alignCenter], ['right', t.alignRight]] },
+        { label: t.verticalPosition, value: verticalPosition, onChange: onVerticalPositionChange, options: [['top', t.positionTop], ['middle', t.positionMiddle], ['bottom', t.positionBottom]] },
+      ].map((group) => (
+        <div key={group.label}>
+          <label className="block text-sm font-medium mb-3 text-gray-700 dark:text-gray-200">
+            {group.label}
+          </label>
+          <div className="grid grid-cols-3 gap-2">
+            {group.options.map(([value, name]) => (
+              <button
+                key={value}
+                type="button"
+                aria-pressed={group.value === value}
+                onClick={() => group.onChange(value)}
+                className={`px-3 py-2 text-xs rounded-lg transition-colors duration-200 ${
+                  group.value === value
+                    ? "bg-neutral-900 text-white dark:bg-white dark:text-black"
+                    : "bg-gray-50 hover:bg-gray-100 text-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300"
+                }`}
+              >
+                {name}
+              </button>
+            ))}
+          </div>
+        </div>
+      ))}
 
       {/* 字体选择 */}
       <div>

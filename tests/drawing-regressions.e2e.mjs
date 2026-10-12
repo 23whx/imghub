@@ -6,7 +6,7 @@ async function click(page, label) { await page.locator(`button[aria-label="${lab
 async function enter(page, selector, value) { await page.$eval(selector, el => el.scrollIntoView({ block: 'center', behavior: 'instant' })); await page.locator(selector).click(); await page.keyboard.down('Control'); await page.keyboard.press('a'); await page.keyboard.up('Control'); await page.keyboard.type(value); await page.keyboard.press('Tab'); }
 try {
   const page = await browser.newPage(); await page.setViewport({ width: 1500, height: 1000 });
-  await page.evaluateOnNewDocument(() => localStorage.setItem('cookieConsent', 'accepted')); await page.setRequestInterception(true); page.on('request', request => /googlesyndication\.com|doubleclick\.net/.test(request.url()) ? request.abort() : request.continue()); await page.goto(`${base}/zh/tools/online-drawing`, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('.draw-art');
+  await page.evaluateOnNewDocument(() => localStorage.setItem('cookieConsent', 'accepted')); await page.setRequestInterception(true); page.on('request', request => /googlesyndication\.com|doubleclick\.net/.test(request.url()) ? request.abort() : request.continue()); await page.goto(`${base}/zh/tools/online-drawing/`, { waitUntil: 'domcontentloaded' }); await page.waitForSelector('.draw-art');
   const engine = await page.evaluate(async () => {
     const { DrawingDocument, makeLayer, surface, worldPoint } = await import('/src/utils/drawingEngine.js');
     const results = [];

@@ -1,4 +1,3 @@
-import React from 'react';
 import { Upload, ChevronDown } from 'lucide-react';
 
 const heroes = [
@@ -10,7 +9,7 @@ const heroes = [
   { id: 'yuhua', name: '余华', image: '/assets/heroes/hero_Yuhua.png' },
 ];
 
-const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageChange, isDarkMode, language }) => {
+const HeroSelector = ({ selectedHero, onHeroChange, customImage, onCustomImageChange, language }) => {
   // 语言配置
   const languages = {
     en: {

@@ -15,15 +15,16 @@ interface Props {
   pathWithoutLang?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
   indexable?: boolean;
+  canonical?: boolean;
 }
-const { title, description, keywords, lang = defaultLocale, pathWithoutLang = '', jsonLd = null, indexable = true } = Astro.props;
+const { title, description, keywords, lang = defaultLocale, pathWithoutLang = '', jsonLd = null, indexable = true, canonical = true } = Astro.props;
 const locale = isValidLocale(lang) ? lang : defaultLocale;
 const alternates = indexable ? buildAlternates(siteConfig.url, pathWithoutLang) : [];
 const t = getUi(locale);
 const studio = getStudioCopy(locale);
 const isHome = pathWithoutLang === '';
 ---
-<Layout title={title} description={description} keywords={keywords} lang={locale} pathWithoutLang={pathWithoutLang} alternates={alternates} jsonLd={jsonLd} indexable={indexable}>
+<Layout title={title} description={description} keywords={keywords} lang={locale} pathWithoutLang={pathWithoutLang} alternates={alternates} jsonLd={jsonLd} indexable={indexable} canonical={canonical}>
   <a class="skip-link" href="#main-content">{locale === 'zh' ? '跳到主要内容' : locale === 'ja' ? '本文へ移動' : 'Skip to content'}</a>
   <Navbar client:load lang={locale} isHome={isHome} />
   <main id="main-content" class:list={['studio-main', { 'studio-main-home': isHome }]}>

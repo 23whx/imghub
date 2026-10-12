@@ -83,7 +83,10 @@ export function getBilibiliCover(input, { signal, timeout = 15000 } = {}) {
     script.async = true;
     script.referrerPolicy = 'no-referrer';
     script.src = `https://api.bilibili.com/x/web-interface/view?${new URLSearchParams({ [parsed.kind]: parsed.id, jsonp: 'jsonp', callback })}`;
-    script.onerror = () => finish(new Error('upstream_failed'));
+    // A script error hides the HTTP status. If an opaque request still gets an
+    // answer, the API is reachable but refused (usually 412 risk control).
+    script.onerror = () => fetch(script.src, { mode: 'no-cors', credentials: 'omit', referrerPolicy: 'no-referrer', signal })
+      .then(() => finish(new Error('rate_limited')), () => finish(new Error('upstream_failed')));
     timer = setTimeout(() => finish(new Error('timeout')), timeout);
     signal?.addEventListener('abort', onAbort, { once: true });
     document.head.appendChild(script);

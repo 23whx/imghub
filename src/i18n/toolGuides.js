@@ -211,21 +211,21 @@ const guideData = {
   'pornhub-style': {
     zh: {
       summary: '用黑底、白字和橙色块制作 Pornhub 风格文字 Logo。自定义前后两段文字，选择左右或上下布局，调整字号和间距，并从实时画布下载 PNG。适合制作文字梗图和风格化标题，不需要上传背景图片。',
-      steps: ['输入两段要显示的文字。', '选择横向或纵向布局，调整字号与间距。', '确认文字没有超出画布，下载 PNG Logo。'],
-      tips: ['文字较长时降低字号，避免超出固定画布。', '导出使用黑色背景，不是透明 Logo。', '颜色保持黑、白、橙的既定风格；复杂排版可在在线画图中继续编辑。'],
-      faqs: [faq('能把两段文字上下排列吗？', '可以。选择纵向布局后，白色文字放在上方，橙色块文字放在下方；可调整间距。'), faq('能直接下载透明背景的 Logo 吗？', '目前输出带黑色背景的 PNG，没有透明背景选项。需要自由设置背景或图层时可使用在线画图。')],
+      steps: ['输入两段要显示的文字。', '选择横向或纵向布局，调整字号与间距。', '在预览中确认效果，下载 PNG Logo。'],
+      tips: ['文字较长时画布会自动加宽，不会裁掉文字。', '默认导出黑色背景；勾选透明背景可导出透明 PNG Logo。', '颜色保持黑、白、橙的既定风格；复杂排版可在在线画图中继续编辑。'],
+      faqs: [faq('能把两段文字上下排列吗？', '可以。选择纵向布局后，白色文字放在上方，橙色块文字放在下方；可调整间距。'), faq('能直接下载透明背景的 Logo 吗？', '可以。勾选透明背景后，导出的 PNG 只保留文字和橙色块；需要自由设置背景或图层时可使用在线画图。')],
     },
     en: {
       summary: 'Make a Pornhub-style text logo with a black background, white lettering and an orange block. Customize two text segments, choose horizontal or stacked layout and adjust font size and spacing. The canvas updates as you edit and downloads as PNG, making it useful for text memes and stylized titles.',
-      steps: ['Enter the two text segments.', 'Choose horizontal or vertical layout and adjust font size and spacing.', 'Check that the text fits the canvas and download the PNG logo.'],
-      tips: ['Reduce font size for longer text so it stays inside the fixed canvas.', 'The export has a black background rather than transparency.', 'The palette stays black, white and orange. Use the drawing editor for more flexible layouts.'],
-      faqs: [faq('Can I stack the text vertically?', 'Yes. Choose vertical layout to place the white text above the orange block, then adjust the gap.'), faq('Can I download a transparent logo?', 'The current PNG export has a black background and no transparency option. Use the drawing editor when you need custom backgrounds or layers.')],
+      steps: ['Enter the two text segments.', 'Choose horizontal or vertical layout and adjust font size and spacing.', 'Check the preview and download the PNG logo.'],
+      tips: ['The canvas widens automatically for longer text, so nothing is cut off.', 'The export uses a black background by default; turn on transparent background for a transparent PNG logo.', 'The palette stays black, white and orange. Use the drawing editor for more flexible layouts.'],
+      faqs: [faq('Can I stack the text vertically?', 'Yes. Choose vertical layout to place the white text above the orange block, then adjust the gap.'), faq('Can I download a transparent logo?', 'Yes. Turn on transparent background and the PNG keeps only the lettering and the orange block. Use the drawing editor when you need custom backgrounds or layers.')],
     },
     ja: {
       summary: '黒背景、白い文字、オレンジのブロックを使った Pornhub 風の文字ロゴを作成します。2 つの文字列を入力し、横並び・縦並び、文字サイズ、間隔を調整できます。編集した内容をキャンバスで確認して PNG を保存でき、文字ミームやスタイル付きの見出しに使えます。',
-      steps: ['表示したい 2 つの文字列を入力します。', '横並びか縦並びを選び、文字サイズと間隔を調整します。', '文字がキャンバス内に収まることを確認し、PNG を保存します。'],
-      tips: ['長い文字列はサイズを小さくして、固定キャンバス内に収めます。', '出力は黒い背景付きで、透明背景ではありません。', '配色は黒・白・オレンジです。より自由なレイアウトにはオンライン描画を使えます。'],
-      faqs: [faq('文字を上下に並べられますか？', '縦並びを選ぶと、白い文字が上、オレンジのブロックが下になります。間隔も変更できます。'), faq('透明な背景で保存できますか？', '現在は黒背景付きの PNG を出力します。透明背景の選択肢はありません。背景やレイヤーを自由に設定するにはオンライン描画を使えます。')],
+      steps: ['表示したい 2 つの文字列を入力します。', '横並びか縦並びを選び、文字サイズと間隔を調整します。', 'プレビューを確認して PNG を保存します。'],
+      tips: ['長い文字列ではキャンバスが自動で広がり、文字は切れません。', '標準では黒い背景で出力します。透明な背景を選ぶと透過 PNG ロゴを保存できます。', '配色は黒・白・オレンジです。より自由なレイアウトにはオンライン描画を使えます。'],
+      faqs: [faq('文字を上下に並べられますか？', '縦並びを選ぶと、白い文字が上、オレンジのブロックが下になります。間隔も変更できます。'), faq('透明な背景で保存できますか？', 'できます。透明な背景を選ぶと、文字とオレンジのブロックだけの PNG を保存します。背景やレイヤーを自由に設定するにはオンライン描画を使えます。')],
     },
   },
   'video-thumbnail': {
@@ -268,13 +268,33 @@ const guideData = {
       faqs: [faq('MP4 ボタンが使えないのはなぜですか？', 'MP4 録画に対応したブラウザのコーデックが必要です。対応形式を検出し、非対応のものは無効になります。GIF または利用できる WebM を選んでください。'), faq('写真の 1 つの物だけを動かせますか？', 'その物の範囲だけを塗り、背景を避けて動きの強さと速度を調整します。選択境界や周辺の内容によって見え方が変わります。')],
     },
   },
+  screenshot: {
+    zh: {
+      summary: '在浏览器里截取屏幕，或把滚动中的网页自动拼接成一张长截图。即时截图可选择标签页、窗口或整个屏幕；长截图会在你向下滚动时比对画面，只追加新出现的内容，吸顶导航和固定页脚只保留一次。画面在本机处理，不上传服务器，导出前可框选要保留的部分。',
+      steps: ['选择即时截图，或选择网页长截图后挑选要截取的标签页。', '长截图时从页面顶部开始匀速向下滚动，完成后回到工具页点击完成拼接。', '默认导出整张图片，也可以拖动选区边框只保留需要的部分，再下载 PNG。'],
+      tips: ['滚动过快时工具会提示往回滚动一点，对上画面后会继续拼接。', '长截图使用标签页原始分辨率，最高约 32000 像素；超过后自动结束。', '需要电脑版 Chrome、Edge 或 Firefox；手机浏览器不支持屏幕捕获。Chrome 和 Edge 在后台取帧更稳定。'],
+      faqs: [faq('会把网页内容上传到服务器吗？', '不会。截图和拼接都在你的浏览器中完成，网站没有截图接口，也不会保存画面。'), faq('长截图里为什么能看到滚动条？', '截取的是标签页的真实画面，网页自己的滚动条也在其中。导出前把选区右边缘向左拖一点即可去掉。')],
+    },
+    en: {
+      summary: 'Capture your screen in the browser, or stitch a scrolling webpage into one long screenshot. Screen capture lets you pick a tab, window or whole screen. Full-page capture compares frames as you scroll and appends only new content, keeping sticky headers and fixed footers once. Frames are processed on your device, and you can select the area to keep before exporting.',
+      steps: ['Choose screen capture, or choose full-page capture and pick the tab to capture.', 'For a long capture, start at the top and scroll down steadily, then return to the tool and select Finish.', 'The whole image is selected by default. Drag the selection edges to keep only part of it, then download PNG.'],
+      tips: ['If you scroll too fast, the tool asks you to scroll back a little and continues once the frames line up.', 'Long captures keep the tab\u2019s native resolution, up to about 32,000 pixels tall, and finish automatically at that limit.', 'Use desktop Chrome, Edge or Firefox. Mobile browsers cannot capture the screen. Chrome and Edge capture more reliably in the background.'],
+      faqs: [faq('Is the page uploaded to a server?', 'No. Capturing and stitching happen in your browser. There is no screenshot server, and frames are not stored.'), faq('Why is the scrollbar visible in a long screenshot?', 'The tool captures what the tab actually shows, including the page\u2019s own scrollbar. Drag the right edge of the selection inward before exporting to remove it.')],
+    },
+    ja: {
+      summary: 'ブラウザで画面を撮影したり、スクロールしたページを 1 枚の縦長スクリーンショットにつなげたりできます。画面の撮影ではタブ、ウィンドウ、画面全体を選べます。縦長の撮影ではスクロール中のフレームを比較して新しい部分だけを追加し、固定ヘッダーやフッターは 1 回だけ残します。画面は端末内で処理され、書き出す前に残す範囲を選べます。',
+      steps: ['画面の撮影を選ぶか、ページ全体の撮影を選んで撮影するタブを指定します。', '縦長の撮影ではページの一番上から一定の速さで下へスクロールし、ツールに戻って完了を選びます。', '初期状態では画像全体が選択されています。選択範囲の端をドラッグして必要な部分だけにし、PNG を保存します。'],
+      tips: ['速くスクロールしすぎると少し戻すよう案内が出て、位置が合うと続きをつなげます。', '縦長の撮影はタブ本来の解像度で、高さ約 32,000 ピクセルまで記録し、上限に達すると自動で完了します。', 'パソコン版の Chrome、Edge、Firefox を使ってください。スマートフォンのブラウザは画面を取得できません。Chrome と Edge はバックグラウンドでも安定して取得できます。'],
+      faqs: [faq('ページの内容はサーバーに送信されますか？', 'いいえ。撮影も結合もブラウザ内で行われ、撮影用のサーバーはなく、画面も保存されません。'), faq('縦長のスクリーンショットにスクロールバーが写るのはなぜですか？', 'タブに実際に表示されている画面をそのまま取得するため、ページのスクロールバーも含まれます。書き出す前に選択範囲の右端を内側へドラッグすると除けます。')],
+    },
+  },
 };
 
 const relatedTools = {
   'image-enhancer': ['image-compress', 'online-drawing', 'ai-watermark-remover'],
   'online-drawing': ['image-compress', 'watermark-adder', 'wiggle-studio'],
   'image-compress': ['image-enhancer', 'online-drawing', 'meme-slicer'],
-  'image-ocr': ['online-drawing', 'subtitle-generator'],
+  'image-ocr': ['screenshot', 'online-drawing', 'subtitle-generator'],
   'watermark-adder': ['online-drawing', 'image-compress'],
   'ai-watermark-remover': ['image-enhancer', 'online-drawing', 'image-compress'],
   'subtitle-generator': ['image-ocr', 'online-drawing', 'image-compress'],
@@ -284,6 +304,7 @@ const relatedTools = {
   'pornhub-style': ['online-drawing', 'watermark-adder'],
   'video-thumbnail': ['online-drawing', 'image-compress', 'image-ocr'],
   'wiggle-studio': ['online-drawing', 'image-compress'],
+  screenshot: ['image-ocr', 'online-drawing', 'image-compress'],
 };
 
 export const toolGuides = Object.fromEntries(Object.entries(guideData).map(([slug, locales]) => [

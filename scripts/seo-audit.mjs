@@ -50,6 +50,15 @@ for (const [file, document] of documents) {
     report.redirects.push({ path: pathname, destination });
     continue;
   }
+  if (file === '404.html') {
+    // Not-found page: never indexed, no canonical of its own, links every language's tools.
+    check(attr(meta('robots'), 'content') === 'noindex, follow', '/404.html: must be noindex');
+    check(!tags('link').some(node => ['canonical', 'alternate'].includes(attr(node, 'rel'))), '/404.html: must not declare canonical or language alternates');
+    const hrefs = new Set(tags('a').map(node => attr(node, 'href')));
+    for (const lang of locales) for (const tool of publicTools) check(hrefs.has(localizedPath(lang, `tools/${tool.slug}`)), `/404.html: missing link to ${lang}/${tool.slug}`);
+    for (const href of hrefs) if (href?.startsWith('/')) check(exists.has(fileFor(href.split('#')[0])), `/404.html: broken link ${href}`);
+    continue;
+  }
   const canonical = attr(tags('link').find(node => attr(node, 'rel') === 'canonical'), 'href');
   const title = text(tags('title')[0]).trim(), description = attr(meta('description'), 'content');
   const robots = attr(meta('robots'), 'content') || '';

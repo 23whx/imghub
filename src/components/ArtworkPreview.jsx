@@ -1,4 +1,3 @@
-import React from 'react';
 import { getStudioCopy } from '../i18n/studio.js';
 import { mbtiTypes, mbtiCharacterSrc } from '../data/mbti.js';
 
@@ -20,6 +19,7 @@ export default function ArtworkPreview({ slug, lang = 'en' }) {
   }
   if (slug === 'pornhub-style') return <div className="artwork art-logo" aria-hidden="true"><span>Image<b>hub</b></span></div>;
   if (slug === 'image-ocr') return <div className="artwork art-ocr" aria-hidden="true"><div className="ocr-paper"><span>IMAGINATION</span><p>Every image<br />tells a story.</p><small>Image → Text</small></div><div className="ocr-scan" /></div>;
+  if (slug === 'screenshot') return <div className="artwork art-screenshot" aria-hidden="true"><div className="art-shot-page">{Array.from({ length: 9 }, (_, i) => <span key={i} className={i % 4 === 2 ? 'art-shot-block' : ''} />)}</div><span className="art-shot-tag">SCROLL · STITCH</span></div>;
   if (slug === 'wiggle-studio') return <div className="artwork art-motion art-pudding"><picture><source media="(prefers-reduced-motion: reduce)" srcSet="/assets/wiggle/pudding.webp" /><img src="/assets/wiggle/pudding-soft.webp" alt={lang === 'zh' ? '不停柔软晃动的焦糖布丁' : lang === 'ja' ? 'ぷるぷる揺れるキャラメルプリン' : 'A softly jiggling caramel pudding'} loading="lazy" width="384" height="384" /></picture><span className="art-pudding-label" aria-hidden="true">MADE TO MOVE</span></div>;
   return <div className={'artwork art-photo art-' + slug}>
     <img src="/assets/studio/subtitle.webp" alt="" loading="lazy" width="900" height="600" />

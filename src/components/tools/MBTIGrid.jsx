@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { Upload, Download, X, Check, Move, ZoomIn } from 'lucide-react';
 import { language, syncLanguageFromLocale } from '../../stores/globalStore';
@@ -209,7 +209,7 @@ const MBTIGridContent = ({ lang: langProp }) => {
     }));
   };
 
-  const drawCanvas = () => {
+  const drawCanvas = (preview = true) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -290,11 +290,14 @@ const MBTIGridContent = ({ lang: langProp }) => {
         ctx.fillStyle = '#eee8dd';
         ctx.fillRect(x + padding, y + padding, cellWidth - padding * 2, cellHeight - 50 - padding);
         
-        ctx.fillStyle = '#75685b';
-        ctx.font = '18px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(t.clickToUpload, x + cellWidth / 2, y + (cellHeight - 50) / 2);
+        // 提示文字只在预览中显示，不写入导出图片
+        if (preview) {
+          ctx.fillStyle = '#75685b';
+          ctx.font = '18px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(t.clickToUpload, x + cellWidth / 2, y + (cellHeight - 50) / 2);
+        }
       }
 
       // 绘制MBTI标签
@@ -315,6 +318,8 @@ const MBTIGridContent = ({ lang: langProp }) => {
     if (!canvas) return;
 
     setError(null);
+    // toBlob 会同步截取当前画布，截取后立即恢复预览
+    drawCanvas(false);
     canvas.toBlob(blob => {
       if (!blob || blob.type !== 'image/webp') {
         setError('exportError');
@@ -327,6 +332,7 @@ const MBTIGridContent = ({ lang: langProp }) => {
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }, 'image/webp', 0.95);
+    drawCanvas();
   };
 
   const getGridLayout = () => {

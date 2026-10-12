@@ -18,6 +18,8 @@ export interface Props {
   alternates?: Array<{ lang: string; hreflang: string; href: string }>;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[] | null;
   indexable?: boolean;
+  // false for pages without a real URL of their own (the 404 page)
+  canonical?: boolean;
 }
 
 const {
@@ -31,6 +33,7 @@ const {
   alternates = [],
   jsonLd = null,
   indexable = true,
+  canonical = true,
 } = Astro.props;
 
 const locale = isValidLocale(lang) ? lang : defaultLocale;
@@ -68,7 +71,7 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
     <meta name="author" content="Rollkey" />
     {googleSiteVerification && <meta name="google-site-verification" content={googleSiteVerification} />}
     <meta name="robots" content={indexable ? 'index, follow, max-image-preview:large' : 'noindex, follow'} />
-    <link rel="canonical" href={canonicalURL} />
+    {canonical && <link rel="canonical" href={canonicalURL} />}
     {pathWithoutLang === '' && <link rel="preload" as="image" href="/assets/studio/gallery-hero-alps.webp" media="(min-width: 701px)" />}
     {pathWithoutLang === '' && <link rel="preload" as="image" href="/assets/studio/gallery-hero-alps-mobile.webp" media="(max-width: 700px)" />}
 
@@ -101,7 +104,7 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content={type} />
-    <meta property="og:url" content={canonicalURL} />
+    {canonical && <meta property="og:url" content={canonicalURL} />}
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
@@ -115,7 +118,7 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:url" content={canonicalURL} />
+    {canonical && <meta name="twitter:url" content={canonicalURL} />}
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImage} />

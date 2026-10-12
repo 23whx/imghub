@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Upload,
   Download,
@@ -25,6 +25,9 @@ const copy = {
     fontSize: '文字大小',
     fontColor: '文字颜色',
     uploadMark: '上传水印图片',
+    replaceBase: '更换原图',
+    chooseMark: '选择水印图片',
+    replaceMark: '更换水印图片',
     markHint: '建议透明底 PNG',
     size: '水印大小',
     opacity: '透明度',
@@ -39,6 +42,7 @@ const copy = {
     tile: '平铺铺满',
     tileGap: '平铺间距',
     download: '下载图片',
+    format: '导出格式',
     preview: '实时预览',
     needImage: '请先上传原图',
     needMark: '请输入文字或上传水印图',
@@ -56,6 +60,9 @@ const copy = {
     fontSize: 'Font size',
     fontColor: 'Text color',
     uploadMark: 'Upload watermark image',
+    replaceBase: 'Replace image',
+    chooseMark: 'Choose watermark image',
+    replaceMark: 'Replace watermark image',
     markHint: 'PNG with transparency recommended',
     size: 'Size',
     opacity: 'Opacity',
@@ -70,6 +77,7 @@ const copy = {
     tile: 'Tile across image',
     tileGap: 'Tile spacing',
     download: 'Download',
+    format: 'Export format',
     preview: 'Live preview',
     needImage: 'Upload a base image first',
     needMark: 'Enter text or upload a watermark image',
@@ -87,6 +95,9 @@ const copy = {
     fontSize: '文字サイズ',
     fontColor: '文字色',
     uploadMark: '透かし画像',
+    replaceBase: '画像を変更',
+    chooseMark: '透かし画像を選択',
+    replaceMark: '透かし画像を変更',
     markHint: '透明PNG推奨',
     size: 'サイズ',
     opacity: '不透明度',
@@ -101,11 +112,14 @@ const copy = {
     tile: 'タイル敷き詰め',
     tileGap: '間隔',
     download: 'ダウンロード',
+    format: '出力形式',
     preview: 'プレビュー',
     needImage: '先に画像をアップロードしてください',
     needMark: '文字を入れるか透かし画像を選んでください',
   },
 };
+
+const EXPORT_FORMATS = { 'image/png': 'png', 'image/jpeg': 'jpg', 'image/webp': 'webp' };
 
 function loadImageFromFile(file) {
   return new Promise((resolve, reject) => {
@@ -132,6 +146,8 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
 
   const [baseImage, setBaseImage] = useState(null);
   const [markImage, setMarkImage] = useState(null);
+  // loadImageFromFile 会释放自己的 URL，缩略图需要单独的 URL
+  const [markPreview, setMarkPreview] = useState('');
   const [mode, setMode] = useState('text'); // text | image
   const [text, setText] = useState(langProp === 'en' ? 'Watermark' : langProp === 'ja' ? '透かし' : '水印');
   const [fontSize, setFontSize] = useState(48);
@@ -144,6 +160,7 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
   const [tile, setTile] = useState(false);
   const [tileGap, setTileGap] = useState(40); // percent of mark size
   const [status, setStatus] = useState('');
+  const [format, setFormat] = useState('image/png');
 
   const canvasRef = useRef(null);
   const previewWrapRef = useRef(null);
@@ -241,12 +258,18 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
     draw();
   }, [draw]);
 
+  const loadBase = async (file) => {
+    const img = await loadImageFromFile(file);
+    setBaseImage(img);
+    // 默认沿用原图格式，避免 JPEG / WebP 加水印后变成很大的 PNG
+    setFormat(EXPORT_FORMATS[file.type] ? file.type : 'image/png');
+  };
+
   const onBaseUpload = async (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
     try {
-      const img = await loadImageFromFile(file);
-      setBaseImage(img);
+      await loadBase(file);
       setStatus('');
     } catch {
       setStatus(t.needImage);
@@ -259,6 +282,10 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
     try {
       const img = await loadImageFromFile(file);
       setMarkImage(img);
+      setMarkPreview((previous) => {
+        if (previous) URL.revokeObjectURL(previous);
+        return URL.createObjectURL(file);
+      });
       setMode('image');
       setStatus('');
     } catch {
@@ -280,12 +307,28 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
       return;
     }
     draw();
-    const canvas = canvasRef.current;
+    let canvas = canvasRef.current;
     if (!canvas) return;
-    const link = document.createElement('a');
-    link.download = 'watermarked.png';
-    link.href = canvas.toDataURL('image/png');
-    link.click();
+    if (format === 'image/jpeg') {
+      // JPEG 没有透明通道，透明区域铺白底，否则会变成黑色
+      const flat = document.createElement('canvas');
+      flat.width = canvas.width;
+      flat.height = canvas.height;
+      const ctx = flat.getContext('2d');
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, flat.width, flat.height);
+      ctx.drawImage(canvas, 0, 0);
+      canvas = flat;
+    }
+    canvas.toBlob((blob) => {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.download = `watermarked.${EXPORT_FORMATS[format]}`;
+      link.href = url;
+      link.click();
+      setTimeout(() => URL.revokeObjectURL(url), 10000);
+    }, format, 0.92);
   };
 
   const anglePresets = [
@@ -310,7 +353,7 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
                 const file = e.dataTransfer.files?.[0];
                 if (!file) return;
                 try {
-                  setBaseImage(await loadImageFromFile(file));
+                  await loadBase(file);
                 } catch {
                   /* ignore */
                 }
@@ -363,14 +406,14 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
             </div>
 
             {baseImage && (
-              <label className="block text-sm">
+              <label className="block text-sm rounded-xl focus-within:ring-2 focus-within:ring-black/30 dark:focus-within:ring-white/30">
                 <span className="font-medium text-neutral-700 dark:text-neutral-300">{t.uploadBase}</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={onBaseUpload}
-                  className="mt-1 block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-black/5 dark:file:bg-white/10 file:text-neutral-700 dark:file:text-neutral-300"
-                />
+                {/* 原生文件框的文字跟随浏览器语言且会显示“未选择文件”，改用自定义按钮 */}
+                <span className="mt-1 flex items-center justify-center gap-2 w-full rounded-xl border border-dashed border-black/20 dark:border-white/20 px-3 py-2.5 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 font-medium text-neutral-800 dark:text-neutral-200">
+                  <Upload className="w-4 h-4" />
+                  {t.replaceBase}
+                </span>
+                <input type="file" accept="image/*" onChange={onBaseUpload} className="sr-only" />
               </label>
             )}
 
@@ -414,20 +457,19 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
               </>
             ) : (
               <>
-                <label className="block text-sm">
+                <label className="block text-sm rounded-xl focus-within:ring-2 focus-within:ring-black/30 dark:focus-within:ring-white/30">
                   <span className="font-medium text-neutral-700 dark:text-neutral-300">{t.uploadMark}</span>
                   <span className="block text-xs text-neutral-500 dark:text-neutral-400 mb-1">{t.markHint}</span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={onMarkUpload}
-                    className="block w-full text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-black/5 dark:file:bg-white/10 file:text-neutral-700 dark:file:text-neutral-300"
-                  />
+                  <span className="mt-1 flex items-center justify-center gap-2 w-full rounded-xl border border-dashed border-black/20 dark:border-white/20 px-3 py-2.5 cursor-pointer hover:bg-black/5 dark:hover:bg-white/5 font-medium text-neutral-800 dark:text-neutral-200">
+                    <ImageIcon className="w-4 h-4" />
+                    {markImage ? t.replaceMark : t.chooseMark}
+                  </span>
+                  <input type="file" accept="image/*" onChange={onMarkUpload} className="sr-only" />
                 </label>
                 {markImage && (
                   <div className="flex items-center gap-3 p-2 bg-black/5 dark:bg-white/5 rounded-xl">
                     <img
-                      src={markImage.src}
+                      src={markPreview}
                       alt=""
                       className="h-12 w-12 object-contain rounded bg-white border border-black/10"
                     />
@@ -573,6 +615,19 @@ const WatermarkAdder = ({ lang: langProp = 'zh' }) => {
                 />
               </label>
             )}
+
+            <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300">
+              <span>{t.format}</span>
+              <select
+                value={format}
+                onChange={(e) => setFormat(e.target.value)}
+                className="mt-1 w-full rounded-xl border border-black/15 dark:border-white/15 px-3 py-2.5 focus:ring-2 focus:ring-black/30 dark:focus:ring-white/30 outline-none bg-white dark:bg-neutral-900"
+              >
+                {Object.entries(EXPORT_FORMATS).map(([type, ext]) => (
+                  <option key={type} value={type}>{ext.toUpperCase()}</option>
+                ))}
+              </select>
+            </label>
 
             <button
               type="button"

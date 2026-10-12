@@ -2,7 +2,7 @@
    Layers: canvas 0, sticky navigation 50, menu 55, consent 60, dialogs 70. */
 :root {
   --page: #f4f0e8; --surface: #fffdf8; --surface-soft: #eee8dd;
-  --ink: #2c251e; --muted: #75685b; --faint: #867665;
+  --ink: #2c251e; --muted: #6e6154; --faint: #75685b;
   --line: #d5cbbb; --accent: #765323; --accent-fill: #dcc08b;
   --accent-ink: #261c0e; --display: 'Cormorant Garamond', 'Noto Serif SC', 'Noto Serif JP', Georgia, 'Songti SC', SimSun, serif;
   --control-radius: 6px;
@@ -138,6 +138,12 @@ html[lang='en'] .hero-content h1 { font-size: clamp(52px, 5.4vw, 82px); max-widt
 .art-compress-line span:first-child { position: absolute; right: 100%; }
 .art-slice-grid { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); }
 .art-slice-grid span { border: 1px solid rgb(255 255 255 / .65); }
+.art-screenshot { display: grid; place-items: center; overflow: hidden; background: #2f3a3d; }
+.art-shot-page { display: grid; gap: 7px; width: 46%; padding: 14px 12px; background: #f1ede4; transform: rotate(-4deg) translate(-14%, 12%); box-shadow: 0 0 0 3px #f1ede4, 0 -18px 0 -6px #c9c2b4, 0 18px 0 -6px #c9c2b4; }
+.art-shot-page span { height: 6px; background: #8b8274; }
+.art-shot-page span:nth-child(3n) { width: 70%; }
+.art-shot-page .art-shot-block { height: 24px; background: #9fb7a6; }
+.art-shot-tag { position: absolute; z-index: 1; right: 10px; bottom: 10px; padding: 4px 7px; background: #2f3a3d; color: #f1ede4; font-size: 9px; letter-spacing: .2em; }
 .art-play { position: absolute; inset: 0; display: grid; place-items: center; color: #fff; font-size: 34px; text-shadow: 0 0 25px #000; }
 .art-aiwm { position:relative;background:#312920;overflow:hidden }
 .art-aiwm>img,.art-aiwm-clean img { width:100%;height:100%;object-fit:cover;object-position:right bottom }

@@ -34,7 +34,7 @@ const t = termsPage[lang as keyof typeof termsPage] || termsPage.en;
       )}
       <div class="reading-body"><TermsBody lang={lang} /></div>
       <div class="reading-acknowledgment mt-8 pt-6 border-t border-black/10 dark:border-white/10">
-        <p class="text-center text-gray-600">{lang === 'zh' ? '感谢您使用 ImgHub！' : lang === 'ja' ? 'ImgHubをご利用いただき、ありがとうございます。' : 'Thank you for using ImgHub!'}</p>
+        <p class="text-center text-gray-600 dark:text-gray-400">{lang === 'zh' ? '感谢您使用 ImgHub！' : lang === 'ja' ? 'ImgHubをご利用いただき、ありがとうございます。' : 'Thank you for using ImgHub!'}</p>
       </div>
     </div>
   </div>

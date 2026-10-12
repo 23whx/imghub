@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle, useState } from 'react';
 
 const CanvasPreview = forwardRef(({ 
   selectedHero,
@@ -11,15 +11,14 @@ const CanvasPreview = forwardRef(({
   verticalPosition,
   fontFamily,
   textColor,
-  isDarkMode,
   language,
 }, ref) => {
   const canvasRef = useRef(null);
   const imageRef = useRef(null);
   const [canvasSize, setCanvasSize] = useState({ width: 800, height: 600 });
-  const [aspectRatio, setAspectRatio] = useState(4/3);
   const isDrawingRef = useRef(false);
   const PREVIEW_FIXED_WIDTH = 512; // 预览固定显示宽度（px）
+  const TEXT_PADDING = 24; // 字幕距画布左右边缘的留白（px）
 
 
   useImperativeHandle(ref, () => canvasRef.current);
@@ -41,19 +40,94 @@ const CanvasPreview = forwardRef(({
     return null;
   };
 
+  // 解析段落：单语每行一段 [line]，双语每行一对 [top, bottom]
+  const parseParagraphs = () => {
+    if (subtitleType !== 'mono' && subtitle.includes('---BILINGUAL_SEPARATOR---')) {
+      const [topSubtitleStr, bottomSubtitleStr] = subtitle.split('---BILINGUAL_SEPARATOR---');
+      const topLines = topSubtitleStr.split('\n').filter(line => line.trim());
+      const bottomLines = bottomSubtitleStr.split('\n').filter(line => line.trim());
+      const maxLines = Math.max(topLines.length, bottomLines.length);
+      const paragraphs = [];
+      for (let i = 0; i < maxLines; i++) {
+        const topLine = topLines[i] || '';
+        const bottomLine = bottomLines[i] || '';
+        if (topLine.trim() || bottomLine.trim()) {
+          paragraphs.push([topLine, bottomLine]);
+        }
+      }
+      return paragraphs;
+    }
+    return subtitle.split('\n').filter(line => line.trim()).map(line => [line]);
+  };
+
+  // 按可用宽度自动换行：中日文逐字断行，英文按单词断行，超长单词再按字符断开
+  const wrapText = (ctx, text, maxWidth) => {
+    const tokens = text.match(/[⺀-鿿豈-﫿＀-￯]|[^\s⺀-鿿豈-﫿＀-￯]+|\s+/g) || [];
+    const lines = [];
+    let line = '';
+    const push = () => {
+      if (line.trim()) lines.push(line.trim());
+      line = '';
+    };
+    for (const token of tokens) {
+      if (ctx.measureText(line + token).width <= maxWidth) {
+        line += token;
+      } else if (!token.trim()) {
+        push();
+      } else {
+        push();
+        if (ctx.measureText(token).width <= maxWidth) {
+          line = token;
+        } else {
+          for (const char of token) {
+            if (line && ctx.measureText(line + char).width > maxWidth) push();
+            line += char;
+          }
+        }
+      }
+    }
+    push();
+    return lines;
+  };
+
+  // 段落排版：换行后的各行、行距和总高度（双语时字号略小、上下行更紧凑）
+  const layoutParagraphs = (ctx, paragraphs, areaWidth) => {
+    const isBilingual = Array.isArray(paragraphs[0]) && paragraphs[0].length === 2;
+    const size = isBilingual ? Math.min(Math.max(14, Math.round(fontSize * 0.85)), 80) : Math.min(fontSize, 80);
+    ctx.font = `${size}px ${getFontFamilyString(fontFamily)}`;
+    const maxWidth = Math.max(size, areaWidth - TEXT_PADDING * 2);
+    const lines = paragraphs.flat().flatMap(text => wrapText(ctx, text, maxWidth));
+    const step = isBilingual ? size + Math.max(2, Math.round(size * 0.2)) : size * lineHeight;
+    const height = lines.length ? (lines.length - 1) * step + (isBilingual ? size : step) : 0;
+    return { size, lines, step, height };
+  };
+
+  // 计算画布尺寸：主图宽度最多 800，第二段起每段在下方拼接一条（高度随换行行数增加）
+  const measureCanvas = (img) => {
+    const maxWidth = 800;
+    const width = img.width <= maxWidth ? img.width : maxWidth;
+    const baseHeight = img.width <= maxWidth ? img.height : Math.round(img.height * (maxWidth / img.width));
+    const ctx = canvasRef.current.getContext('2d');
+    const segmentHeights = parseParagraphs().slice(1).map(paragraph => {
+      const { height } = layoutParagraphs(ctx, [paragraph], width);
+      return Math.max(height + 24, Math.min(160, Math.floor(baseHeight * 0.18)));
+    });
+    return { width, baseHeight, segmentHeights, height: baseHeight + segmentHeights.reduce((sum, h) => sum + h, 0) };
+  };
+
   // 绘制Canvas内容
   const drawCanvas = () => {
     if (isDrawingRef.current) return; // 防止重复绘制
-    
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     isDrawingRef.current = true;
-    
+
     const ctx = canvas.getContext('2d');
     const canvasWidth = canvasSize.width;
     const canvasHeight = canvasSize.height;
-    
+
     // 设置Canvas尺寸
     canvas.width = canvasWidth;
     canvas.height = canvasHeight;
@@ -62,134 +136,34 @@ const CanvasPreview = forwardRef(({
     ctx.fillStyle = '#f3f4f6';
     ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
+    // 根据图片和台词段落调整Canvas尺寸后绘制
+    const layoutAndDraw = (img, delay) => {
+      const size = measureCanvas(img);
+      setCanvasSize({ width: size.width, height: size.height });
+      // 延迟绘制避免状态更新冲突
+      setTimeout(() => {
+        const canvas = canvasRef.current;
+        if (canvas) {
+          drawImageAndText(canvas.getContext('2d'), img);
+        }
+      }, delay);
+    };
+
     // 绘制背景图片
     const imageUrl = getCurrentImageUrl();
     if (imageUrl) {
-      if (imageRef.current && imageRef.current.src === imageUrl) {
+      // img.src 会被解析为绝对地址，需比较原始属性值才能命中缓存
+      if (imageRef.current && imageRef.current.getAttribute('src') === imageUrl) {
         // 复用已加载图片，但仍需按当前字幕和自适应裁切重新计算尺寸
-        const img = imageRef.current;
-        const maxWidth = 800;
-        const imgWidth = img.width;
-        const imgHeight = img.height;
-        let baseCanvasWidth, baseCanvasHeight;
-        if (imgWidth <= maxWidth) {
-          baseCanvasWidth = imgWidth;
-          baseCanvasHeight = imgHeight;
-        } else {
-          const scale = maxWidth / imgWidth;
-          baseCanvasWidth = maxWidth;
-          baseCanvasHeight = Math.round(imgHeight * scale);
-        }
-
-        // 解析段落（与实际绘制逻辑一致）
-        let paragraphs;
-        if (subtitleType !== 'mono' && subtitle.includes('---BILINGUAL_SEPARATOR---')) {
-          const [topSubtitleStr, bottomSubtitleStr] = subtitle.split('---BILINGUAL_SEPARATOR---');
-          const topLines = topSubtitleStr.split('\n').filter(line => line.trim());
-          const bottomLines = bottomSubtitleStr.split('\n').filter(line => line.trim());
-          const maxLines = Math.max(topLines.length, bottomLines.length);
-          paragraphs = [];
-          for (let i = 0; i < maxLines; i++) {
-            const topLine = topLines[i] || '';
-            const bottomLine = bottomLines[i] || '';
-            if (topLine.trim() || bottomLine.trim()) {
-              paragraphs.push([topLine, bottomLine]);
-            }
-          }
-        } else {
-          const subtitleLines = subtitle.split('\n').filter(line => line.trim());
-          paragraphs = subtitleLines.map(line => [line]);
-        }
-
-        // 计算每个段落的高度（与实际绘制一致）
-        const isBilingualCalc = Array.isArray(paragraphs[0]) && paragraphs[0].length === 2;
-        const subtitleFontSizeLocal = Math.min(fontSize, 80);
-        const adjustedFontSize = isBilingualCalc ? Math.max(14, Math.round(subtitleFontSizeLocal * 0.85)) : subtitleFontSizeLocal;
-        const normalLineHeightPx = adjustedFontSize * lineHeight;
-        const pairGapPx = Math.max(2, Math.round(adjustedFontSize * 0.2));
-        const perBlockHeight = isBilingualCalc ? (adjustedFontSize * 2 + pairGapPx) : normalLineHeightPx;
-        const extraSegmentHeight = Math.max(perBlockHeight + 24, Math.min(160, Math.floor(baseCanvasHeight * 0.18)));
-        const additionalSegments = Math.max(0, paragraphs.length - 1);
-        const finalCanvasHeight = baseCanvasHeight + (additionalSegments * extraSegmentHeight);
-        setCanvasSize({ width: baseCanvasWidth, height: finalCanvasHeight });
-        setAspectRatio(baseCanvasWidth / finalCanvasHeight);
-        setTimeout(() => {
-          const canvas = canvasRef.current;
-          if (canvas) {
-            const ctx2 = canvas.getContext('2d');
-            drawImageAndText(ctx2, img, baseCanvasWidth, finalCanvasHeight);
-          }
-        }, 10);
+        layoutAndDraw(imageRef.current, 10);
       } else {
         const img = new Image();
         img.crossOrigin = 'anonymous';
         img.onload = () => {
           imageRef.current = img;
-          
-          // 根据图片和台词段落数量动态调整Canvas尺寸
-          const maxWidth = 800; // 最大宽度限制
-          const imgWidth = img.width;
-          const imgHeight = img.height;
-          
-          let baseCanvasWidth, baseCanvasHeight;
-          
-          // 计算基础图片在Canvas中的尺寸
-          if (imgWidth <= maxWidth) {
-            baseCanvasWidth = imgWidth;
-            baseCanvasHeight = imgHeight;
-          } else {
-            const scale = maxWidth / imgWidth;
-            baseCanvasWidth = maxWidth;
-            baseCanvasHeight = Math.round(imgHeight * scale);
-          }
-          
-          // 解析段落（与实际绘制逻辑一致）
-          let paragraphs;
-          if (subtitleType !== 'mono' && subtitle.includes('---BILINGUAL_SEPARATOR---')) {
-            const [topSubtitleStr, bottomSubtitleStr] = subtitle.split('---BILINGUAL_SEPARATOR---');
-            const topLines = topSubtitleStr.split('\n').filter(line => line.trim());
-            const bottomLines = bottomSubtitleStr.split('\n').filter(line => line.trim());
-            const maxLines = Math.max(topLines.length, bottomLines.length);
-            paragraphs = [];
-            for (let i = 0; i < maxLines; i++) {
-              const topLine = topLines[i] || '';
-              const bottomLine = bottomLines[i] || '';
-              if (topLine.trim() || bottomLine.trim()) {
-                paragraphs.push([topLine, bottomLine]);
-              }
-            }
-          } else {
-            const subtitleLines = subtitle.split('\n').filter(line => line.trim());
-            paragraphs = subtitleLines.map(line => [line]);
-          }
-
-          // 计算每个段落的高度（与实际绘制一致）
-          const isBilingualCalc = Array.isArray(paragraphs[0]) && paragraphs[0].length === 2;
-          const subtitleFontSizeLocal = Math.min(fontSize, 80);
-          const adjustedFontSize = isBilingualCalc ? Math.max(14, Math.round(subtitleFontSizeLocal * 0.85)) : subtitleFontSizeLocal;
-          const normalLineHeightPx = adjustedFontSize * lineHeight;
-          const pairGapPx = Math.max(2, Math.round(adjustedFontSize * 0.2));
-          const perBlockHeight = isBilingualCalc ? (adjustedFontSize * 2 + pairGapPx) : normalLineHeightPx;
-          const extraSegmentHeight = Math.max(perBlockHeight + 24, Math.min(160, Math.floor(baseCanvasHeight * 0.18)));
-          const additionalSegments = Math.max(0, paragraphs.length - 1);
-
-          // 计算最终Canvas尺寸
-          const finalCanvasHeight = baseCanvasHeight + (additionalSegments * extraSegmentHeight);
-
-          // 更新Canvas尺寸和宽高比
-          setCanvasSize({ width: baseCanvasWidth, height: finalCanvasHeight });
-          setAspectRatio(baseCanvasWidth / finalCanvasHeight);
-
-          // 延迟绘制避免状态更新冲突
-          setTimeout(() => {
-            const canvas = canvasRef.current;
-            if (canvas) {
-              const ctx = canvas.getContext('2d');
-              drawImageAndText(ctx, img, baseCanvasWidth, finalCanvasHeight);
-            }
-          }, 50);
+          layoutAndDraw(img, 50);
         };
-        img.onerror = (error) => {
+        img.onerror = () => {
           console.warn(`背景图片加载失败: ${imageUrl}`);
           // 图片加载失败时显示占位图
           drawPlaceholderAndText(ctx, canvasWidth, canvasHeight, `图片加载失败: ${selectedHero || '自定义图片'}`);
@@ -200,104 +174,52 @@ const CanvasPreview = forwardRef(({
       // 没有图片时使用默认尺寸，但避免在渲染过程中更新状态
       drawPlaceholderAndText(ctx, canvasWidth, canvasHeight);
     }
-    
+
     // 重置绘制标志
     isDrawingRef.current = false;
   };
 
   // 绘制图片和文字（电视截图拼接效果）
-  const drawImageAndText = (ctx, img, canvasWidth, canvasHeight) => {
+  const drawImageAndText = (ctx, img) => {
+    const { width: canvasWidth, height: canvasHeight, baseHeight, segmentHeights } = measureCanvas(img);
     // 确保画布实际像素尺寸与即将绘制的尺寸一致，避免浏览器拉伸导致的变形
     if (ctx.canvas.width !== canvasWidth || ctx.canvas.height !== canvasHeight) {
       ctx.canvas.width = canvasWidth;
       ctx.canvas.height = canvasHeight;
     }
 
-    // 计算台词段落（每1行为一段）
-    let paragraphs;
-    
-    // 仅当处于双语模式时，解析分隔符
-    if (subtitleType !== 'mono' && subtitle.includes('---BILINGUAL_SEPARATOR---')) {
-      const [topSubtitle, bottomSubtitle] = subtitle.split('---BILINGUAL_SEPARATOR---');
-      const topLines = topSubtitle.split('\n').filter(line => line.trim());
-      const bottomLines = bottomSubtitle.split('\n').filter(line => line.trim());
-      
-      // 双语模式：每行包含上下两个字幕
-      const maxLines = Math.max(topLines.length, bottomLines.length);
-      paragraphs = [];
-      for (let i = 0; i < maxLines; i++) {
-        const topLine = topLines[i] || '';
-        const bottomLine = bottomLines[i] || '';
-        if (topLine.trim() || bottomLine.trim()) {
-          paragraphs.push([topLine, bottomLine]);
-        }
-      }
-    } else {
-      // 单语模式：每行单独成段
-      const subtitleLines = subtitle.split('\n').filter(line => line.trim());
-      paragraphs = subtitleLines.map(line => [line]);
-    }
-    
-    // 计算基础图片尺寸，保持原始宽高比
-    const maxWidth = 800;
-    let baseWidth, baseHeight;
-    
-    if (img.width <= maxWidth) {
-      baseWidth = img.width;
-      baseHeight = img.height;
-    } else {
-      const scale = maxWidth / img.width;
-      baseWidth = maxWidth;
-      baseHeight = Math.round(img.height * scale);
-    }
-    
+    const paragraphs = parseParagraphs();
+
     // 绘制主图片 - 保持原始宽高比
     ctx.drawImage(img, 0, 0, canvasWidth, baseHeight);
-    
-    // 可选遮罩（关闭以避免条纹视觉干扰）
-    // ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
-    // ctx.fillRect(0, 0, canvasWidth, baseHeight);
-    
-    // 绘制第一段台词在主图片上（双语/单语都绘制）
-    const hasBilingualPairs = Array.isArray(paragraphs[0]) && paragraphs[0].length === 2;
+
+    // 绘制第一段台词在主图片上（双语/单语都绘制），位置由用户选择
     if (paragraphs.length > 0) {
-      drawParagraphSubtitle(ctx, [paragraphs[0]], canvasWidth, baseHeight, 0);
+      drawParagraphSubtitle(ctx, [paragraphs[0]], canvasWidth, baseHeight, 0, verticalPosition);
     }
-    
+
     // 为额外的段落绘制背景：从原图底部复制
-    // 段落高度基于模式和字体，确保一对上下字幕能完整容纳且间距更紧凑
-    const subtitleFontSizeLocal = Math.min(fontSize, 80);
-    const adjustedFontSize = hasBilingualPairs ? Math.max(14, Math.round(subtitleFontSizeLocal * 0.85)) : subtitleFontSizeLocal;
-    const normalLineHeightPx = adjustedFontSize * lineHeight;
-    const pairGapPx = Math.max(2, Math.round(adjustedFontSize * 0.2));
-    const perBlockHeight = hasBilingualPairs
-      ? (adjustedFontSize * 2 + pairGapPx)
-      : normalLineHeightPx;
-    const extraSegmentHeight = Math.max(perBlockHeight + 24, Math.min(160, Math.floor(baseHeight * 0.18)));
-    
-    const startIndex = 1; // 主图已绘制第一段，从第二段开始拼接
-    for (let i = startIndex; i < paragraphs.length; i++) {
-      const segmentY = baseHeight + (i - startIndex) * extraSegmentHeight;
-      
+    let segmentY = baseHeight;
+    for (let i = 1; i < paragraphs.length; i++) {
+      const segmentHeight = segmentHeights[i - 1];
+
       // 计算源区域（从原图底部复制）
-      const srcSliceHeight = Math.max(1, Math.round(extraSegmentHeight * (img.height / baseHeight)));
-      const srcY = Math.max(0, img.height - srcSliceHeight);
+      const srcSliceHeight = Math.min(img.height, Math.max(1, Math.round(segmentHeight * (img.height / baseHeight))));
+      const srcY = img.height - srcSliceHeight;
       ctx.drawImage(
         img,
         0, srcY, img.width, srcSliceHeight,
-        0, segmentY, canvasWidth, extraSegmentHeight
+        0, segmentY, canvasWidth, segmentHeight
       );
-      
-      // 轻微暗化渐变以提升可读性（顶部更深，向下过渡）
+
       // 轻微暗化提升可读性（不改变背景一致性）
       ctx.fillStyle = 'rgba(0,0,0,0.2)';
-      ctx.fillRect(0, segmentY, canvasWidth, extraSegmentHeight);
-      
+      ctx.fillRect(0, segmentY, canvasWidth, segmentHeight);
+
       // 绘制当前段落的台词（传入一对/一段）
-      drawParagraphSubtitle(ctx, [paragraphs[i]], canvasWidth, extraSegmentHeight, segmentY);
+      drawParagraphSubtitle(ctx, [paragraphs[i]], canvasWidth, segmentHeight, segmentY, 'bottom');
+      segmentY += segmentHeight;
     }
-    
-    // 水印功能已移除
   };
 
   // 绘制占位图和文字
@@ -337,35 +259,12 @@ const CanvasPreview = forwardRef(({
     
     // 在占位图中绘制字幕（如果有的话）
     if (subtitle.trim()) {
-      let paragraphs;
-      
-      // 仅当处于双语模式时解析分隔符
-      if (subtitleType !== 'mono' && subtitle.includes('---BILINGUAL_SEPARATOR---')) {
-        const [topSubtitle, bottomSubtitle] = subtitle.split('---BILINGUAL_SEPARATOR---');
-        const topLines = topSubtitle.split('\n').filter(line => line.trim());
-        const bottomLines = bottomSubtitle.split('\n').filter(line => line.trim());
-        
-        // 双语模式：每行包含上下两个字幕
-        const maxLines = Math.max(topLines.length, bottomLines.length);
-        paragraphs = [];
-        for (let i = 0; i < maxLines; i++) {
-          const topLine = topLines[i] || '';
-          const bottomLine = bottomLines[i] || '';
-          if (topLine.trim() || bottomLine.trim()) {
-            paragraphs.push([topLine, bottomLine]);
-          }
-        }
-      } else {
-        // 单语模式：每行单独成段
-        const lines = subtitle.split('\n').filter(line => line.trim());
-        paragraphs = lines.map(line => [line]);
-      }
-      
+      const paragraphs = parseParagraphs();
       if (paragraphs.length > 0) {
-        drawParagraphSubtitle(ctx, paragraphs, canvasWidth, canvasHeight, 0);
+        drawParagraphSubtitle(ctx, paragraphs, canvasWidth, canvasHeight, 0, verticalPosition);
       }
     }
-    
+
     // 水印功能已移除
   };
 
@@ -384,89 +283,37 @@ const CanvasPreview = forwardRef(({
     return fontMap[family] || fontMap['default'];
   };
 
-  // 绘制单个段落的字幕（支持双语）
-  const drawParagraphSubtitle = (ctx, paragraphLines, areaWidth, areaHeight, offsetY) => {
+  // 绘制段落字幕（支持双语、自动换行、对齐方式和垂直位置）
+  const drawParagraphSubtitle = (ctx, paragraphLines, areaWidth, areaHeight, offsetY, position = 'bottom') => {
     if (!paragraphLines || paragraphLines.length === 0) return;
 
-    // 检查是否为双语模式（元素为 [top, bottom] 的一对）
-    const isBilingual = Array.isArray(paragraphLines[0]) && paragraphLines[0].length === 2;
-    
-    // 设置字体样式
-    // 双语模式默认把字号调小一些，使两行更紧凑适配同一背景
-    const subtitleFontSize = isBilingual ? Math.min(Math.max(14, Math.round(fontSize * 0.85)), 80) : Math.min(fontSize, 80);
-    const fontFamilyString = getFontFamilyString(fontFamily);
-    ctx.font = `${subtitleFontSize}px ${fontFamilyString}`;
-    ctx.fillStyle = textColor;
+    const { size, lines, step, height } = layoutParagraphs(ctx, paragraphLines, areaWidth);
     ctx.strokeStyle = '#000000';
     ctx.lineWidth = 2;
-    ctx.textAlign = 'center';
+    ctx.textAlign = textAlign;
 
-    if (isBilingual) {
-      // 双语模式：每个段落仅包含一对上下字幕
-      const topBottomGap = Math.max(2, Math.round(subtitleFontSize * 0.2));
-      const singlePairHeight = subtitleFontSize + topBottomGap + subtitleFontSize; // 上行 + 间距 + 下行
-      const totalHeight = paragraphLines.length * singlePairHeight;
-      
-      // 字幕在当前区域底部
-      const startY = offsetY + areaHeight - totalHeight - 20 + subtitleFontSize;
-      const textX = areaWidth / 2;
+    // 基线位置：底部/顶部各留 20px，居中时整体垂直居中
+    const startY = position === 'top'
+      ? offsetY + 20 + size
+      : position === 'middle'
+        ? offsetY + (areaHeight - height) / 2 + size
+        : offsetY + areaHeight - height - 20 + size;
+    const textX = textAlign === 'left' ? TEXT_PADDING : textAlign === 'right' ? areaWidth - TEXT_PADDING : areaWidth / 2;
 
-      // 绘制每一对双语字幕
-      paragraphLines.forEach((linePair, pairIndex) => {
-        const [topLine, bottomLine] = linePair;
-        const pairY = startY + pairIndex * singlePairHeight;
-        
-        // 绘制上方字幕
-        if (topLine && topLine.trim()) {
-          const topY = pairY;
-          // 阴影
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-          ctx.fillText(topLine, textX + 3, topY + 3);
-          // 描边
-          ctx.strokeText(topLine, textX, topY);
-          // 文字
-          ctx.fillStyle = textColor;
-          ctx.fillText(topLine, textX, topY);
-        }
-        
-        // 绘制下方字幕
-        if (bottomLine && bottomLine.trim()) {
-          const bottomY = pairY + subtitleFontSize + topBottomGap;
-          // 阴影
-          ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-          ctx.fillText(bottomLine, textX + 3, bottomY + 3);
-          // 描边
-          ctx.strokeText(bottomLine, textX, bottomY);
-          // 文字
-          ctx.fillStyle = textColor;
-          ctx.fillText(bottomLine, textX, bottomY);
-        }
-      });
-    } else {
-      // 单语模式：原有逻辑
-      const lineHeightPx = subtitleFontSize * lineHeight;
-      const totalHeight = paragraphLines.length * lineHeightPx;
-      
-      // 字幕在当前区域底部
-      const startY = offsetY + areaHeight - totalHeight - 20 + subtitleFontSize;
-      const textX = areaWidth / 2;
+    lines.forEach((line, index) => {
+      const y = startY + index * step;
 
-      // 绘制每一行文字
-      paragraphLines.forEach((line, index) => {
-        const y = startY + index * lineHeightPx;
-        
-        // 绘制阴影效果
-        ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
-        ctx.fillText(line, textX + 3, y + 3);
-        
-        // 绘制描边
-        ctx.strokeText(line, textX, y);
-        
-        // 绘制文字
-        ctx.fillStyle = textColor;
-        ctx.fillText(line, textX, y);
-      });
-    }
+      // 绘制阴影效果
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.8)';
+      ctx.fillText(line, textX + 3, y + 3);
+
+      // 绘制描边
+      ctx.strokeText(line, textX, y);
+
+      // 绘制文字
+      ctx.fillStyle = textColor;
+      ctx.fillText(line, textX, y);
+    });
   };
 
   // 水印绘制函数已移除
@@ -476,7 +323,6 @@ const CanvasPreview = forwardRef(({
     const imageUrl = getCurrentImageUrl();
     if (!imageUrl) {
       setCanvasSize({ width: 800, height: 600 });
-      setAspectRatio(4/3);
     }
   }, [selectedHero, customImage]);
 

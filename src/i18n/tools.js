@@ -7,16 +7,16 @@ export const tools = [
   {
     slug: 'image-enhancer', public: true, component: 'ImageEnhancer', icon: 'Sparkles', color: 'amber',
     browserRequirements: 'Requires JavaScript, WebAssembly and Web Workers. WebGPU is optional for GPU acceleration; CPU processing is supported. Internet access is needed for the initial model download.',
-    nav: { zh: '图片变清晰', en: 'Image Enhancer', ja: '画像の鮮明化' },
+    nav: { zh: '图片变清晰', en: 'Image Enhancer', ja: '画像の高画質化' },
     card: {
       zh: { title: '图片变清晰', description: '本机 AI 超分辨率，增强细节，支持 2 倍 / 4 倍放大' },
       en: { title: 'Image Enhancer', description: 'Local AI detail enhancement with 2× and 4× upscaling' },
-      ja: { title: '画像の鮮明化', description: '端末 AI で細部を鮮明に。2 倍・4 倍の拡大に対応' },
+      ja: { title: '画像の高画質化', description: '端末 AI で細部を鮮明に。2 倍・4 倍の拡大に対応' },
     },
     seo: {
       zh: { title: '图片变清晰 - 免费 AI 图片增强与超分辨率放大 | ImgHub', description: '用本机 AI 超分辨率增强低清图片，支持原尺寸、2 倍和 4 倍放大，滑动对比、100% 查看与 WebP 下载。优先 WebGPU，图片不上传；增强可能改变细节。', keywords: '图片变清晰,AI图片增强,超分辨率,图片放大,WebGPU,Real-ESRGAN,ImgHub', h1: '图片变清晰' },
       en: { title: 'Free AI Image Enhancer & Upscaler | ImgHub', description: 'Enhance low-resolution images locally with AI. Original-size, 2× and 4× output, comparison, 100% inspection and WebP export. Uses WebGPU or CPU without uploads; detail may change.', keywords: 'AI image enhancer,image upscale,super resolution,WebGPU,Real-ESRGAN,ImgHub', h1: 'Image Enhancer' },
-      ja: { title: 'AI 画像の鮮明化・超解像拡大 | ImgHub', description: '低解像度画像を端末の AI で鮮明化。元のサイズ、2 倍・4 倍の拡大、比較、100% 表示、WebP 保存に対応。GPU または CPU で処理し、細部が変わる場合があります。', keywords: '画像鮮明化,超解像,画像拡大,WebGPU,Real-ESRGAN,ImgHub', h1: '画像の鮮明化' },
+      ja: { title: '画像高画質化 - AI で鮮明化・超解像拡大 | ImgHub', description: '低解像度画像を端末の AI で高画質化。元のサイズ、2 倍・4 倍の拡大、比較、100% 表示、WebP 保存に対応。GPU または CPU で処理し、細部が変わる場合があります。', keywords: '画像高画質化,画像鮮明化,超解像,画像拡大,WebGPU,Real-ESRGAN,ImgHub', h1: '画像の高画質化' },
     },
   },
   {
@@ -30,8 +30,8 @@ export const tools = [
     },
     seo: {
       zh: { title: 'AI 图片去水印 - 隐形水印重建实验与本地修复 | ImgHub', description: 'GPT-image / Nano Banana 整图重建实验，使用本机 WebGPU 或 CPU，隐形水印效果未验证。支持 Gemini 星形还原、局部修复、对比与 WebP 导出，图片不上传。', keywords: 'AI图片去水印,Gemini水印,Nano Banana去水印,本地图片修复,WebP,ImgHub', h1: 'AI 图片去水印' },
-      en: { title: 'AI Watermark Experiments & Local Image Repair | ImgHub', description: 'Experiment with whole-image reconstruction for GPT-image / Nano Banana using local WebGPU or CPU. Invisible watermark removal is unverified. Also repair visible marks and export WebP locally.', keywords: 'AI watermark remover,Gemini watermark,Nano Banana,inpainting,WebP,ImgHub', h1: 'AI Watermark Remover' },
-      ja: { title: 'AI 透かしの再構築実験・ローカル修復 | ImgHub', description: 'GPT-image / Nano Banana の画像全体を端末の WebGPU または CPU で再構築する実験。不可視透かしの除去は未検証。可視マークの修復、比較、WebP 保存にも対応。', keywords: 'AI透かし除去,Gemini,Nano Banana,画像修復,WebP,ImgHub', h1: 'AI 画像の透かし除去' },
+      en: { title: 'AI Watermark Remover – Experimental, Runs Locally | ImgHub', description: 'Experiment with whole-image reconstruction for GPT-image / Nano Banana using local WebGPU or CPU. Invisible watermark removal is unverified. Also repair visible marks and export WebP locally.', keywords: 'AI watermark remover,Gemini watermark,Nano Banana,inpainting,WebP,ImgHub', h1: 'AI Watermark Remover' },
+      ja: { title: 'AI 透かし除去 - 再構築実験と端末内修復 | ImgHub', description: 'GPT-image / Nano Banana の画像全体を端末の WebGPU または CPU で再構築する実験。不可視透かしの除去は未検証。可視マークの修復、比較、WebP 保存にも対応。', keywords: 'AI透かし除去,Gemini,Nano Banana,画像修復,WebP,ImgHub', h1: 'AI 画像の透かし除去' },
     },
   },
   {
@@ -263,8 +263,8 @@ export const tools = [
     color: 'green',
     nav: {
       zh: '表情包切片',
-      en: 'Meme Slicer',
-      ja: 'ミームスライサー',
+      en: 'Image Splitter',
+      ja: '画像分割',
     },
     card: {
       zh: {
@@ -272,37 +272,37 @@ export const tools = [
         description: '上传图片，自定义行列数，快速切片导出',
       },
       en: {
-        title: 'Meme Slicer',
+        title: 'Image Splitter',
         description:
           'Upload an image, set rows and columns, and slice/export quickly',
       },
       ja: {
-        title: 'ミームスライサー',
+        title: '画像分割',
         description:
           '画像をアップロードし、行と列を指定して素早くスライス＆書き出し',
       },
     },
     seo: {
       zh: {
-        title: '图片分割与表情包切片 - 九宫格切图工具 | ImgHub',
+        title: '图片分割 - 在线九宫格切图与表情包切片 | ImgHub',
         description:
-          '上传长图或九宫格，自定义行列数，一键切片导出多张表情包图片。',
-        keywords: '表情包切片,九宫格切割,图片分割,ImgHub',
-        h1: '表情包切片工具',
+          '免费在线把图片按行列均匀分割：九宫格切图、长图分段、表情包合集拆分，像素级精确切片，打包下载 ZIP。图片在浏览器本地处理。',
+        keywords: '图片分割,九宫格切图,图片切割,表情包切片,长图分割,ImgHub',
+        h1: '图片分割与表情包切片',
       },
       en: {
-        title: 'Meme Slicer - Split Images into Grid | ImgHub',
+        title: 'Image Splitter – Split an Image into a Grid Online | ImgHub',
         description:
-          'Slice an image into custom rows and columns and export meme tiles instantly.',
-        keywords: 'meme slicer,image splitter,grid cut,ImgHub',
-        h1: 'Meme Slicer',
+          'Split an image into equal rows and columns for free: 3×3 grids, long-image sections or meme tiles, cut pixel-exact and downloaded as a ZIP. Runs in your browser.',
+        keywords: 'image splitter,split image into grid,grid image cutter,meme slicer,ImgHub',
+        h1: 'Image Splitter',
       },
       ja: {
-        title: 'ミーム画像スライサー | ImgHub',
+        title: '画像分割ツール - グリッド・九宮格に切り分け | ImgHub',
         description:
-          '画像を任意の行・列で分割し、ミーム用タイルをすばやく書き出し。',
-        keywords: 'ミーム,画像分割,スライサー,ImgHub',
-        h1: 'ミーム画像スライサー',
+          '画像を任意の行と列で均等に分割。3×3 グリッド、縦長画像の分割、ミーム用タイルをピクセル単位で正確に切り出し、ZIP で保存。ブラウザ内で処理します。',
+        keywords: '画像分割,画像 グリッド 分割,九宮格,ミーム,ImgHub',
+        h1: '画像分割ツール',
       },
     },
   },
@@ -391,7 +391,7 @@ export const tools = [
         h1: '图片压缩工具',
       },
       en: {
-        title: 'Image Compressor - JPG, PNG & WebP Online | ImgHub',
+        title: 'Image Compressor – Reduce JPG, PNG & WebP Size Online | ImgHub',
         description:
           'Batch compress JPG, PNG and WebP for free. Control quality, set file size targets and compare results locally in your browser.',
         keywords: 'image compressor,batch compress,reduce image size,ImgHub',
@@ -558,98 +558,50 @@ export const tools = [
       },
     },
   },
-  // Hidden from homepage, still routable
   {
     slug: 'screenshot',
-    public: false,
+    public: true,
+    browserRequirements: 'Requires a desktop browser with screen capture (getDisplayMedia), such as Chrome, Edge or Firefox. Mobile browsers are not supported.',
     component: 'Screenshot',
     icon: 'Monitor',
     color: 'blue',
     nav: {
-      zh: '网页截图',
-      en: 'Screenshot',
-      ja: 'スクリーンショット',
+      zh: '网页长截图',
+      en: 'Full Page Screenshot',
+      ja: 'スクロールスクショ',
     },
     card: {
       zh: {
-        title: '网页截图',
-        description: '输入网址生成网页截图',
+        title: '网页长截图',
+        description: '滚动网页自动拼接长图，也能即时截屏，画面不上传',
       },
       en: {
-        title: 'Web Screenshot',
-        description: 'Capture a webpage screenshot from a URL',
+        title: 'Full Page Screenshot',
+        description: 'Scroll a page to stitch one long screenshot, or capture your screen',
       },
       ja: {
-        title: 'ウェブスクリーンショット',
-        description: 'URL からウェブページのスクリーンショットを作成',
+        title: 'スクロールスクリーンショット',
+        description: 'スクロールしたページを縦長画像に。画面の撮影にも対応',
       },
     },
     seo: {
       zh: {
-        title: '网页截图工具 | ImgHub',
-        description: '输入网址，在线生成网页截图。',
-        keywords: '网页截图,在线截图,ImgHub',
-        h1: '网页截图工具',
+        title: '网页长截图 - 在线滚动截图，自动拼接长图 | ImgHub',
+        description: '在浏览器里滚动网页即可自动拼接长截图，吸顶导航只保留一次，导出前可框选范围；也能即时截取标签页、窗口或屏幕。画面在本机处理，不上传服务器。',
+        keywords: '网页长截图,长截图,滚动截图,网页截图,在线截图,ImgHub',
+        h1: '网页长截图',
       },
       en: {
-        title: 'Web Screenshot Tool | ImgHub',
-        description: 'Capture webpage screenshots online from a URL.',
-        keywords: 'web screenshot,url screenshot,ImgHub',
-        h1: 'Web Screenshot Tool',
+        title: 'Full Page Screenshot Online – Scrolling Screenshot | ImgHub',
+        description: 'Take a full page screenshot in your browser: scroll any tab and the frames are stitched into one long image, with sticky headers kept once. Nothing is uploaded.',
+        keywords: 'full page screenshot,scrolling screenshot,long screenshot,webpage screenshot,ImgHub',
+        h1: 'Full Page Screenshot',
       },
       ja: {
-        title: 'ウェブスクリーンショットツール | ImgHub',
-        description: 'URL からウェブページのスクリーンショットを取得。',
-        keywords: 'スクリーンショット,ウェブ截図,ImgHub',
-        h1: 'ウェブスクリーンショットツール',
-      },
-    },
-  },
-  {
-    slug: 'watermark-remover',
-    public: false,
-    component: 'WatermarkRemover',
-    icon: 'Eraser',
-    color: 'green',
-    nav: {
-      zh: '去水印',
-      en: 'Watermark Remover',
-      ja: '透かし除去',
-    },
-    card: {
-      zh: {
-        title: '去水印',
-        description: '手动涂抹去除图片水印',
-      },
-      en: {
-        title: 'Watermark Remover',
-        description: 'Brush away watermarks from images locally',
-      },
-      ja: {
-        title: '透かし除去',
-        description: 'ブラシで画像の透かしをローカル除去',
-      },
-    },
-    seo: {
-      zh: {
-        title: '图片去水印工具 | ImgHub',
-        description: '在浏览器本地涂抹去除图片水印，图片不上传服务器。',
-        keywords: '去水印,图片水印,ImgHub',
-        h1: '图片去水印工具',
-      },
-      en: {
-        title: 'Watermark Remover | ImgHub',
-        description:
-          'Remove image watermarks with a brush tool. Processing stays in your browser.',
-        keywords: 'watermark remover,remove watermark,ImgHub',
-        h1: 'Watermark Remover',
-      },
-      ja: {
-        title: '透かし除去ツール | ImgHub',
-        description:
-          'ブラウザ上でブラシ操作により画像の透かしを除去。画像はサーバーに送信されません。',
-        keywords: '透かし除去,ウォーターマーク,ImgHub',
-        h1: '透かし除去ツール',
+        title: 'スクロールスクリーンショット - ページ全体を縦長画像に | ImgHub',
+        description: 'ブラウザでページをスクロールするだけで、縦長のスクリーンショットに自動でつなげます。固定ヘッダーは 1 回だけ残り、保存前に範囲も選べます。画像はアップロードされません。',
+        keywords: 'スクロールスクリーンショット,ページ全体 スクショ,縦長スクショ,ウェブページ キャプチャ,ImgHub',
+        h1: 'スクロールスクリーンショット',
       },
     },
   },

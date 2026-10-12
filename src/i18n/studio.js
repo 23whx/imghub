@@ -14,7 +14,7 @@ export function getStudioCopy(lang) { return studioCopy[lang] || studioCopy.en; 
 
 export const toolCategory = {
   'subtitle-generator': 1, 'wiggle-studio': 1, 'online-drawing': 1, 'mbti-grid': 1, 'dnd-alignment': 1, 'pornhub-style': 1,
-  'image-compress': 2, 'image-enhancer': 2, 'meme-slicer': 2, 'watermark-adder': 2, 'ai-watermark-remover': 2, 'image-ocr': 3, 'video-thumbnail': 3,
+  'image-compress': 2, 'image-enhancer': 2, 'meme-slicer': 2, 'watermark-adder': 2, 'ai-watermark-remover': 2, 'image-ocr': 3, 'video-thumbnail': 3, 'screenshot': 3,
 };
 
-export const exhibitOrder = ['subtitle-generator', 'wiggle-studio', 'online-drawing', 'mbti-grid', 'dnd-alignment', 'pornhub-style', 'image-compress', 'image-enhancer', 'meme-slicer', 'watermark-adder', 'ai-watermark-remover', 'image-ocr', 'video-thumbnail'];
+export const exhibitOrder = ['subtitle-generator', 'wiggle-studio', 'online-drawing', 'mbti-grid', 'dnd-alignment', 'pornhub-style', 'image-compress', 'image-enhancer', 'meme-slicer', 'watermark-adder', 'ai-watermark-remover', 'image-ocr', 'video-thumbnail', 'screenshot'];

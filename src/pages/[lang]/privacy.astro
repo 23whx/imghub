@@ -34,7 +34,7 @@ const t = privacyPage[lang as keyof typeof privacyPage] || privacyPage.en;
       )}
       <div class="reading-body"><PrivacyBody lang={lang} /></div>
       <div class="reading-acknowledgment mt-8 pt-6 border-t border-black/10 dark:border-white/10">
-        <p class="text-center text-gray-600">{lang === 'zh' ? '感谢您信任 ImgHub。我们承诺保护您的隐私。' : lang === 'ja' ? 'ImgHubをご信頼いただき、ありがとうございます。お客様のプライバシー保護に努めます。' : 'Thank you for trusting ImgHub. We are committed to protecting your privacy.'}</p>
+        <p class="text-center text-gray-600 dark:text-gray-400">{lang === 'zh' ? '感谢您信任 ImgHub。我们承诺保护您的隐私。' : lang === 'ja' ? 'ImgHubをご信頼いただき、ありがとうございます。お客様のプライバシー保護に努めます。' : 'Thank you for trusting ImgHub. We are committed to protecting your privacy.'}</p>
       </div>
     </div>
   </div>

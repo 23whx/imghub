@@ -1,5 +1,5 @@
 import { translateToolText } from '../../i18n/legacyTools.js';
-﻿import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { Download, Type, Palette } from 'lucide-react';
 
 const PornhubStyle = ({ lang: langProp = 'en' }) => {
@@ -9,26 +9,45 @@ const PornhubStyle = ({ lang: langProp = 'en' }) => {
   const [fontSize, setFontSize] = useState(80);
   const [layout, setLayout] = useState('horizontal'); // 'horizontal' 或 'vertical'
   const [textGap, setTextGap] = useState(10); // 可调节的文字间距，默认改为10
+  const [transparent, setTransparent] = useState(false);
   const canvasRef = useRef(null);
 
   React.useEffect(() => {
     drawCanvas();
-  }, [leftText, rightText, fontSize, layout, textGap]);
+  }, [leftText, rightText, fontSize, layout, textGap, transparent]);
 
   const drawCanvas = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext('2d');
+    const font = `bold ${fontSize}px Arial, sans-serif`;
+
+    // 画布至少 800×450，文字放不下时按内容尺寸加边距扩大，避免裁切
+    ctx.font = font;
+    const padding = 10;
+    const leftWidth = ctx.measureText(leftText).width;
+    const rightWidth = ctx.measureText(rightText).width;
+    const contentWidth = layout === 'horizontal'
+      ? leftWidth + textGap + rightWidth + padding
+      : Math.max(leftWidth, rightWidth + padding * 2);
+    const contentHeight = layout === 'horizontal'
+      ? fontSize + padding
+      : fontSize * 2 + padding + textGap;
+    const margin = 40;
+    canvas.width = Math.max(800, Math.ceil(contentWidth + margin * 2));
+    canvas.height = Math.max(450, Math.ceil(contentHeight + margin * 2));
     const width = canvas.width;
     const height = canvas.height;
 
-    // 清空画布
-    ctx.fillStyle = '#000000';
-    ctx.fillRect(0, 0, width, height);
+    // 调整尺寸已清空画布；非透明时铺黑底
+    if (!transparent) {
+      ctx.fillStyle = '#000000';
+      ctx.fillRect(0, 0, width, height);
+    }
 
-    // 设置字体
-    ctx.font = `bold ${fontSize}px Arial, sans-serif`;
+    // 设置字体（改变画布尺寸会重置上下文状态）
+    ctx.font = font;
     ctx.textBaseline = 'middle';
 
     if (layout === 'horizontal') {
@@ -74,7 +93,6 @@ const PornhubStyle = ({ lang: langProp = 'en' }) => {
 
   const drawVerticalLayout = (ctx, width, height) => {
     // 上下布局
-    const topWidth = ctx.measureText(leftText).width;
     const bottomWidth = ctx.measureText(rightText).width;
     const padding = 10;
     const cornerRadius = 5;
@@ -213,7 +231,7 @@ const PornhubStyle = ({ lang: langProp = 'en' }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("字体大小:")}{fontSize}px
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("字体大小:")} {fontSize}px
                 </label>
                 <input
                   type="range"
@@ -225,8 +243,18 @@ const PornhubStyle = ({ lang: langProp = 'en' }) => {
                 />
               </div>
 
+              <label className="flex items-center gap-2 text-sm font-medium text-neutral-700 dark:text-neutral-300">
+                <input
+                  type="checkbox"
+                  checked={transparent}
+                  onChange={(e) => setTransparent(e.target.checked)}
+                  className="w-4 h-4 accent-neutral-900 dark:accent-white"
+                />
+                {tr("透明背景")}
+              </label>
+
               <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("文字间距:")}{textGap}px
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("文字间距:")} {textGap}px
                 </label>
                 <input
                   type="range"
@@ -307,7 +335,10 @@ const PornhubStyle = ({ lang: langProp = 'en' }) => {
         {/* 右侧预览区 */}
         <div className="tool-card">
           <h2 className="text-lg font-semibold mb-4">{tr("实时预览")}</h2>
-          <div className="aspect-video bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden">
+          <div
+            className="aspect-video bg-black/5 dark:bg-white/5 rounded-lg overflow-hidden"
+            style={transparent ? { background: 'repeating-conic-gradient(#9ca3af 0% 25%, #d1d5db 0% 50%) 50% / 20px 20px' } : undefined}
+          >
             <canvas
               ref={canvasRef}
               width={800}

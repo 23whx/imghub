@@ -8,7 +8,7 @@ export const legalPrivacy = {
   en: [
     { title: '1. Overview', blocks: [
       paragraph('ImgHub ("we") takes your privacy seriously. This Privacy Policy explains how we collect, use, and protect your personal information.'),
-      paragraph('All images you provide are processed locally in your browser and are not uploaded to our servers, unless a tool explicitly states that server processing is required, such as the webpage screenshot tool.', 'Core principle: '),
+      paragraph('All images you provide are processed locally in your browser and are not uploaded to our servers.', 'Core principle: '),
     ] },
     { title: '2. Information Collection', blocks: [
       heading('2.1 Information We Do Not Collect'),
@@ -56,7 +56,7 @@ export const legalPrivacy = {
   ja: [
     { title: '1. 概要', blocks: [
       paragraph('ImgHub（以下「当サイト」）は、お客様のプライバシーを重視しています。本プライバシーポリシーでは、個人情報の収集、利用、保護について説明します。'),
-      paragraph('お客様が読み込んだ画像はすべてブラウザ内で処理され、当サイトのサーバーには送信されません。ただし、「ウェブページのスクリーンショット」など、サーバーでの処理が必要であることを明示したツールは除きます。', '基本原則：'),
+      paragraph('お客様が読み込んだ画像はすべてブラウザ内で処理され、当サイトのサーバーには送信されません。', '基本原則：'),
     ] },
     { title: '2. 情報の収集', blocks: [
       heading('2.1 収集しない情報'),

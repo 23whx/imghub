@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Upload, ScanText, Copy, Check, RotateCw, Download, X, Languages, Loader2, Scan, ZoomIn } from 'lucide-react';
 import { syncLanguageFromLocale } from '../../stores/globalStore';
 import { OCRClient, readOCRImage } from '../../utils/ocr/client.js';

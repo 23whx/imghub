@@ -2,7 +2,6 @@ import { absoluteUrl } from '../config/site.js';
 
 const robotsTxt = `User-agent: *
 Allow: /
-Disallow: /api/
 
 Sitemap: ${absoluteUrl('/sitemap.xml')}
 `;

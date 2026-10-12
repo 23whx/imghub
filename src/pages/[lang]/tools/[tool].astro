@@ -18,7 +18,6 @@ import AIWatermarkRemover from '../../../components/tools/AIWatermarkRemover.jsx
 import ImageEnhancer from '../../../components/tools/ImageEnhancer.jsx';
 import ImageCompress from '../../../components/tools/ImageCompress.jsx';
 import Screenshot from '../../../components/tools/Screenshot.jsx';
-import WatermarkRemover from '../../../components/tools/WatermarkRemover.jsx';
 import WiggleStudio from '../../../components/tools/WiggleStudio.jsx';
 import WatermarkAdder from '../../../components/tools/WatermarkAdder.jsx';
 import ImageOCR from '../../../components/tools/ImageOCR.jsx';
@@ -48,9 +47,13 @@ const studio = getStudioCopy(lang);
 const pathWithoutLang = `tools/${tool.slug}`;
 const pageUrl = canonicalPath(lang, pathWithoutLang);
 const slug = tool.slug;
-const workspaceGuide = slug === 'video-thumbnail'
-  ? ({ zh: '粘贴链接 · 预览封面 · 下载 WebP', en: 'Paste a link · Preview · Download WebP', ja: 'リンクを入力 · プレビュー · WebP を保存' }[lang] || studio.guide)
-  : studio.guide;
+// Tools that do not start from an uploaded image get their own step hint.
+const stepHints: Record<string, Record<string, string>> = {
+  'video-thumbnail': { zh: '粘贴链接 · 预览封面 · 下载 WebP', en: 'Paste a link · Preview · Download WebP', ja: 'リンクを入力 · プレビュー · WebP を保存' },
+  screenshot: { zh: '选择标签页 · 滚动拼接 · 框选导出', en: 'Choose a tab · Scroll · Select and export', ja: 'タブを選択 · スクロール · 範囲を選んで保存' },
+  'pornhub-style': { zh: '输入文字 · 调整样式 · 下载 PNG', en: 'Enter text · Adjust style · Download PNG', ja: '文字を入力 · スタイル調整 · PNG を保存' },
+};
+const workspaceGuide = stepHints[slug]?.[lang] || studio.guide;
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -109,7 +112,6 @@ const breadcrumb = {
     {slug === 'image-enhancer' && <ImageEnhancer client:load lang={lang} />}
     {slug === 'image-compress' && <ImageCompress client:load lang={lang} />}
     {slug === 'screenshot' && <Screenshot client:load lang={lang} />}
-    {slug === 'watermark-remover' && <WatermarkRemover client:load lang={lang} />}
     {slug === 'wiggle-studio' && <WiggleStudio client:load lang={lang} />}
     {slug === 'watermark-adder' && <WatermarkAdder client:load lang={lang} />}
     {slug === 'image-ocr' && <ImageOCR client:load lang={lang} />}

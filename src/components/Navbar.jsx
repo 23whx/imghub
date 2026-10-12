@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useStore } from '@nanostores/react';
 import { Menu, X, Sun, Moon, ArrowUpRight } from 'lucide-react';
 import { isDarkMode, syncLanguageFromLocale } from '../stores/globalStore';

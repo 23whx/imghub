@@ -76,5 +76,23 @@ test('JSONP lifecycle uses only the official endpoint and cleans up callbacks', 
 
     await assert.rejects(getBilibiliCover('https://b23.tv/abcdef'), /short_link_failed/);
     assert.equal(scripts.length, 4, 'Short URLs must not call an arbitrary proxy');
+
+    // Script errors: a reachable API means risk control, an unreachable one a network failure.
+    const previousFetch = globalThis.fetch;
+    const probes = [];
+    try {
+      globalThis.fetch = async (url, options) => { probes.push({ url, options }); return {}; };
+      const refused = getBilibiliCover('BV1GBa66HEC7');
+      scripts[4].onerror();
+      await assert.rejects(refused, /rate_limited/);
+      assert.equal(probes[0].url, scripts[4].src);
+      assert.equal(probes[0].options.mode, 'no-cors');
+      assert.equal(scripts[4].removed, true);
+      globalThis.fetch = async () => { throw new TypeError('Failed to fetch'); };
+      const offline = getBilibiliCover('BV1GBa66HEC7');
+      scripts[5].onerror();
+      await assert.rejects(offline, /upstream_failed/);
+      assert.deepEqual(Object.keys(window), []);
+    } finally { globalThis.fetch = previousFetch; }
   } finally { globalThis.document = previousDocument; globalThis.window = previousWindow; }
 });

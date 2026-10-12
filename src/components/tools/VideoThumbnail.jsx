@@ -52,7 +52,7 @@ function CoverCard({ thumbnail, t, download, downloading, disabled }) {
     <div className="p-4 sm:p-5 space-y-3">
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div><h3 className="font-medium">{thumbnail.label}</h3><p className="text-sm text-neutral-500 dark:text-neutral-400">{t.dimensions}: {dimensions || '—'}</p></div>
-        <button type="button" disabled={failed || disabled} onClick={() => download(thumbnail)} className="studio-button !gap-2 !min-h-11 disabled:opacity-50">
+        <button type="button" disabled={failed || !dimensions || disabled} onClick={() => download(thumbnail)} className="studio-button !gap-2 !min-h-11 disabled:opacity-50">
           {downloading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />} {downloading ? t.downloading : t.download}
         </button>
       </div>

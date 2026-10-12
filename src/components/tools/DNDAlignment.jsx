@@ -1,4 +1,4 @@
-﻿import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useStore } from '@nanostores/react';
 import { Upload, Download, X, Move, ZoomIn } from 'lucide-react';
 import { language, syncLanguageFromLocale } from '../../stores/globalStore';
@@ -142,7 +142,7 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
 
   useEffect(() => {
     drawCanvas();
-  }, [gridItems, currentLang, showDescriptions, descriptions]);
+  }, [gridItems, currentLang, showDescriptions, descriptions, selectedIndex]);
 
   const handleImageUpload = (index, event) => {
     const file = event.target.files?.[0];
@@ -152,15 +152,17 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
     reader.onload = (e) => {
       const img = new Image();
       img.onload = () => {
-        const newItems = [...gridItems];
-        newItems[index] = {
-          img: img,
-          src: e.target.result,
-          x: 0,
-          y: 0,
-          scale: 1
-        };
-        setGridItems(newItems);
+        setGridItems(previous => {
+          const newItems = [...previous];
+          newItems[index] = {
+            img: img,
+            src: e.target.result,
+            x: 0,
+            y: 0,
+            scale: 1
+          };
+          return newItems;
+        });
         setSelectedIndex(index); // 自动选中新上传的图片进行编辑
       };
       img.src = e.target.result;
@@ -187,7 +189,7 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
     }
   };
 
-  const drawCanvas = () => {
+  const drawCanvas = (highlight = true) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -269,14 +271,17 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
         ctx.restore();
       } else {
         // 绘制占位符
-        ctx.fillStyle = '#1f2937';
+        ctx.fillStyle = '#2b2722';
         ctx.fillRect(x + padding, y + padding, cellWidth - padding * 2, cellHeight - labelHeight - padding);
         
-        ctx.fillStyle = '#6b7280';
-        ctx.font = '20px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(t.clickToUpload, x + cellWidth / 2, y + (cellHeight - labelHeight) / 2);
+        // 提示文字只在预览中显示，不写入导出图片
+        if (highlight) {
+          ctx.fillStyle = '#a39a8f';
+          ctx.font = '20px Arial';
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(t.clickToUpload, x + cellWidth / 2, y + (cellHeight - labelHeight) / 2);
+        }
       }
 
       // 绘制标签背景
@@ -311,7 +316,7 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
       });
       
       // 如果选中，绘制高亮边框
-      if (selectedIndex === i) {
+      if (highlight && selectedIndex === i) {
         ctx.strokeStyle = '#ffffff'; // 高亮
         ctx.lineWidth = 4;
         ctx.strokeRect(x + padding - 2, y + padding - 2, cellWidth - padding * 2 + 4, cellHeight - labelHeight - padding + 4);
@@ -324,6 +329,8 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
     if (!canvas) return;
 
     setExportError(false);
+    // 导出图片不应包含选中高亮框；toBlob 会同步截取当前画布
+    drawCanvas(false);
     canvas.toBlob(blob => {
       if (!blob || blob.type !== 'image/webp') {
         setExportError(true);
@@ -336,6 +343,7 @@ const DNDAlignmentContent = ({ lang: langProp }) => {
       link.click();
       setTimeout(() => URL.revokeObjectURL(url), 1000);
     }, 'image/webp', 0.95);
+    drawCanvas();
   };
 
   return (

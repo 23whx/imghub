@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowUpRight, Search, X, Lock, Sparkles, Eye } from 'lucide-react';
 import { syncLanguageFromLocale } from '../stores/globalStore';
 import ToolCard from './ToolCard.jsx';

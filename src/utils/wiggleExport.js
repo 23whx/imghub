@@ -73,7 +73,6 @@ export async function exportVideo(renderFrame, options = {}) {
     frameCount = 30,
     fps = 20,
     aspect = 'original',
-    preferredExt = 'webm',
     onProgress,
     filename,
   } = options;

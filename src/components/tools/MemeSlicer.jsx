@@ -1,5 +1,5 @@
 import { translateToolText } from '../../i18n/legacyTools.js';
-﻿import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Upload, Download, Grid } from 'lucide-react';
 import JSZip from 'jszip';
 
@@ -74,14 +74,19 @@ const MemeSlicer = ({ lang: langProp = 'en' }) => {
   const handleExport = async () => {
     if (!image) return;
 
-    const cellWidth = image.width / cols;
-    const cellHeight = image.height / rows;
+    // 整数像素边界：尺寸不能整除时避免切片被截断或重采样
+    const edgeX = i => Math.round((i * image.width) / cols);
+    const edgeY = i => Math.round((i * image.height) / rows);
 
     const zip = new JSZip();
     const slicesFolder = zip.folder('slices');
 
     for (let row = 0; row < rows; row++) {
       for (let col = 0; col < cols; col++) {
+        const sx = edgeX(col);
+        const sy = edgeY(row);
+        const cellWidth = edgeX(col + 1) - sx;
+        const cellHeight = edgeY(row + 1) - sy;
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = cellWidth;
         tempCanvas.height = cellHeight;
@@ -89,8 +94,8 @@ const MemeSlicer = ({ lang: langProp = 'en' }) => {
 
         tempCtx.drawImage(
           image,
-          col * cellWidth,
-          row * cellHeight,
+          sx,
+          sy,
           cellWidth,
           cellHeight,
           0,
@@ -168,7 +173,7 @@ const MemeSlicer = ({ lang: langProp = 'en' }) => {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("行数:")}{rows}
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("行数:")} {rows}
                 </label>
                 <input
                   type="range"
@@ -181,7 +186,7 @@ const MemeSlicer = ({ lang: langProp = 'en' }) => {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("列数:")}{cols}
+                <label className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-2">{tr("列数:")} {cols}
                 </label>
                 <input
                   type="range"
@@ -194,7 +199,7 @@ const MemeSlicer = ({ lang: langProp = 'en' }) => {
               </div>
 
               <div className="pt-4 border-t border-black/10 dark:border-white/10">
-                <p className="text-sm text-neutral-600 dark:text-neutral-400">{tr("将生成")}<span className="font-semibold">{rows * cols}</span>{tr("张切片图片")}</p>
+                <p className="text-sm text-neutral-600 dark:text-neutral-400">{tr("将生成")} <span className="font-semibold">{rows * cols}</span> {tr("张切片图片")}</p>
               </div>
             </div>
           </div>

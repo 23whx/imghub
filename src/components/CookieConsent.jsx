@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { getUi } from '../i18n/ui.js';
 import { localizedPath } from '../i18n/utils.js';

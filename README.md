@@ -119,7 +119,7 @@ imghub/
 │   │   └── global.css               # 全局样式
 │   │
 │   └── utils/
-│       └── canvasUtils.js           # Canvas工具函数
+│       └── scrollStitch.js          # 长截图滚动拼接
 │
 └── package.json
 ```

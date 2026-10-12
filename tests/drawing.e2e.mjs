@@ -48,7 +48,7 @@ try {
     const original = URL.createObjectURL;
     URL.createObjectURL = blob => { window.__downloadBlob = blob; return original(blob); };
   });
-  await page.goto(`${base}/zh/tools/online-drawing`, { waitUntil: 'networkidle0' });
+  await page.goto(`${base}/zh/tools/online-drawing/`, { waitUntil: 'networkidle0' });
   await page.waitForSelector('.draw-art');
   await page.evaluate(() => { document.querySelector('.cookie-consent')?.remove(); document.querySelector('astro-dev-toolbar')?.remove(); });
   assert((await page.title()).includes('在线画图'));
@@ -182,7 +182,7 @@ try {
     await localRequests(mobile);
     await mobile.setViewport({ width, height: 844, isMobile: width < 760, hasTouch: width < 760 });
     await mobile.evaluateOnNewDocument(() => localStorage.setItem('cookieConsent', 'accepted'));
-    await mobile.goto(`${base}/zh/tools/online-drawing`, { waitUntil: 'networkidle0' });
+    await mobile.goto(`${base}/zh/tools/online-drawing/`, { waitUntil: 'networkidle0' });
     await mobile.waitForSelector('.draw-art');
     await mobile.evaluate(() => document.querySelector('astro-dev-toolbar')?.remove());
     await (await mobile.$('input[aria-label="打开图片 / 工程"]')).uploadFile(projectFile);
@@ -197,7 +197,7 @@ try {
   for (const locale of ['en', 'ja']) {
     const localized = await browser.newPage(); localized.on('pageerror', e => { errors.push(e.stack || e.message); console.log('BROWSER ERROR', e.stack || e.message); });
     await localRequests(localized);
-    const response = await localized.goto(`${base}/${locale}/tools/online-drawing`, { waitUntil: 'networkidle0' });
+    const response = await localized.goto(`${base}/${locale}/tools/online-drawing/`, { waitUntil: 'networkidle0' });
     assert.equal(response.status(), 200); await localized.waitForSelector('.draw-art'); assert(!(await localized.$eval('.draw-filebar', el => el.textContent)).includes('新建画布')); await localized.close();
     pass(`${locale} tool route and controls are localized`);
   }

@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-03T13:27:27.834Z",
+  "checkedAt": "2026-10-12T01:30:02.214Z",
   "origin": "https://imghub.oumashu.top",
   "scope": "Built static HTML and local assets; not Google indexing or CWV field data",
-  "assertions": 3462,
+  "assertions": 3516,
   "errors": [],
   "warnings": [],
   "pages": [
@@ -13,7 +13,7 @@
       "descriptionLength": 92,
       "indexable": true,
       "h1": "Rollkey",
-      "htmlBytes": 15028,
+      "htmlBytes": 15027,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -27,7 +27,7 @@
       "descriptionLength": 180,
       "indexable": true,
       "h1": "Online image tools.Create with ease.",
-      "htmlBytes": 36672,
+      "htmlBytes": 37808,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -42,7 +42,7 @@
       "descriptionLength": 61,
       "indexable": true,
       "h1": "Privacy Policy",
-      "htmlBytes": 19096,
+      "htmlBytes": 19009,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -56,7 +56,7 @@
       "descriptionLength": 69,
       "indexable": true,
       "h1": "Terms of Service",
-      "htmlBytes": 21808,
+      "htmlBytes": 21826,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -66,11 +66,11 @@
     {
       "path": "/en/tools/ai-watermark-remover/",
       "canonical": "https://imghub.oumashu.top/en/tools/ai-watermark-remover/",
-      "title": "AI Watermark Experiments & Local Image Repair | ImgHub",
+      "title": "AI Watermark Remover – Experimental, Runs Locally | ImgHub",
       "descriptionLength": 191,
       "indexable": true,
       "h1": "AI Watermark Remover",
-      "htmlBytes": 25284,
+      "htmlBytes": 25291,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -86,7 +86,7 @@
       "descriptionLength": 87,
       "indexable": true,
       "h1": "DND Alignment Chart Maker",
-      "htmlBytes": 28209,
+      "htmlBytes": 28210,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -98,11 +98,11 @@
     {
       "path": "/en/tools/image-compress/",
       "canonical": "https://imghub.oumashu.top/en/tools/image-compress/",
-      "title": "Image Compressor - JPG, PNG & WebP Online | ImgHub",
+      "title": "Image Compressor – Reduce JPG, PNG & WebP Size Online | ImgHub",
       "descriptionLength": 126,
       "indexable": true,
       "h1": "Image Compressor",
-      "htmlBytes": 19968,
+      "htmlBytes": 20038,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -118,7 +118,7 @@
       "descriptionLength": 179,
       "indexable": true,
       "h1": "Image Enhancer",
-      "htmlBytes": 23780,
+      "htmlBytes": 23778,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -131,10 +131,10 @@
       "path": "/en/tools/image-ocr/",
       "canonical": "https://imghub.oumashu.top/en/tools/image-ocr/",
       "title": "Online OCR – Extract Text from Images | ImgHub",
-      "descriptionLength": 134,
+      "descriptionLength": 174,
       "indexable": true,
       "h1": "Online OCR",
-      "htmlBytes": 22916,
+      "htmlBytes": 23393,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -150,7 +150,7 @@
       "descriptionLength": 93,
       "indexable": true,
       "h1": "MBTI Personality Grid Maker",
-      "htmlBytes": 43225,
+      "htmlBytes": 43224,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -162,11 +162,11 @@
     {
       "path": "/en/tools/meme-slicer/",
       "canonical": "https://imghub.oumashu.top/en/tools/meme-slicer/",
-      "title": "Meme Slicer - Split Images into Grid | ImgHub",
-      "descriptionLength": 76,
+      "title": "Image Splitter – Split an Image into a Grid Online | ImgHub",
+      "descriptionLength": 161,
       "indexable": true,
-      "h1": "Meme Slicer",
-      "htmlBytes": 22459,
+      "h1": "Image Splitter",
+      "htmlBytes": 23138,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -182,7 +182,7 @@
       "descriptionLength": 135,
       "indexable": true,
       "h1": "Online Drawing & Image Editor",
-      "htmlBytes": 36462,
+      "htmlBytes": 36458,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -198,7 +198,7 @@
       "descriptionLength": 97,
       "indexable": true,
       "h1": "Pornhub Style Logo Maker",
-      "htmlBytes": 22628,
+      "htmlBytes": 22917,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -210,15 +210,17 @@
     {
       "path": "/en/tools/screenshot/",
       "canonical": "https://imghub.oumashu.top/en/tools/screenshot/",
-      "title": "Web Screenshot Tool | ImgHub",
-      "descriptionLength": 46,
-      "indexable": false,
-      "h1": "Web Screenshot Tool",
-      "htmlBytes": 15036,
+      "title": "Full Page Screenshot Online – Scrolling Screenshot | ImgHub",
+      "descriptionLength": 160,
+      "indexable": true,
+      "h1": "Full Page Screenshot",
+      "htmlBytes": 21078,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "WebApplication",
+        "BreadcrumbList"
       ]
     },
     {
@@ -228,7 +230,7 @@
       "descriptionLength": 134,
       "indexable": true,
       "h1": "Subtitle Screenshot Generator",
-      "htmlBytes": 27843,
+      "htmlBytes": 28084,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -244,7 +246,7 @@
       "descriptionLength": 110,
       "indexable": true,
       "h1": "Video Thumbnail Downloader",
-      "htmlBytes": 21114,
+      "htmlBytes": 21112,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -260,7 +262,7 @@
       "descriptionLength": 125,
       "indexable": true,
       "h1": "Add Watermark",
-      "htmlBytes": 26154,
+      "htmlBytes": 26599,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -270,27 +272,13 @@
       ]
     },
     {
-      "path": "/en/tools/watermark-remover/",
-      "canonical": "https://imghub.oumashu.top/en/tools/watermark-remover/",
-      "title": "Watermark Remover | ImgHub",
-      "descriptionLength": 76,
-      "indexable": false,
-      "h1": "Watermark Remover",
-      "htmlBytes": 15518,
-      "schemaTypes": [
-        "Person",
-        "WebSite",
-        "WebPage"
-      ]
-    },
-    {
       "path": "/en/tools/wiggle-studio/",
       "canonical": "https://imghub.oumashu.top/en/tools/wiggle-studio/",
       "title": "Wiggle Studio - Make Jiggle GIF & Video Online | ImgHub",
       "descriptionLength": 129,
       "indexable": true,
       "h1": "Wiggle Studio",
-      "htmlBytes": 24935,
+      "htmlBytes": 24934,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -320,7 +308,7 @@
       "descriptionLength": 95,
       "indexable": true,
       "h1": "画像ツール、創作を自由に。",
-      "htmlBytes": 38202,
+      "htmlBytes": 39392,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -335,7 +323,7 @@
       "descriptionLength": 32,
       "indexable": true,
       "h1": "プライバシーポリシー",
-      "htmlBytes": 20340,
+      "htmlBytes": 20194,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -349,7 +337,7 @@
       "descriptionLength": 40,
       "indexable": true,
       "h1": "利用規約",
-      "htmlBytes": 23779,
+      "htmlBytes": 23798,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -359,11 +347,11 @@
     {
       "path": "/ja/tools/ai-watermark-remover/",
       "canonical": "https://imghub.oumashu.top/ja/tools/ai-watermark-remover/",
-      "title": "AI 透かしの再構築実験・ローカル修復 | ImgHub",
+      "title": "AI 透かし除去 - 再構築実験と端末内修復 | ImgHub",
       "descriptionLength": 96,
       "indexable": true,
       "h1": "AI 画像の透かし除去",
-      "htmlBytes": 26039,
+      "htmlBytes": 26058,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -379,7 +367,7 @@
       "descriptionLength": 33,
       "indexable": true,
       "h1": "DND陣営チャートメーカー",
-      "htmlBytes": 28696,
+      "htmlBytes": 28681,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -395,7 +383,7 @@
       "descriptionLength": 50,
       "indexable": true,
       "h1": "画像圧縮ツール",
-      "htmlBytes": 20513,
+      "htmlBytes": 20502,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -407,11 +395,11 @@
     {
       "path": "/ja/tools/image-enhancer/",
       "canonical": "https://imghub.oumashu.top/ja/tools/image-enhancer/",
-      "title": "AI 画像の鮮明化・超解像拡大 | ImgHub",
-      "descriptionLength": 89,
+      "title": "画像高画質化 - AI で鮮明化・超解像拡大 | ImgHub",
+      "descriptionLength": 90,
       "indexable": true,
-      "h1": "画像の鮮明化",
-      "htmlBytes": 24761,
+      "h1": "画像の高画質化",
+      "htmlBytes": 24890,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -424,10 +412,10 @@
       "path": "/ja/tools/image-ocr/",
       "canonical": "https://imghub.oumashu.top/ja/tools/image-ocr/",
       "title": "オンライン OCR - 画像から文字認識 | ImgHub",
-      "descriptionLength": 53,
+      "descriptionLength": 74,
       "indexable": true,
       "h1": "オンライン OCR",
-      "htmlBytes": 23690,
+      "htmlBytes": 24463,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -443,7 +431,7 @@
       "descriptionLength": 33,
       "indexable": true,
       "h1": "MBTI性格グリッドメーカー",
-      "htmlBytes": 43891,
+      "htmlBytes": 43888,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -455,11 +443,11 @@
     {
       "path": "/ja/tools/meme-slicer/",
       "canonical": "https://imghub.oumashu.top/ja/tools/meme-slicer/",
-      "title": "ミーム画像スライサー | ImgHub",
-      "descriptionLength": 31,
+      "title": "画像分割ツール - グリッド・九宮格に切り分け | ImgHub",
+      "descriptionLength": 76,
       "indexable": true,
-      "h1": "ミーム画像スライサー",
-      "htmlBytes": 23183,
+      "h1": "画像分割ツール",
+      "htmlBytes": 24069,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -491,7 +479,7 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "Pornhub風ロゴメーカー",
-      "htmlBytes": 23415,
+      "htmlBytes": 23669,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -503,15 +491,17 @@
     {
       "path": "/ja/tools/screenshot/",
       "canonical": "https://imghub.oumashu.top/ja/tools/screenshot/",
-      "title": "ウェブスクリーンショットツール | ImgHub",
-      "descriptionLength": 26,
-      "indexable": false,
-      "h1": "ウェブスクリーンショットツール",
-      "htmlBytes": 15560,
+      "title": "スクロールスクリーンショット - ページ全体を縦長画像に | ImgHub",
+      "descriptionLength": 85,
+      "indexable": true,
+      "h1": "スクロールスクリーンショット",
+      "htmlBytes": 22762,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "WebApplication",
+        "BreadcrumbList"
       ]
     },
     {
@@ -521,7 +511,7 @@
       "descriptionLength": 66,
       "indexable": true,
       "h1": "字幕スクリーンショット生成器",
-      "htmlBytes": 29011,
+      "htmlBytes": 29346,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -537,7 +527,7 @@
       "descriptionLength": 72,
       "indexable": true,
       "h1": "動画サムネイルダウンロード",
-      "htmlBytes": 22107,
+      "htmlBytes": 22105,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -553,7 +543,7 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "透かし追加",
-      "htmlBytes": 26773,
+      "htmlBytes": 27218,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -563,27 +553,13 @@
       ]
     },
     {
-      "path": "/ja/tools/watermark-remover/",
-      "canonical": "https://imghub.oumashu.top/ja/tools/watermark-remover/",
-      "title": "透かし除去ツール | ImgHub",
-      "descriptionLength": 40,
-      "indexable": false,
-      "h1": "透かし除去ツール",
-      "htmlBytes": 16037,
-      "schemaTypes": [
-        "Person",
-        "WebSite",
-        "WebPage"
-      ]
-    },
-    {
       "path": "/ja/tools/wiggle-studio/",
       "canonical": "https://imghub.oumashu.top/ja/tools/wiggle-studio/",
       "title": "ぷるぷる画像工房 - 揺れるGIF/動画を無料作成 | ImgHub",
       "descriptionLength": 59,
       "indexable": true,
       "h1": "ぷるぷる画像工房",
-      "htmlBytes": 25997,
+      "htmlBytes": 25996,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -613,7 +589,7 @@
       "descriptionLength": 82,
       "indexable": true,
       "h1": "在线图片工具，创作更简单。",
-      "htmlBytes": 37047,
+      "htmlBytes": 38165,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -628,7 +604,7 @@
       "descriptionLength": 31,
       "indexable": true,
       "h1": "隐私政策",
-      "htmlBytes": 18690,
+      "htmlBytes": 18626,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -642,7 +618,7 @@
       "descriptionLength": 29,
       "indexable": true,
       "h1": "服务条款",
-      "htmlBytes": 20794,
+      "htmlBytes": 20813,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -688,7 +664,7 @@
       "descriptionLength": 70,
       "indexable": true,
       "h1": "图片压缩工具",
-      "htmlBytes": 20379,
+      "htmlBytes": 20377,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -717,10 +693,10 @@
       "path": "/zh/tools/image-ocr/",
       "canonical": "https://imghub.oumashu.top/zh/tools/image-ocr/",
       "title": "图片转文字 - 免费在线 OCR 图片文字识别 | ImgHub",
-      "descriptionLength": 58,
+      "descriptionLength": 81,
       "indexable": true,
       "h1": "图片文字识别（在线 OCR）",
-      "htmlBytes": 23402,
+      "htmlBytes": 23892,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -736,7 +712,7 @@
       "descriptionLength": 43,
       "indexable": true,
       "h1": "MBTI人格图生成器",
-      "htmlBytes": 43400,
+      "htmlBytes": 43399,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -748,11 +724,11 @@
     {
       "path": "/zh/tools/meme-slicer/",
       "canonical": "https://imghub.oumashu.top/zh/tools/meme-slicer/",
-      "title": "图片分割与表情包切片 - 九宫格切图工具 | ImgHub",
-      "descriptionLength": 30,
+      "title": "图片分割 - 在线九宫格切图与表情包切片 | ImgHub",
+      "descriptionLength": 62,
       "indexable": true,
-      "h1": "表情包切片工具",
-      "htmlBytes": 22786,
+      "h1": "图片分割与表情包切片",
+      "htmlBytes": 23428,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -768,7 +744,7 @@
       "descriptionLength": 50,
       "indexable": true,
       "h1": "在线画图",
-      "htmlBytes": 36615,
+      "htmlBytes": 36613,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -784,7 +760,7 @@
       "descriptionLength": 44,
       "indexable": true,
       "h1": "Pornhub风格 Logo 生成器",
-      "htmlBytes": 22721,
+      "htmlBytes": 22965,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -796,15 +772,17 @@
     {
       "path": "/zh/tools/screenshot/",
       "canonical": "https://imghub.oumashu.top/zh/tools/screenshot/",
-      "title": "网页截图工具 | ImgHub",
-      "descriptionLength": 14,
-      "indexable": false,
-      "h1": "网页截图工具",
-      "htmlBytes": 15085,
+      "title": "网页长截图 - 在线滚动截图，自动拼接长图 | ImgHub",
+      "descriptionLength": 69,
+      "indexable": true,
+      "h1": "网页长截图",
+      "htmlBytes": 21288,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "WebApplication",
+        "BreadcrumbList"
       ]
     },
     {
@@ -814,7 +792,7 @@
       "descriptionLength": 52,
       "indexable": true,
       "h1": "截图字幕生成器",
-      "htmlBytes": 27983,
+      "htmlBytes": 28239,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -830,7 +808,7 @@
       "descriptionLength": 51,
       "indexable": true,
       "h1": "视频封面下载",
-      "htmlBytes": 21193,
+      "htmlBytes": 21192,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -846,7 +824,7 @@
       "descriptionLength": 54,
       "indexable": true,
       "h1": "图片加水印",
-      "htmlBytes": 26499,
+      "htmlBytes": 26945,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -856,27 +834,13 @@
       ]
     },
     {
-      "path": "/zh/tools/watermark-remover/",
-      "canonical": "https://imghub.oumashu.top/zh/tools/watermark-remover/",
-      "title": "图片去水印工具 | ImgHub",
-      "descriptionLength": 24,
-      "indexable": false,
-      "h1": "图片去水印工具",
-      "htmlBytes": 15568,
-      "schemaTypes": [
-        "Person",
-        "WebSite",
-        "WebPage"
-      ]
-    },
-    {
       "path": "/zh/tools/wiggle-studio/",
       "canonical": "https://imghub.oumashu.top/zh/tools/wiggle-studio/",
       "title": "晃动图片工坊 - 在线制作晃动 GIF / 视频 | ImgHub",
       "descriptionLength": 61,
       "indexable": true,
       "h1": "晃动图片工坊",
-      "htmlBytes": 25174,
+      "htmlBytes": 25173,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -892,8 +856,16 @@
       "destination": "https://imghub.oumashu.top/en/about/"
     },
     {
+      "path": "/en/tools/watermark-remover/",
+      "destination": "https://imghub.oumashu.top/en/tools/ai-watermark-remover/"
+    },
+    {
       "path": "/",
       "destination": "https://imghub.oumashu.top/en/"
+    },
+    {
+      "path": "/ja/tools/watermark-remover/",
+      "destination": "https://imghub.oumashu.top/ja/tools/ai-watermark-remover/"
     },
     {
       "path": "/privacy/",
@@ -957,21 +929,25 @@
     },
     {
       "path": "/tools/watermark-remover/",
-      "destination": "https://imghub.oumashu.top/en/tools/watermark-remover/"
+      "destination": "https://imghub.oumashu.top/en/tools/ai-watermark-remover/"
     },
     {
       "path": "/tools/wiggle-studio/",
       "destination": "https://imghub.oumashu.top/en/tools/wiggle-studio/"
+    },
+    {
+      "path": "/zh/tools/watermark-remover/",
+      "destination": "https://imghub.oumashu.top/zh/tools/ai-watermark-remover/"
     }
   ],
   "summary": {
-    "contentPages": 57,
-    "indexablePages": 51,
-    "publicTools": 13,
-    "toolGuides": 39,
-    "hiddenPages": 6,
-    "redirectFallbacks": 19,
-    "internalReferences": 1674,
+    "contentPages": 54,
+    "indexablePages": 54,
+    "publicTools": 14,
+    "toolGuides": 42,
+    "hiddenPages": 0,
+    "redirectFallbacks": 22,
+    "internalReferences": 1638,
     "errors": 0
   }
 }

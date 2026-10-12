@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Type, Globe, Languages } from 'lucide-react';
+import { Type, Languages } from 'lucide-react';
 
 const SubtitleInput = ({ 
   subtitle, 
   onSubtitleChange, 
   subtitleType, 
   onSubtitleTypeChange, 
-  isDarkMode, 
   language 
 }) => {
   // 用于双语模式的两个独立字幕内容
@@ -83,25 +82,48 @@ const SubtitleInput = ({
 
 
 
-  const placeholders = {
-    mono: '如果你不够优秀\n人脉是不值钱的\n它不是追求来的\n而是吸引来的',
-    bilingual: {
-      top: '如果你不够优秀\n人脉是不值钱的',
-      bottom: 'If you are not excellent enough\nConnections are worthless'
+  // 占位文字跟随页面语言；双语示例为“页面语言 + 另一种语言”
+  const allPlaceholders = {
+    zh: {
+      mono: '如果你不够优秀\n人脉是不值钱的\n它不是追求来的\n而是吸引来的',
+      bilingual: {
+        top: '如果你不够优秀\n人脉是不值钱的',
+        bottom: 'If you are not excellent enough\nConnections are worthless'
+      }
+    },
+    en: {
+      mono: 'If you are not good enough\nconnections are worthless\nThey are not chased\nbut attracted',
+      bilingual: {
+        top: 'If you are not good enough\nconnections are worthless',
+        bottom: '如果你不够优秀\n人脉是不值钱的'
+      }
+    },
+    ja: {
+      mono: '自分が優れていなければ\n人脈に価値はない\n人脈は追いかけるものではなく\n引き寄せるものだ',
+      bilingual: {
+        top: '自分が優れていなければ\n人脈に価値はない',
+        bottom: 'If you are not good enough\nconnections are worthless'
+      }
     }
   };
-
-  // 处理模式变化
-  const handleModeChange = (mode) => {
-    if (mode === 'mono') {
-      onSubtitleTypeChange('mono');
-    } else {
-      onSubtitleTypeChange('bilingual');
-    }
-  };
+  const placeholders = allPlaceholders[language] || allPlaceholders.en;
 
   const isBilingualMode = subtitleType !== 'mono';
   const currentMode = isBilingualMode ? 'bilingual' : 'mono';
+
+  // 处理模式变化：切换时保留已输入的台词
+  const handleModeChange = (mode) => {
+    if (mode === currentMode) return;
+    if (mode === 'mono') {
+      onSubtitleTypeChange('mono');
+      // 回到单语时沿用上方字幕，避免把双语分隔符显示在输入框里
+      onSubtitleChange(topSubtitle);
+    } else {
+      // 进入双语时把当前台词带到上方字幕
+      setTopSubtitle(subtitle);
+      onSubtitleTypeChange('bilingual');
+    }
+  };
 
   // 处理双语模式下的字幕变化
   React.useEffect(() => {
@@ -276,12 +298,26 @@ const SubtitleInput = ({
                 key={template}
                 onClick={() => {
                   const templates = {
-                    '经典励志': '成功没有捷径\n只有不懈的努力\n和永不放弃的信念',
-                    '人生感悟': '人生如茶\n第一道苦如生命\n第二道甜似爱情\n第三道淡若微风',
-                    '商业智慧': '做生意要讲诚信\n诚信是最大的财富\n信誉比黄金更珍贵',
-                    '哲学思考': '知识改变命运\n态度决定高度\n细节决定成败',
+                    zh: {
+                      '经典励志': '成功没有捷径\n只有不懈的努力\n和永不放弃的信念',
+                      '人生感悟': '人生如茶\n第一道苦如生命\n第二道甜似爱情\n第三道淡若微风',
+                      '商业智慧': '做生意要讲诚信\n诚信是最大的财富\n信誉比黄金更珍贵',
+                      '哲学思考': '知识改变命运\n态度决定高度\n细节决定成败',
+                    },
+                    en: {
+                      '经典励志': 'There is no shortcut to success\nonly steady effort\nand the will to never give up',
+                      '人生感悟': 'Life is like tea\nthe first cup is bitter like life\nthe second sweet like love\nthe third light as a breeze',
+                      '商业智慧': 'Do business with integrity\nintegrity is the greatest wealth\nreputation is worth more than gold',
+                      '哲学思考': 'Knowledge changes fate\nattitude sets your height\ndetails decide success',
+                    },
+                    ja: {
+                      '经典励志': '成功に近道はない\nあるのはたゆまぬ努力と\n決してあきらめない信念だけ',
+                      '人生感悟': '人生はお茶のようなもの\n一杯目は命のように苦く\n二杯目は恋のように甘く\n三杯目はそよ風のように淡い',
+                      '商业智慧': '商売には誠実さが必要だ\n誠実さこそ最大の財産\n信用は黄金よりも尊い',
+                      '哲学思考': '知識は運命を変え\n姿勢は高みを決め\n細部は成否を決める',
+                    },
                   };
-                  onSubtitleChange(templates[template]);
+                  onSubtitleChange((templates[language] || templates.en)[template]);
                 }}
                 className={`px-3 py-1 text-xs rounded-full transition-colors duration-200 ${
                   "bg-gray-100 hover:bg-gray-200 text-gray-600 dark:bg-gray-700 dark:hover:bg-gray-600 dark:text-gray-300"
