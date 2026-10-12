@@ -3,7 +3,8 @@ export const MAX_SIDE = 4096;
 export const MAX_PIXELS = 32 * 1024 * 1024;
 export const MAX_LAYERS = 40;
 const TYPES = ['paint', 'image', 'text', 'rect', 'ellipse', 'line'];
-export const BLENDS = ['source-over', 'multiply', 'screen', 'overlay', 'darken', 'lighten'];
+// Photoshop menu order: normal, darken group, lighten group, contrast, inversion, component.
+export const BLENDS = ['source-over', 'darken', 'multiply', 'color-burn', 'lighten', 'screen', 'color-dodge', 'overlay', 'soft-light', 'hard-light', 'difference', 'exclusion', 'hue', 'saturation', 'color', 'luminosity'];
 const number = (v, fallback, min, max) => Number.isFinite(Number(v)) ? Math.min(max, Math.max(min, Number(v))) : fallback;
 
 export function dimensions(width, height) {
@@ -80,12 +81,20 @@ export function floodFill(data, width, height, x, y, color, tolerance = 24) {
   return true;
 }
 
+export function drawLayer(context, layer) {
+  context.save(); context.globalAlpha = layer.opacity; context.globalCompositeOperation = layer.blend;
+  context.filter = `brightness(${layer.brightness}%) contrast(${layer.contrast}%) saturate(${layer.saturation}%) hue-rotate(${layer.hue || 0}deg) blur(${layer.blur}px)`;
+  context.translate(layer.x + layer.width / 2, layer.y + layer.height / 2);
+  context.rotate(layer.rotation * Math.PI / 180); context.scale(layer.flipX ? -1 : 1, layer.flipY ? -1 : 1);
+  context.drawImage(layer.canvas, -layer.width / 2, -layer.height / 2, layer.width, layer.height); context.restore();
+}
+
 export function makeLayer(type, name, canvas, extra = {}) {
   return {
     id: crypto.randomUUID(), type, name, canvas, x: 0, y: 0,
     width: canvas.width, height: canvas.height, rotation: 0,
     flipX: false, flipY: false, opacity: 1, visible: true, locked: false,
-    blend: 'source-over', brightness: 100, contrast: 100, saturation: 100, blur: 0,
+    blend: 'source-over', brightness: 100, contrast: 100, saturation: 100, hue: 0, blur: 0,
     ...extra,
   };
 }
@@ -161,7 +170,7 @@ export class DrawingDocument {
         rotation: number(raw.rotation, 0, -360, 360), flipX: !!raw.flipX, flipY: !!raw.flipY,
         opacity: number(raw.opacity, 1, 0, 1), visible: raw.visible !== false, locked: !!raw.locked,
         blend: BLENDS.includes(raw.blend) ? raw.blend : 'source-over', brightness: number(raw.brightness, 100, 0, 200),
-        contrast: number(raw.contrast, 100, 0, 200), saturation: number(raw.saturation, 100, 0, 200), blur: number(raw.blur, 0, 0, 20),
+        contrast: number(raw.contrast, 100, 0, 200), saturation: number(raw.saturation, 100, 0, 200), hue: number(raw.hue, 0, -180, 180), blur: number(raw.blur, 0, 0, 20),
       });
       if (raw.type === 'text') Object.assign(layer, { text: String(raw.text || '').slice(0, 5000), fontSize: number(raw.fontSize, 48, 8, 300), fontFamily: ['sans-serif', 'serif', 'monospace'].includes(raw.fontFamily) ? raw.fontFamily : 'sans-serif', color: /^#[0-9a-f]{6}$/i.test(raw.color) ? raw.color : '#000000', bold: !!raw.bold });
       layers.push(layer);
@@ -182,14 +191,7 @@ export class DrawingDocument {
     context.save(); context.clearRect(0, 0, this.width, this.height);
     if (this.background !== 'transparent') { context.fillStyle = this.background; context.fillRect(0, 0, this.width, this.height); }
     context.beginPath(); context.rect(0, 0, this.width, this.height); context.clip();
-    for (const layer of this.layers) {
-      if (!layer.visible) continue;
-      context.save(); context.globalAlpha = layer.opacity; context.globalCompositeOperation = layer.blend;
-      context.filter = `brightness(${layer.brightness}%) contrast(${layer.contrast}%) saturate(${layer.saturation}%) blur(${layer.blur}px)`;
-      context.translate(layer.x + layer.width / 2, layer.y + layer.height / 2);
-      context.rotate(layer.rotation * Math.PI / 180); context.scale(layer.flipX ? -1 : 1, layer.flipY ? -1 : 1);
-      context.drawImage(layer.canvas, -layer.width / 2, -layer.height / 2, layer.width, layer.height); context.restore();
-    }
+    for (const layer of this.layers) if (layer.visible) drawLayer(context, layer);
     context.restore();
   }
   hit(point) {
@@ -247,6 +249,33 @@ export class DrawingDocument {
     const copy = surface(this.active.canvas.width, this.active.canvas.height);
     copy.getContext('2d').drawImage(this.active.canvas, 0, 0);
     this.add({ ...this.active, id: crypto.randomUUID(), canvas: copy, name, x: this.active.x + 20, y: this.active.y + 20 });
+  }
+  gradient(layer, from, to, start, end) {
+    // Fills the whole layer, as Photoshop does without a selection.
+    const a = localPoint(layer, from), b = localPoint(layer, to), sx = layer.canvas.width / layer.width, sy = layer.canvas.height / layer.height;
+    const c = layer.canvas.getContext('2d'), g = c.createLinearGradient(a.x * sx, a.y * sy, b.x * sx, b.y * sy);
+    g.addColorStop(0, start); g.addColorStop(1, end);
+    c.save(); c.fillStyle = g; c.fillRect(0, 0, layer.canvas.width, layer.canvas.height); c.restore(); layer.type = 'paint';
+  }
+  mergeDown() {
+    const index = this.layers.findIndex(layer => layer.id === this.selected), upper = this.layers[index], lower = this.layers[index - 1];
+    if (!lower || [upper, lower].some(layer => layer.locked || !layer.visible)) return;
+    // Bake both layers into one paint layer covering their combined bounds, so nothing outside the canvas is lost.
+    const corners = [upper, lower].flatMap(layer => [{ x: 0, y: 0 }, { x: layer.width, y: 0 }, { x: layer.width, y: layer.height }, { x: 0, y: layer.height }].map(p => worldPoint(layer, p)));
+    const left = Math.floor(Math.min(...corners.map(p => p.x))), top = Math.floor(Math.min(...corners.map(p => p.y)));
+    const width = Math.ceil(Math.max(...corners.map(p => p.x))) - left, height = Math.ceil(Math.max(...corners.map(p => p.y))) - top;
+    if (width > MAX_SIDE || height > MAX_SIDE) throw new Error('capacity');
+    const others = this.layers.filter(layer => layer !== upper && layer !== lower).reduce((sum, layer) => sum + layer.canvas.width * layer.canvas.height, 0);
+    if (others + width * height > MAX_PIXELS) throw new Error('capacity');
+    const canvas = surface(width, height), c = canvas.getContext('2d'); c.translate(-left, -top);
+    drawLayer(c, lower); drawLayer(c, upper);
+    const merged = makeLayer('paint', lower.name, canvas, { id: lower.id, x: left, y: top });
+    this.layers.splice(index - 1, 2, merged); this.selected = merged.id;
+  }
+  moveTo(id, target) {
+    const index = this.layers.findIndex(layer => layer.id === id);
+    if (index < 0 || target < 0 || target >= this.layers.length || index === target) return;
+    const [layer] = this.layers.splice(index, 1); this.layers.splice(target, 0, layer);
   }
   remove() { this.layers = this.layers.filter(layer => layer.id !== this.selected); this.selected = this.layers.at(-1)?.id || null; }
   reorder(direction) {

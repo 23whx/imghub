@@ -22,7 +22,7 @@ html { scroll-padding-top: 105px; }
 .studio-container { width: min(1380px, calc(100% - 112px)); margin-inline: auto; }
 .studio-main { min-height: 62dvh; }
 .studio-nav { position: sticky; top: 0; z-index: 50; background: var(--page); border-bottom: 1px solid var(--line); }
-.studio-nav-home { position: absolute; inset: 0 0 auto; color: #eee6d6; background: transparent; border: 0; }
+.studio-nav-home { position: absolute; inset: 0 0 auto; color: #eee6d6; background: linear-gradient(180deg, rgb(10 8 6 / .78), rgb(10 8 6 / .42) 62%, transparent); border: 0; text-shadow: 0 1px 8px rgb(0 0 0 / .55); }
 .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 80px; gap: 24px; }
 .studio-wordmark { font: 600 34px/1 var(--display); letter-spacing: -.025em; display: block; }
 .studio-wordmark span { display: block; font: 500 8px/1.3 Inter, sans-serif; letter-spacing: .23em; margin-top: 9px; }

@@ -28,8 +28,8 @@
 .draw-options > select { width: auto; }
 .draw-tool-name { font-weight: 500; min-width: 72px; padding-right: 18px; border-right: 1px solid var(--line); }
 .draw-color-control { display: inline-flex; align-items: center; gap: 9px; font-size: 12px; color: var(--muted); }
-.draw-color-control input[type='color'], .draw-toolbar-color input[type='color'] { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--line); background: var(--surface); padding: 3px; cursor: pointer; }
-.draw-color-control input::-webkit-color-swatch, .draw-toolbar-color input::-webkit-color-swatch { border: 0; border-radius: 2px; }
+.draw-color-control input[type='color'] { width: 30px; height: 30px; border-radius: 5px; border: 1px solid var(--line); background: var(--surface); padding: 3px; cursor: pointer; }
+.draw-color-control input::-webkit-color-swatch { border: 0; border-radius: 2px; }
 .draw-inline-control { display: inline-flex; align-items: center; gap: 9px; color: var(--muted); }
 .draw-inline-control output { min-width: 35px; color: var(--ink); font-variant-numeric: tabular-nums; }
 .draw-check { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--muted); min-height: 40px; }
@@ -40,14 +40,27 @@
 .draw-toolbar { display: flex; align-items: center; flex-direction: column; gap: 2px; border-right: 1px solid var(--line); padding: 9px 6px; overflow-y: auto; }
 .draw-toolbar button { width: 46px; min-height: 44px; padding: 0; position: relative; flex-shrink: 0; }
 .draw-toolbar kbd { font-family: inherit; font-size: 8px; position: absolute; bottom: 3px; right: 4px; color: var(--faint); }
-.draw-toolbar-color { padding: 10px 0; }
+.draw-swatches { position: relative; width: 46px; height: 50px; margin-top: 10px; flex-shrink: 0; }
+.draw-swatches label { position: absolute; width: 28px; height: 28px; }
+.draw-swatches input[type='color'] { width: 100%; height: 100%; padding: 2px; border-radius: 4px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; }
+.draw-swatches input::-webkit-color-swatch { border: 0; border-radius: 2px; }
+.draw-swatch-fg { left: 2px; top: 2px; z-index: 1; }
+.draw-swatch-bg { right: 2px; bottom: 2px; }
+.drawing-studio .draw-swatches button { position: absolute; min-height: 0; width: 14px; height: 14px; padding: 0; border: 0; border-radius: 2px; color: var(--muted); }
+.drawing-studio .draw-swatches button:hover { color: var(--accent); background: transparent; }
+.draw-swatches .draw-swatch-swap { right: 1px; top: 2px; }
+.draw-swatches .draw-swatch-reset { left: 2px; bottom: 2px; }
+.draw-swatch-reset span { position: absolute; width: 7px; height: 7px; border: 1px solid var(--ink); }
+.draw-swatch-reset span:first-child { left: 1px; top: 1px; background: #000; z-index: 1; }
+.draw-swatch-reset span:last-child { right: 1px; bottom: 1px; background: #fff; }
+.draw-brush-ring { display: none; position: absolute; left: 0; top: 0; border: 1px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px rgb(0 0 0 / .55), inset 0 0 0 1px rgb(0 0 0 / .55); pointer-events: none; }
 .draw-viewport { background: var(--surface-soft); background-image: radial-gradient(var(--line) .6px, transparent .6px); background-size: 12px 12px; position: relative; min-width: 0; overflow: auto; overscroll-behavior: contain; touch-action: none; }
 .draw-stage { position: relative; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .draw-canvas-wrap { position: relative; flex-shrink: 0; background-color: #fff; background-image: linear-gradient(45deg, #e7e7e7 25%, transparent 25%), linear-gradient(-45deg, #e7e7e7 25%, transparent 25%), linear-gradient(45deg, transparent 75%, #e7e7e7 75%), linear-gradient(-45deg, transparent 75%, #e7e7e7 75%); background-size: 16px 16px; background-position: 0 0, 0 8px, 8px -8px, -8px 0; box-shadow: 0 3px 22px rgb(35 25 10 / .1); }
 .draw-art, .draw-overlay { display: block; position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; }
 .draw-overlay { touch-action: none; user-select: none; }
 .draw-cursor-move { cursor: default; }
-.draw-cursor-brush, .draw-cursor-eraser, .draw-cursor-rect, .draw-cursor-ellipse, .draw-cursor-line, .draw-cursor-fill, .draw-cursor-picker, .draw-cursor-crop { cursor: crosshair; }
+.draw-cursor-brush, .draw-cursor-eraser, .draw-cursor-rect, .draw-cursor-ellipse, .draw-cursor-line, .draw-cursor-fill, .draw-cursor-gradient, .draw-cursor-picker, .draw-cursor-crop { cursor: crosshair; }
 .draw-cursor-text { cursor: text; }
 .draw-cursor-hand { cursor: grab; }
 .draw-cursor-hand:active { cursor: grabbing; }
@@ -66,12 +79,14 @@
 .draw-panel-tabs button span { font-size: 10px; color: var(--muted); }
 .draw-side-scroll { flex: 1; overflow: auto; min-height: 0; }
 .draw-layer-actions { display: flex; justify-content: space-around; padding: 5px 7px; border-bottom: 1px solid var(--line); }
-.draw-layer-actions button { width: 44px; padding: 0; }
+.draw-layer-actions button { flex: 1 1 0; max-width: 44px; min-width: 0; padding: 0; }
 .draw-layer-list { max-height: 210px; overflow-y: auto; border-bottom: 1px solid var(--line); }
 .draw-layer-row { display: flex; align-items: center; min-height: 62px; border-bottom: 1px solid var(--line); padding: 3px; }
 .draw-layer-row:last-child { border-bottom: 0; }
 .draw-layer-row.is-selected { background: var(--surface-soft); box-shadow: inset 3px 0 0 var(--accent); }
 .draw-layer-row.is-hidden .draw-layer-select { opacity: .45; }
+.draw-layer-row[draggable='true'] { cursor: grab; }
+.draw-layer-row.is-drop-target { box-shadow: inset 0 2px 0 var(--accent); }
 .draw-layer-row > button:not(.draw-layer-select) { padding: 0; width: 44px; flex-shrink: 0; }
 .draw-layer-row button.draw-layer-select { text-align: left; justify-content: flex-start; min-width: 0; flex: 1; padding: 4px; gap: 8px; background: transparent; border: 0; }
 .draw-layer-select span { font-size: 12px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden; }
@@ -152,7 +167,7 @@
   .draw-main { grid-template-columns: minmax(0, 1fr); height: auto; }
   .draw-toolbar { flex-direction: row; border-right: 0; border-bottom: 1px solid var(--line); overflow-x: auto; padding: 6px; height: 60px; }
   .draw-toolbar button { min-width: 44px; min-height: 44px; }
-  .draw-toolbar-color { padding: 0 7px; flex-shrink: 0; }
+  .draw-swatches { margin: 0 4px; height: 46px; }
   .draw-viewport { height: 430px; }
   .draw-sidebar { border-left: 0; border-top: 1px solid var(--line); }
   .draw-side-scroll { max-height: 370px; min-height: 160px; }
