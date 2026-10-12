@@ -12,6 +12,7 @@ export interface Props {
   description?: string;
   keywords?: string;
   image?: string;
+  imageAlt?: string;
   type?: string;
   lang?: string;
   pathWithoutLang?: string;
@@ -27,6 +28,7 @@ const {
   description = 'ImgHub - Free online image tools collection',
   keywords = 'image tools,online tools,ImgHub',
   image = siteConfig.image,
+  imageAlt: pageImageAlt,
   type = 'website',
   lang = defaultLocale,
   pathWithoutLang = '',
@@ -46,7 +48,7 @@ const alternateOgLocales = Object.entries(ogLocale)
 const canonicalURL = canonicalPath(locale, pathWithoutLang);
 const ogImage = absoluteUrl(image);
 const structuredData = buildPageSchema({ lang: locale, title, description, path: pathWithoutLang, extra: jsonLd });
-const imageAlt = locale === 'zh' ? 'ImgHub 免费在线图片工具集' : locale === 'ja' ? 'ImgHub 無料オンライン画像ツール集' : 'ImgHub free online image toolkit';
+const imageAlt = pageImageAlt || (locale === 'zh' ? 'ImgHub 免费在线图片工具集' : locale === 'ja' ? 'ImgHub 無料オンライン画像ツール集' : 'ImgHub free online image toolkit');
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 ---
 
@@ -109,7 +111,9 @@ const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
     <meta property="og:description" content={description} />
     <meta property="og:image" content={ogImage} />
     <meta property="og:image:alt" content={imageAlt} />
-    {image === siteConfig.image && <><meta property="og:image:width" content="1200" /><meta property="og:image:height" content="630" /><meta property="og:image:type" content="image/png" /></>}
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content={image.endsWith('.png') ? 'image/png' : 'image/jpeg'} />
     <meta property="og:site_name" content="ImgHub" />
     <meta property="og:locale" content={pageOgLocale} />
     {alternateOgLocales.map((loc) => (

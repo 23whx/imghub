@@ -6,7 +6,7 @@ import { localizedPath } from '../../../i18n/utils.js';
 import { getStudioCopy } from '../../../i18n/studio.js';
 import ToolGuide from '../../../components/ToolGuide.astro';
 import { canonicalPath } from '../../../utils/seo.js';
-import { siteConfig } from '../../../config/site.js';
+import { siteConfig, ogImagePath } from '../../../config/site.js';
 
 import ScreenshotGenerator from '../../../components/ScreenshotGenerator.jsx';
 import PornhubStyle from '../../../components/tools/PornhubStyle.jsx';
@@ -95,6 +95,8 @@ const breadcrumb = {
   pathWithoutLang={pathWithoutLang}
   jsonLd={tool.public ? [jsonLd, breadcrumb] : null}
   indexable={tool.public}
+  image={tool.public ? ogImagePath(lang, slug) : undefined}
+  imageAlt={tool.public ? `${seo.h1} · ImgHub` : undefined}
 >
   <div class="tool-page studio-container" data-tool={slug}>
     <header class="workspace-header">

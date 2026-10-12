@@ -10,3 +10,5 @@ export const siteConfig = {
 };
 
 export const absoluteUrl = path => new URL(path, `${siteConfig.url}/`).href;
+// Per-language share images from scripts/generate-og-images.mjs (1200×630 JPEG): the home card, or a public tool's card.
+export const ogImagePath = (lang, slug = 'home') => `/og/${lang}/${slug}.jpg`;

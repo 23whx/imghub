@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import { parse } from 'parse5';
 import sharp from 'sharp';
-import { siteConfig } from '../src/config/site.js';
+import { siteConfig, ogImagePath } from '../src/config/site.js';
 import { locales, htmlLang } from '../src/i18n/config.js';
 import { tools, publicTools } from '../src/i18n/tools.js';
 import { buildAlternates, localizedPath } from '../src/i18n/utils.js';
@@ -71,7 +71,7 @@ for (const [file, document] of documents) {
   check(Boolean(title && description), `${pathname}: missing title or description`);
   check(attr(meta('og:url'), 'content') === canonical && attr(meta('twitter:url'), 'content') === canonical, `${pathname}: social URL differs from canonical`);
   check(attr(meta('twitter:creator'), 'content') === siteConfig.socialHandle, `${pathname}: wrong creator handle`);
-  check(attr(meta('og:image'), 'content') === `${siteConfig.url}${siteConfig.image}`, `${pathname}: wrong share image URL`);
+  check(attr(meta('og:image'), 'content') === `${siteConfig.url}${ogImagePath(lang, tool?.public ? slug : undefined)}`, `${pathname}: wrong share image URL`);
   const alternates = tags('link').filter(node => attr(node, 'hreflang'));
   if (isHidden) {
     hidden++;
@@ -157,10 +157,12 @@ for (const entry of sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
 }
 const robots = await fs.readFile(path.join(root, 'robots.txt'), 'utf8');
 check(robots.includes(`Sitemap: ${siteConfig.url}/sitemap.xml`) && !robots.includes('Disallow: /\n'), 'Incorrect robots sitemap or sitewide block');
-try {
-  const image = await sharp(path.join(root, siteConfig.image)).metadata();
-  check(image.width === 1200 && image.height === 630 && image.format === 'png', 'Share image wrong dimensions');
-} catch { check(false, 'Share image missing; build the current source before auditing'); }
+for (const file of locales.flatMap(lang => [undefined, ...publicTools.map(tool => tool.slug)].map(slug => ogImagePath(lang, slug)))) {
+  try {
+    const image = await sharp(path.join(root, file)).metadata();
+    check(image.width === 1200 && image.height === 630 && image.format === 'jpeg', `${file}: share image wrong dimensions`);
+  } catch { check(false, `${file}: share image missing; run scripts/generate-og-images.mjs and build`); }
+}
 for (const file of allFiles.filter(file => file.endsWith('.css'))) {
   const css = await fs.readFile(file, 'utf8');
   for (const match of css.matchAll(/url\(["']?([^\s"')]+)["']?\)/g)) {
