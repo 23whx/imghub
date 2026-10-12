@@ -47,7 +47,7 @@ const alternateOgLocales = Object.entries(ogLocale)
 
 const canonicalURL = canonicalPath(locale, pathWithoutLang);
 const ogImage = absoluteUrl(image);
-const structuredData = buildPageSchema({ lang: locale, title, description, path: pathWithoutLang, extra: jsonLd });
+const structuredData = buildPageSchema({ lang: locale, title, description, path: pathWithoutLang, image: ogImage, extra: jsonLd });
 const imageAlt = pageImageAlt || (locale === 'zh' ? 'ImgHub 免费在线图片工具集' : locale === 'ja' ? 'ImgHub 無料オンライン画像ツール集' : 'ImgHub free online image toolkit');
 const googleSiteVerification = import.meta.env.PUBLIC_GOOGLE_SITE_VERIFICATION;
 ---

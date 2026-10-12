@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-12T10:16:23.825Z",
+  "checkedAt": "2026-10-12T11:52:24.583Z",
   "origin": "https://imghub.oumashu.top",
   "scope": "Built static HTML and local assets; not Google indexing or CWV field data",
-  "assertions": 3560,
+  "assertions": 3668,
   "errors": [],
   "warnings": [],
   "pages": [
@@ -13,11 +13,12 @@
       "descriptionLength": 92,
       "indexable": true,
       "h1": "Rollkey",
-      "htmlBytes": 15032,
+      "htmlBytes": 15414,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "AboutPage"
+        "AboutPage",
+        "ImageObject"
       ]
     },
     {
@@ -27,11 +28,12 @@
       "descriptionLength": 180,
       "indexable": true,
       "h1": "Online image tools.Create with ease.",
-      "htmlBytes": 37813,
+      "htmlBytes": 38183,
       "schemaTypes": [
         "Person",
         "WebSite",
         "CollectionPage",
+        "ImageObject",
         "ItemList"
       ]
     },
@@ -42,11 +44,12 @@
       "descriptionLength": 61,
       "indexable": true,
       "h1": "Privacy Policy",
-      "htmlBytes": 19014,
+      "htmlBytes": 19400,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -56,11 +59,12 @@
       "descriptionLength": 69,
       "indexable": true,
       "h1": "Terms of Service",
-      "htmlBytes": 21831,
+      "htmlBytes": 22213,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -70,11 +74,12 @@
       "descriptionLength": 191,
       "indexable": true,
       "h1": "AI Watermark Remover",
-      "htmlBytes": 25324,
+      "htmlBytes": 25869,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -86,11 +91,12 @@
       "descriptionLength": 87,
       "indexable": true,
       "h1": "DND Alignment Chart Maker",
-      "htmlBytes": 28239,
+      "htmlBytes": 28749,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -102,11 +108,12 @@
       "descriptionLength": 126,
       "indexable": true,
       "h1": "Image Compressor",
-      "htmlBytes": 20051,
+      "htmlBytes": 20566,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -118,11 +125,12 @@
       "descriptionLength": 179,
       "indexable": true,
       "h1": "Image Enhancer",
-      "htmlBytes": 23787,
+      "htmlBytes": 24302,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -134,11 +142,12 @@
       "descriptionLength": 174,
       "indexable": true,
       "h1": "Online OCR",
-      "htmlBytes": 23384,
+      "htmlBytes": 23874,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -150,11 +159,12 @@
       "descriptionLength": 93,
       "indexable": true,
       "h1": "MBTI Personality Grid Maker",
-      "htmlBytes": 43249,
+      "htmlBytes": 43739,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -166,11 +176,12 @@
       "descriptionLength": 161,
       "indexable": true,
       "h1": "Image Splitter",
-      "htmlBytes": 23141,
+      "htmlBytes": 23641,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -182,11 +193,12 @@
       "descriptionLength": 135,
       "indexable": true,
       "h1": "Online Drawing & Image Editor",
-      "htmlBytes": 38378,
+      "htmlBytes": 38893,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -198,11 +210,12 @@
       "descriptionLength": 97,
       "indexable": true,
       "h1": "Pornhub Style Logo Maker",
-      "htmlBytes": 22944,
+      "htmlBytes": 23454,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -214,11 +227,12 @@
       "descriptionLength": 160,
       "indexable": true,
       "h1": "Full Page Screenshot",
-      "htmlBytes": 21091,
+      "htmlBytes": 21586,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -230,11 +244,12 @@
       "descriptionLength": 134,
       "indexable": true,
       "h1": "Subtitle Screenshot Generator",
-      "htmlBytes": 28131,
+      "htmlBytes": 28666,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -246,11 +261,12 @@
       "descriptionLength": 110,
       "indexable": true,
       "h1": "Video Thumbnail Downloader",
-      "htmlBytes": 21147,
+      "htmlBytes": 21667,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -262,11 +278,12 @@
       "descriptionLength": 125,
       "indexable": true,
       "h1": "Add Watermark",
-      "htmlBytes": 26608,
+      "htmlBytes": 27128,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -278,11 +295,12 @@
       "descriptionLength": 129,
       "indexable": true,
       "h1": "Wiggle Studio",
-      "htmlBytes": 24939,
+      "htmlBytes": 25449,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -294,11 +312,12 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "Rollkey",
-      "htmlBytes": 15397,
+      "htmlBytes": 15779,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "AboutPage"
+        "AboutPage",
+        "ImageObject"
       ]
     },
     {
@@ -308,11 +327,12 @@
       "descriptionLength": 95,
       "indexable": true,
       "h1": "画像ツール、創作を自由に。",
-      "htmlBytes": 39397,
+      "htmlBytes": 39767,
       "schemaTypes": [
         "Person",
         "WebSite",
         "CollectionPage",
+        "ImageObject",
         "ItemList"
       ]
     },
@@ -323,11 +343,12 @@
       "descriptionLength": 32,
       "indexable": true,
       "h1": "プライバシーポリシー",
-      "htmlBytes": 20199,
+      "htmlBytes": 20585,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -337,11 +358,12 @@
       "descriptionLength": 40,
       "indexable": true,
       "h1": "利用規約",
-      "htmlBytes": 23803,
+      "htmlBytes": 24185,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -351,11 +373,12 @@
       "descriptionLength": 96,
       "indexable": true,
       "h1": "AI 画像の透かし除去",
-      "htmlBytes": 26077,
+      "htmlBytes": 26622,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -367,11 +390,12 @@
       "descriptionLength": 33,
       "indexable": true,
       "h1": "DND陣営チャートメーカー",
-      "htmlBytes": 28698,
+      "htmlBytes": 29208,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -383,11 +407,12 @@
       "descriptionLength": 50,
       "indexable": true,
       "h1": "画像圧縮ツール",
-      "htmlBytes": 20497,
+      "htmlBytes": 21012,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -399,11 +424,12 @@
       "descriptionLength": 90,
       "indexable": true,
       "h1": "画像の高画質化",
-      "htmlBytes": 24885,
+      "htmlBytes": 25400,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -415,11 +441,12 @@
       "descriptionLength": 74,
       "indexable": true,
       "h1": "オンライン OCR",
-      "htmlBytes": 24444,
+      "htmlBytes": 24934,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -431,11 +458,12 @@
       "descriptionLength": 33,
       "indexable": true,
       "h1": "MBTI性格グリッドメーカー",
-      "htmlBytes": 43899,
+      "htmlBytes": 44389,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -447,11 +475,12 @@
       "descriptionLength": 76,
       "indexable": true,
       "h1": "画像分割ツール",
-      "htmlBytes": 24058,
+      "htmlBytes": 24558,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -463,11 +492,12 @@
       "descriptionLength": 57,
       "indexable": true,
       "h1": "オンライン描画",
-      "htmlBytes": 39610,
+      "htmlBytes": 40125,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -479,11 +509,12 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "Pornhub風ロゴメーカー",
-      "htmlBytes": 23676,
+      "htmlBytes": 24186,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -495,11 +526,12 @@
       "descriptionLength": 85,
       "indexable": true,
       "h1": "スクロールスクリーンショット",
-      "htmlBytes": 22791,
+      "htmlBytes": 23286,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -511,11 +543,12 @@
       "descriptionLength": 66,
       "indexable": true,
       "h1": "字幕スクリーンショット生成器",
-      "htmlBytes": 29391,
+      "htmlBytes": 29926,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -527,11 +560,12 @@
       "descriptionLength": 72,
       "indexable": true,
       "h1": "動画サムネイルダウンロード",
-      "htmlBytes": 22138,
+      "htmlBytes": 22658,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -543,11 +577,12 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "透かし追加",
-      "htmlBytes": 27203,
+      "htmlBytes": 27723,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -559,11 +594,12 @@
       "descriptionLength": 59,
       "indexable": true,
       "h1": "ぷるぷる画像工房",
-      "htmlBytes": 25995,
+      "htmlBytes": 26505,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -575,11 +611,12 @@
       "descriptionLength": 39,
       "indexable": true,
       "h1": "Rollkey",
-      "htmlBytes": 15221,
+      "htmlBytes": 15603,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "AboutPage"
+        "AboutPage",
+        "ImageObject"
       ]
     },
     {
@@ -589,11 +626,12 @@
       "descriptionLength": 82,
       "indexable": true,
       "h1": "在线图片工具，创作更简单。",
-      "htmlBytes": 38170,
+      "htmlBytes": 38540,
       "schemaTypes": [
         "Person",
         "WebSite",
         "CollectionPage",
+        "ImageObject",
         "ItemList"
       ]
     },
@@ -604,11 +642,12 @@
       "descriptionLength": 31,
       "indexable": true,
       "h1": "隐私政策",
-      "htmlBytes": 18631,
+      "htmlBytes": 19017,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -618,11 +657,12 @@
       "descriptionLength": 29,
       "indexable": true,
       "h1": "服务条款",
-      "htmlBytes": 20818,
+      "htmlBytes": 21200,
       "schemaTypes": [
         "Person",
         "WebSite",
-        "WebPage"
+        "WebPage",
+        "ImageObject"
       ]
     },
     {
@@ -632,11 +672,12 @@
       "descriptionLength": 97,
       "indexable": true,
       "h1": "AI 图片去水印",
-      "htmlBytes": 25376,
+      "htmlBytes": 25921,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -648,11 +689,12 @@
       "descriptionLength": 39,
       "indexable": true,
       "h1": "DND阵营九宫格生成器",
-      "htmlBytes": 28255,
+      "htmlBytes": 28765,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -664,11 +706,12 @@
       "descriptionLength": 70,
       "indexable": true,
       "h1": "图片压缩工具",
-      "htmlBytes": 20390,
+      "htmlBytes": 20905,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -680,11 +723,12 @@
       "descriptionLength": 82,
       "indexable": true,
       "h1": "图片变清晰",
-      "htmlBytes": 24055,
+      "htmlBytes": 24570,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -696,11 +740,12 @@
       "descriptionLength": 81,
       "indexable": true,
       "h1": "图片文字识别（在线 OCR）",
-      "htmlBytes": 23927,
+      "htmlBytes": 24417,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -712,11 +757,12 @@
       "descriptionLength": 43,
       "indexable": true,
       "h1": "MBTI人格图生成器",
-      "htmlBytes": 43410,
+      "htmlBytes": 43900,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -728,11 +774,12 @@
       "descriptionLength": 62,
       "indexable": true,
       "h1": "图片分割与表情包切片",
-      "htmlBytes": 23459,
+      "htmlBytes": 23959,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -744,11 +791,12 @@
       "descriptionLength": 50,
       "indexable": true,
       "h1": "在线画图",
-      "htmlBytes": 38433,
+      "htmlBytes": 38948,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -760,11 +808,12 @@
       "descriptionLength": 44,
       "indexable": true,
       "h1": "Pornhub风格 Logo 生成器",
-      "htmlBytes": 22996,
+      "htmlBytes": 23506,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -776,11 +825,12 @@
       "descriptionLength": 69,
       "indexable": true,
       "h1": "网页长截图",
-      "htmlBytes": 21287,
+      "htmlBytes": 21782,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -792,11 +842,12 @@
       "descriptionLength": 52,
       "indexable": true,
       "h1": "截图字幕生成器",
-      "htmlBytes": 28266,
+      "htmlBytes": 28801,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -808,11 +859,12 @@
       "descriptionLength": 51,
       "indexable": true,
       "h1": "视频封面下载",
-      "htmlBytes": 21207,
+      "htmlBytes": 21727,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -824,11 +876,12 @@
       "descriptionLength": 54,
       "indexable": true,
       "h1": "图片加水印",
-      "htmlBytes": 26954,
+      "htmlBytes": 27474,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]
@@ -840,11 +893,12 @@
       "descriptionLength": 61,
       "indexable": true,
       "h1": "晃动图片工坊",
-      "htmlBytes": 25184,
+      "htmlBytes": 25694,
       "schemaTypes": [
         "Person",
         "WebSite",
         "WebPage",
+        "ImageObject",
         "WebApplication",
         "BreadcrumbList"
       ]

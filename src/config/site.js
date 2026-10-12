@@ -2,6 +2,8 @@
 export const siteConfig = {
   url: 'https://imghub.oumashu.top',
   name: 'ImgHub',
+  // Other names for the site, for search engines choosing a site name.
+  alternateName: ['ImgHub 图片工具', 'ImgHub Image Tools', 'ImgHub 画像ツール'],
   creator: 'Rollkey',
   email: 'wyh93829@gmail.com',
   social: 'https://x.com/Rollkey8',

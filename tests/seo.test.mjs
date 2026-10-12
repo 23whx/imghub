@@ -18,7 +18,8 @@ test('JSON-LD cannot terminate its raw-text element with user-visible text', () 
 });
 test('page graph connects creator, website, application and breadcrumb IDs', () => {
   const url = canonicalPath('zh', '/tools/online-drawing/');
-  const data = buildPageSchema({ lang: 'zh', title: '画图', description: '图层编辑', path: 'tools/online-drawing', extra: [
+  const image = `${siteConfig.url}/og/zh/online-drawing.jpg`;
+  const data = buildPageSchema({ lang: 'zh', title: '画图', description: '图层编辑', path: 'tools/online-drawing', image, extra: [
     { '@context': 'https://schema.org', '@type': 'WebApplication', '@id': `${url}#application` },
     { '@type': 'BreadcrumbList', '@id': `${url}#breadcrumb` },
   ] });
@@ -26,6 +27,12 @@ test('page graph connects creator, website, application and breadcrumb IDs', () 
   assert.equal(url, `${siteConfig.url}/zh/tools/online-drawing/`);
   assert.equal(page.mainEntity['@id'], `${url}#application`);
   assert.equal(page.breadcrumb['@id'], `${url}#breadcrumb`);
+  const app = data['@graph'].find(node => node['@type'] === 'WebApplication');
+  const primary = data['@graph'].find(node => node['@type'] === 'ImageObject');
+  assert.equal(primary.url, image);
+  assert.equal(page.primaryImageOfPage['@id'], primary['@id']);
+  assert.equal(app.image['@id'], primary['@id']);
+  assert.deepEqual(data['@graph'].find(node => node['@type'] === 'WebSite').alternateName, siteConfig.alternateName);
   assert.equal(data['@graph'].filter(node => node['@context']).length, 0);
   assert.equal(new Set(data['@graph'].map(node => node['@id'])).size, data['@graph'].length);
 });

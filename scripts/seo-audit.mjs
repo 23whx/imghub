@@ -94,10 +94,13 @@ for (const [file, document] of documents) {
   const person = graph.find(node => node['@type'] === 'Person');
   check(person?.email === siteConfig.email && person?.sameAs?.includes(siteConfig.social), `${pathname}: incorrect author identity`);
   check(!graph.some(node => node.aggregateRating || node.review || node['@type'] === 'FAQPage'), `${pathname}: unverified reviews or FAQ rich-result markup`);
+  const primaryImage = graph.find(node => node['@type'] === 'ImageObject');
+  check(primaryImage?.url === attr(meta('og:image'), 'content') && graph.find(node => node['@id'] === `${canonical}#webpage`)?.primaryImageOfPage?.['@id'] === primaryImage?.['@id'], `${pathname}: primary image differs from share image`);
+  check(graph.find(node => node['@type'] === 'WebSite')?.alternateName?.length === siteConfig.alternateName.length, `${pathname}: website alternate names missing`);
   if (tool?.public) {
     const app = graph.find(node => node['@type'] === 'WebApplication');
     check(app?.url === canonical && app?.offers?.price === '0' && app?.name === tool.seo[lang].h1, `${pathname}: incorrect application schema`);
-    check(app?.description === tool.seo[lang].description && app?.mainEntityOfPage?.['@id'] === `${canonical}#webpage`, `${pathname}: application metadata disconnected from page`);
+    check(app?.description === tool.seo[lang].description && app?.mainEntityOfPage?.['@id'] === `${canonical}#webpage` && app?.image?.['@id'] === primaryImage?.['@id'], `${pathname}: application metadata disconnected from page`);
     if (tool.browserRequirements) check(app?.browserRequirements === tool.browserRequirements, `${pathname}: incorrect browser requirements`);
     const breadcrumb = graph.find(node => node['@type'] === 'BreadcrumbList');
     check(breadcrumb?.itemListElement?.length === 2 && breadcrumb.itemListElement[1].item === canonical, `${pathname}: invalid breadcrumb`);
