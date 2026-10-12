@@ -59,7 +59,7 @@ html.dark .theme-sun { display: block; }
 .hero-content { padding-top: 72px; padding-bottom: 55px; }
 .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .3em; margin-bottom: 28px; color: #cfbfa4; }
 .hero-content h1 { font: 400 clamp(48px, 5.65vw, 88px)/1.28 var(--display); letter-spacing: -.025em; max-width: 580px; margin-bottom: 27px; }
-.hero-content h1 span { display: block; }
+.hero-content h1 span { display: block; white-space: nowrap; }
 html[lang='en'] .hero-content h1 { font-size: clamp(52px, 5.4vw, 82px); max-width: 650px; line-height: 1.05; }
 .hero-intro { font-size: 17px; line-height: 1.95; font-weight: 400; max-width: 520px; color: #e7dac7; }
 .hero-intro span { color: #c8bba9; font-size: 15px; }
