@@ -3,6 +3,8 @@ import path from 'node:path';
 import { parse } from 'parse5';
 import sharp from 'sharp';
 import { siteConfig, ogImagePath } from '../src/config/site.js';
+
+const adsensePublisher = 'pub-4880646654838411';
 import { locales, htmlLang } from '../src/i18n/config.js';
 import { tools, publicTools } from '../src/i18n/tools.js';
 import { buildAlternates, localizedPath } from '../src/i18n/utils.js';
@@ -85,6 +87,8 @@ for (const [file, document] of documents) {
     const expectedAlternates = buildAlternates(siteConfig.url, pathname.split('/').filter(Boolean).slice(1).join('/'));
     check(alternates.length === 4 && expectedAlternates.every(alternate => alternates.some(node => attr(node, 'hreflang') === alternate.hreflang && attr(node, 'href') === alternate.href)), `${pathname}: language alternates missing or incorrect`);
   }
+  const adsense = tags('script').filter(node => attr(node, 'src')?.startsWith('https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'));
+  check(adsense.length === 1 && attr(adsense[0], 'src').endsWith(`?client=ca-${adsensePublisher}`) && attr(adsense[0], 'crossorigin') === 'anonymous' && adsense[0].parentNode?.tagName === 'head', `${pathname}: AdSense script missing from head`);
   const scripts = tags('script').filter(node => attr(node, 'type') === 'application/ld+json');
   check(scripts.length === 1, `${pathname}: expected one JSON-LD graph`);
   let graph = [];
@@ -159,6 +163,8 @@ for (const entry of sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
   ), `${location}: sitemap language alternates missing or incorrect`);
 }
 const robots = await fs.readFile(path.join(root, 'robots.txt'), 'utf8');
+const adsTxt = await fs.readFile(path.join(root, 'ads.txt'), 'utf8').catch(() => '');
+check(adsTxt.split('\n').some(line => line.trim() === `google.com, ${adsensePublisher}, DIRECT, f08c47fec0942fa0`), 'ads.txt missing or without the AdSense publisher line');
 check(robots.includes(`Sitemap: ${siteConfig.url}/sitemap.xml`) && !robots.includes('Disallow: /\n'), 'Incorrect robots sitemap or sitewide block');
 for (const file of locales.flatMap(lang => [undefined, ...publicTools.map(tool => tool.slug)].map(slug => ogImagePath(lang, slug)))) {
   try {
