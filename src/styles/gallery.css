@@ -93,9 +93,9 @@ html[lang='en'] .hero-content h1 { font-size: clamp(52px, 5.4vw, 82px); max-widt
 .exhibit-caption svg { margin-left: auto; flex-shrink: 0; margin-top: 4px; color: var(--muted); transition: transform .25s; }
 .exhibit-card:hover .exhibit-caption svg { transform: translate(3px, -3px); color: var(--accent); }
 .exhibit-number { font: 400 23px/1.25 var(--display); color: var(--faint); min-width: 24px; }
-.exhibit-caption h3 { font: 500 18px/1.6 var(--display); }
+.exhibit-caption h3, .exhibit-caption .exhibit-title { font: 500 18px/1.6 var(--display); color: inherit; max-width: none; margin-top: 0; }
 .exhibit-caption p { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 5px; max-width: 300px; }
-.exhibit-featured .exhibit-caption h3 { font-size: 23px; }
+.exhibit-featured .exhibit-caption .exhibit-title { font-size: 23px; }
 .exhibit-featured .artwork { aspect-ratio: 1.9; }
 .art-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; padding: 5px; background: #e6d9c6; }
 .art-mosaic-nine { grid-template-columns: repeat(3, 1fr); }
@@ -316,7 +316,7 @@ html[lang='en'] .hero-content h1 { font-size: clamp(52px, 5.4vw, 82px); max-widt
   .section-heading h2, .values-title h2 { font-size: 30px; }
   .selected-grid { grid-template-columns: 1fr; gap: 28px; }
   .exhibit-featured .artwork { aspect-ratio: 1.9; }
-  .exhibit-featured .exhibit-caption h3 { font-size: 21px; }
+  .exhibit-featured .exhibit-caption .exhibit-title { font-size: 21px; }
   .exhibit-caption { padding-top: 12px; gap: 9px; }
   .collection-controls { flex-direction: column; gap: 14px; padding-top: 12px; }
   .collection-filters { gap: 0; }

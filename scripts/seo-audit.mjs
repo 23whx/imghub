@@ -163,6 +163,8 @@ for (const entry of sitemap.matchAll(/<url>([\s\S]*?)<\/url>/g)) {
   ), `${location}: sitemap language alternates missing or incorrect`);
 }
 const robots = await fs.readFile(path.join(root, 'robots.txt'), 'utf8');
+const llmsTxt = await fs.readFile(path.join(root, 'llms.txt'), 'utf8').catch(() => '');
+check(llmsTxt.startsWith(`# ${siteConfig.name}`) && publicTools.every(tool => llmsTxt.includes(`${siteConfig.url}/en/tools/${tool.slug}/`)), 'llms.txt missing or not listing every public tool');
 const adsTxt = await fs.readFile(path.join(root, 'ads.txt'), 'utf8').catch(() => '');
 check(adsTxt.split('\n').some(line => line.trim() === `google.com, ${adsensePublisher}, DIRECT, f08c47fec0942fa0`), 'ads.txt missing or without the AdSense publisher line');
 check(robots.includes(`Sitemap: ${siteConfig.url}/sitemap.xml`) && !robots.includes('Disallow: /\n'), 'Incorrect robots sitemap or sitewide block');

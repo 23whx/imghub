@@ -1,8 +1,8 @@
 {
-  "checkedAt": "2026-10-12T13:18:02.287Z",
+  "checkedAt": "2026-10-14T04:10:30.897Z",
   "origin": "https://imghub.oumashu.top",
   "scope": "Built static HTML and local assets; not Google indexing or CWV field data",
-  "assertions": 3723,
+  "assertions": 3724,
   "errors": [],
   "warnings": [],
   "pages": [
@@ -28,7 +28,7 @@
       "descriptionLength": 180,
       "indexable": true,
       "h1": "Online image tools.Create with ease.",
-      "htmlBytes": 38183,
+      "htmlBytes": 38242,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -210,7 +210,7 @@
       "descriptionLength": 97,
       "indexable": true,
       "h1": "Pornhub Style Logo Maker",
-      "htmlBytes": 23454,
+      "htmlBytes": 23457,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -327,7 +327,7 @@
       "descriptionLength": 95,
       "indexable": true,
       "h1": "画像ツール、創作を自由に。",
-      "htmlBytes": 39767,
+      "htmlBytes": 39826,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -509,7 +509,7 @@
       "descriptionLength": 49,
       "indexable": true,
       "h1": "Pornhub風ロゴメーカー",
-      "htmlBytes": 24186,
+      "htmlBytes": 24192,
       "schemaTypes": [
         "Person",
         "WebSite",
@@ -626,7 +626,7 @@
       "descriptionLength": 82,
       "indexable": true,
       "h1": "在线图片工具，创作更简单。",
-      "htmlBytes": 38540,
+      "htmlBytes": 38600,
       "schemaTypes": [
         "Person",
         "WebSite",

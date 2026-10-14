@@ -26,6 +26,7 @@ const copy = {
   '将生成': ['Tiles to export:', '書き出す画像数:'],
   '张切片图片': ['tiles', '枚'],
   '快速预设': ['Presets', 'プリセット'],
+  '快速模板': ['Quick templates', 'テンプレート'],
   '导出切片 (ZIP)': ['Export tiles (ZIP)', '分割画像を書き出す (ZIP)'],
   '预览': ['Preview', 'プレビュー'],
   '上传图片后查看预览': ['Upload an image to see your grid.', '画像をアップロードするとプレビューが表示されます。'],
